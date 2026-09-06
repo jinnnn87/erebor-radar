@@ -1090,7 +1090,7 @@
         <h3 class="font-serif text-base sm:text-lg text-fable-ink">Gemini API 연동</h3>
         <p class="text-fable-muted leading-relaxed text-[11px] sm:text-[12px]">실시간 포트폴리오 분석 및 종목 추천을 위해 Google Gemini API 키가 필요합니다. 키는 로컬 브라우저에만 안전하게 저장됩니다.</p>
         <div class="flex gap-2">
-          <input type="password" id="api-key-input" placeholder="AIzaSy..." class="flex-grow p-2 rounded-xl border border-fable-border bg-white text-xs font-mono outline-none focus:border-fable-ink transition-colors">
+          <input type="password" id="api-key-input" placeholder="AIzaSy... 또는 ntn_..." class="flex-grow p-2 rounded-xl border border-fable-border bg-white text-xs font-mono outline-none focus:border-fable-ink transition-colors">
           <button onclick="saveApiKey()" class="px-4 py-2 bg-fable-ink text-white font-bold rounded-xl active:scale-95 transition-transform">저장</button>
         </div>
       </div>
@@ -2331,12 +2331,13 @@
     function saveApiKey() {
       const input = document.getElementById('api-key-input');
       const val = input.value.trim();
-      if (val.startsWith('AIzaSy')) {
+      // Google AI Studio API 키 포맷이 AIzaSy... 외에도 ntn_... 등으로 다양화될 수 있으므로, 최소 길이 검증으로 완화합니다.
+      if (val.length >= 20) {
         localStorage.setItem('erebor_gemini_key', val);
         input.value = '';
         checkApiKeyUI();
       } else {
-        alert("올바른 Gemini API Key(AIzaSy... 로 시작)를 입력해주세요.");
+        alert("유효한 Gemini API Key 형식이 아닙니다 (글자 수 부족).");
       }
     }
 
