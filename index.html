@@ -407,26 +407,121 @@
         <span class="text-[10px] font-mono text-fable-subtle bg-fable-cream px-2 py-0.5 rounded border border-fable-border">10.0 SCALE</span>
       </div>
 
-      <!-- Radar Selector Chips -->
-      <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 text-xs font-mono">
-        <button onclick="setRadarStock('ALL')" id="chip-ALL" class="radar-chip px-3 py-1.5 rounded-lg border border-fable-ink bg-fable-ink text-white font-medium text-[11px] shrink-0 transition-all active:scale-[0.97]">
-          종합 오버레이
-        </button>
-        <button onclick="setRadarStock('000660')" id="chip-000660" class="radar-chip px-3 py-1.5 rounded-lg border border-fable-border bg-white text-fable-muted font-medium text-[11px] shrink-0 hover:border-fable-coral transition-all active:scale-[0.97]">
-          SK하이닉스
-        </button>
-        <button onclick="setRadarStock('267260')" id="chip-267260" class="radar-chip px-3 py-1.5 rounded-lg border border-fable-border bg-white text-fable-muted font-medium text-[11px] shrink-0 hover:border-fable-cloud transition-all active:scale-[0.97]">
-          HD현대일렉
-        </button>
-        <button onclick="setRadarStock('105560')" id="chip-105560" class="radar-chip px-3 py-1.5 rounded-lg border border-fable-border bg-white text-fable-muted font-medium text-[11px] shrink-0 hover:border-fable-matcha transition-all active:scale-[0.97]">
-          KB금융
-        </button>
-        <button onclick="setRadarStock('034020')" id="chip-034020" class="radar-chip px-3 py-1.5 rounded-lg border border-fable-border bg-white text-fable-muted font-medium text-[11px] shrink-0 hover:border-fable-slate transition-all active:scale-[0.97]">
-          두산에너빌리티
-        </button>
-        <button onclick="setRadarStock('196170')" id="chip-196170" class="radar-chip px-3 py-1.5 rounded-lg border border-fable-border bg-white text-fable-muted font-medium text-[11px] shrink-0 hover:border-fable-heather transition-all active:scale-[0.97]">
-          알테오젠
-        </button>
+      <!-- TABLE OF CONTENTS // RADAR TARGET SELECTOR -->
+      <div class="relative z-20 space-y-1">
+        <div class="text-[10px] font-mono text-fable-subtle uppercase">
+          <span>Table of Contents // 분석 대상 선택</span>
+        </div>
+
+        <div class="bg-fable-surface border border-fable-border rounded-xl p-1.5 sm:p-2 shadow-xs">
+          <!-- Dropdown Trigger Button with Dotted Leader (Full width, no stepper buttons) -->
+          <button id="radar-stock-dropdown-btn" onclick="toggleRadarStockMenu()" type="button" class="w-full flex items-center justify-between group px-2 py-1 rounded-lg hover:bg-fable-ivory transition-all select-none">
+            <div class="flex items-center min-w-0 flex-1">
+              <span id="radar-stock-current-num" class="font-mono text-xs font-bold text-fable-coral shrink-0">[ ALL ]</span>
+              <span class="index-leader hidden sm:inline-block">....................................................................</span>
+              <span class="mx-1.5 sm:hidden text-fable-faded font-mono">/</span>
+              <span id="radar-stock-current-name" class="font-serif text-sm sm:text-base font-semibold text-fable-ink group-hover:text-fable-coral transition-colors truncate">종합 오버레이</span>
+              <span id="radar-stock-current-sub" class="font-mono text-[10px] text-fable-subtle ml-1.5 shrink-0">(가중 평균)</span>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0 ml-2">
+              <svg id="radar-stock-chevron" class="w-3.5 h-3.5 text-fable-subtle transition-transform duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </div>
+          </button>
+        </div>
+
+        <!-- Radar Dotted Index Dropdown List -->
+        <div id="radar-stock-dropdown-menu" class="hidden absolute top-full left-0 right-0 mt-1 bg-fable-surface border border-fable-border rounded-2xl p-2.5 shadow-xl z-30 space-y-1 transition-all">
+          <div class="px-2 py-1 text-[10px] font-mono uppercase tracking-widest text-fable-subtle border-b border-fable-border mb-1.5 flex justify-between items-center">
+            <span>Table of Contents // Radar Target</span>
+            <span>6 Perspectives</span>
+          </div>
+
+          <!-- ALL 종합 오버레이 -->
+          <button onclick="selectRadarStockFromMenu('ALL')" id="radar-menu-item-ALL" type="button" class="radar-menu-item w-full flex items-center justify-between p-2 rounded-xl text-left transition-all bg-fable-ivory border border-fable-border">
+            <div class="flex items-center min-w-0">
+              <span class="font-mono text-xs font-bold text-fable-coral shrink-0">[ ALL ]</span>
+              <span class="font-serif text-sm font-semibold text-fable-ink ml-1.5 truncate">종합 오버레이</span>
+              <span class="font-mono text-[10px] text-fable-subtle ml-1 shrink-0">가중 평균</span>
+            </div>
+            <span class="index-leader hidden sm:inline-block"></span>
+            <div class="flex items-center gap-1.5 shrink-0 ml-1">
+              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-coralLight text-fable-coral font-bold shrink-0">전체</span>
+              <span id="radar-menu-check-ALL" class="text-xs text-fable-coral font-bold shrink-0">✓</span>
+            </div>
+          </button>
+
+          <!-- 01 SK하이닉스 -->
+          <button onclick="selectRadarStockFromMenu('000660')" id="radar-menu-item-000660" type="button" class="radar-menu-item w-full flex items-center justify-between p-2 rounded-xl text-left transition-all hover:bg-fable-ivory/80 border border-transparent">
+            <div class="flex items-center min-w-0">
+              <span class="font-mono text-xs text-fable-subtle shrink-0">[ 01 ]</span>
+              <span class="font-serif text-sm font-normal text-fable-ink ml-1.5 truncate">SK하이닉스</span>
+              <span class="font-mono text-[10px] text-fable-subtle ml-1 shrink-0">61.3%</span>
+            </div>
+            <span class="index-leader hidden sm:inline-block"></span>
+            <div class="flex items-center gap-1.5 shrink-0 ml-1">
+              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-cream text-fable-subtle shrink-0">000660</span>
+              <span id="radar-menu-check-000660" class="text-xs text-fable-coral font-bold shrink-0 hidden">✓</span>
+            </div>
+          </button>
+
+          <!-- 02 HD현대일렉트릭 -->
+          <button onclick="selectRadarStockFromMenu('267260')" id="radar-menu-item-267260" type="button" class="radar-menu-item w-full flex items-center justify-between p-2 rounded-xl text-left transition-all hover:bg-fable-ivory/80 border border-transparent">
+            <div class="flex items-center min-w-0">
+              <span class="font-mono text-xs text-fable-subtle shrink-0">[ 02 ]</span>
+              <span class="font-serif text-sm font-normal text-fable-ink ml-1.5 truncate">HD현대일렉트릭</span>
+              <span class="font-mono text-[10px] text-fable-subtle ml-1 shrink-0">14.8%</span>
+            </div>
+            <span class="index-leader hidden sm:inline-block"></span>
+            <div class="flex items-center gap-1.5 shrink-0 ml-1">
+              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-cream text-fable-subtle shrink-0">267260</span>
+              <span id="radar-menu-check-267260" class="text-xs text-fable-coral font-bold shrink-0 hidden">✓</span>
+            </div>
+          </button>
+
+          <!-- 03 KB금융 -->
+          <button onclick="selectRadarStockFromMenu('105560')" id="radar-menu-item-105560" type="button" class="radar-menu-item w-full flex items-center justify-between p-2 rounded-xl text-left transition-all hover:bg-fable-ivory/80 border border-transparent">
+            <div class="flex items-center min-w-0">
+              <span class="font-mono text-xs text-fable-subtle shrink-0">[ 03 ]</span>
+              <span class="font-serif text-sm font-normal text-fable-ink ml-1.5 truncate">KB금융</span>
+              <span class="font-mono text-[10px] text-fable-subtle ml-1 shrink-0">10.0%</span>
+            </div>
+            <span class="index-leader hidden sm:inline-block"></span>
+            <div class="flex items-center gap-1.5 shrink-0 ml-1">
+              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-cream text-fable-subtle shrink-0">105560</span>
+              <span id="radar-menu-check-105560" class="text-xs text-fable-coral font-bold shrink-0 hidden">✓</span>
+            </div>
+          </button>
+
+          <!-- 04 두산에너빌리티 -->
+          <button onclick="selectRadarStockFromMenu('034020')" id="radar-menu-item-034020" type="button" class="radar-menu-item w-full flex items-center justify-between p-2 rounded-xl text-left transition-all hover:bg-fable-ivory/80 border border-transparent">
+            <div class="flex items-center min-w-0">
+              <span class="font-mono text-xs text-fable-subtle shrink-0">[ 04 ]</span>
+              <span class="font-serif text-sm font-normal text-fable-ink ml-1.5 truncate">두산에너빌리티</span>
+              <span class="font-mono text-[10px] text-fable-subtle ml-1 shrink-0">4.6%</span>
+            </div>
+            <span class="index-leader hidden sm:inline-block"></span>
+            <div class="flex items-center gap-1.5 shrink-0 ml-1">
+              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-cream text-fable-subtle shrink-0">034020</span>
+              <span id="radar-menu-check-034020" class="text-xs text-fable-coral font-bold shrink-0 hidden">✓</span>
+            </div>
+          </button>
+
+          <!-- 05 알테오젠 -->
+          <button onclick="selectRadarStockFromMenu('196170')" id="radar-menu-item-196170" type="button" class="radar-menu-item w-full flex items-center justify-between p-2 rounded-xl text-left transition-all hover:bg-fable-ivory/80 border border-transparent">
+            <div class="flex items-center min-w-0">
+              <span class="font-mono text-xs text-fable-subtle shrink-0">[ 05 ]</span>
+              <span class="font-serif text-sm font-normal text-fable-ink ml-1.5 truncate">알테오젠</span>
+              <span class="font-mono text-[10px] text-fable-subtle ml-1 shrink-0">2.4%</span>
+            </div>
+            <span class="index-leader hidden sm:inline-block"></span>
+            <div class="flex items-center gap-1.5 shrink-0 ml-1">
+              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-cream text-fable-subtle shrink-0">196170</span>
+              <span id="radar-menu-check-196170" class="text-xs text-fable-coral font-bold shrink-0 hidden">✓</span>
+            </div>
+          </button>
+        </div>
       </div>
 
       <!-- Radar Canvas / SVG Container -->
@@ -1392,6 +1487,12 @@
       if (simBtn && simMenu && !simBtn.contains(e.target) && !simMenu.contains(e.target)) {
         closeSimStockMenu();
       }
+
+      const radarBtn = document.getElementById('radar-stock-dropdown-btn');
+      const radarMenu = document.getElementById('radar-stock-dropdown-menu');
+      if (radarBtn && radarMenu && !radarBtn.contains(e.target) && !radarMenu.contains(e.target)) {
+        closeRadarStockMenu();
+      }
     });
 
     function switchRangeSubtab(subtab) {
@@ -1421,6 +1522,15 @@
     // 3. MULTI-DIMENSIONAL RADAR CHART ENGINE (SVG)
     // -------------------------------------------------------------
     let currentRadarStock = 'ALL';
+    const radarStockList = [
+      { ticker: "ALL", num: "ALL", name: "종합 오버레이", sub: "가중 평균" },
+      { ticker: "000660", num: "01", name: "SK하이닉스", sub: "61.3%" },
+      { ticker: "267260", num: "02", name: "HD현대일렉트릭", sub: "14.8%" },
+      { ticker: "105560", num: "03", name: "KB금융", sub: "10.0%" },
+      { ticker: "034020", num: "04", name: "두산에너빌리티", sub: "4.6%" },
+      { ticker: "196170", num: "05", name: "알테오젠", sub: "2.4%" }
+    ];
+
     const radarAxes = [
       { key: 'moat', name: '경제적 해자', angle: -Math.PI / 2 },
       { key: 'value', name: '안전마진', angle: -Math.PI / 2 + (2 * Math.PI / 5) },
@@ -1429,17 +1539,68 @@
       { key: 'impact', name: '포트 기여도', angle: -Math.PI / 2 + (8 * Math.PI / 5) }
     ];
 
+    function toggleRadarStockMenu() {
+      const menu = document.getElementById('radar-stock-dropdown-menu');
+      const chevron = document.getElementById('radar-stock-chevron');
+      if (!menu) return;
+      const isHidden = menu.classList.contains('hidden');
+      if (isHidden) {
+        menu.classList.remove('hidden');
+        if (chevron) chevron.classList.add('rotate-180');
+      } else {
+        menu.classList.add('hidden');
+        if (chevron) chevron.classList.remove('rotate-180');
+      }
+    }
+
+    function closeRadarStockMenu() {
+      const menu = document.getElementById('radar-stock-dropdown-menu');
+      const chevron = document.getElementById('radar-stock-chevron');
+      if (menu) menu.classList.add('hidden');
+      if (chevron) chevron.classList.remove('rotate-180');
+    }
+
+    function selectRadarStockFromMenu(ticker) {
+      closeRadarStockMenu();
+      setRadarStock(ticker);
+    }
+
     function setRadarStock(ticker) {
       currentRadarStock = ticker;
-      document.querySelectorAll('.radar-chip').forEach(chip => {
-        chip.classList.remove('bg-fable-ink', 'text-white', 'border-fable-ink');
-        chip.classList.add('bg-white', 'text-fable-muted', 'border-fable-border');
+
+      // Update Radar Trigger Bar display
+      const stockInfo = radarStockList.find(s => s.ticker === ticker) || radarStockList[0];
+      const curNumElem = document.getElementById('radar-stock-current-num');
+      if (curNumElem) curNumElem.innerText = `[ ${stockInfo.num} ]`;
+
+      const curNameElem = document.getElementById('radar-stock-current-name');
+      if (curNameElem) curNameElem.innerText = stockInfo.name;
+
+      const curSubElem = document.getElementById('radar-stock-current-sub');
+      if (curSubElem) curSubElem.innerText = `(${stockInfo.sub})`;
+
+      // Update Radar Dropdown Menu Items UI
+      radarStockList.forEach(s => {
+        const menuItem = document.getElementById(`radar-menu-item-${s.ticker}`);
+        const checkElem = document.getElementById(`radar-menu-check-${s.ticker}`);
+        const numElem = menuItem ? menuItem.querySelector('.font-mono') : null;
+        const nameElem = menuItem ? menuItem.querySelector('.font-serif') : null;
+
+        if (menuItem) {
+          if (s.ticker === ticker) {
+            menuItem.className = "radar-menu-item w-full flex items-center justify-between p-2 rounded-xl text-left transition-all bg-fable-ivory border border-fable-border";
+            if (numElem) numElem.className = "font-mono text-xs font-bold text-fable-coral shrink-0";
+            if (nameElem) nameElem.className = "font-serif text-sm font-semibold text-fable-ink ml-1.5 truncate";
+            if (checkElem) checkElem.classList.remove('hidden');
+          } else {
+            menuItem.className = "radar-menu-item w-full flex items-center justify-between p-2 rounded-xl text-left transition-all hover:bg-fable-ivory/80 border border-transparent";
+            if (numElem) numElem.className = "font-mono text-xs text-fable-subtle shrink-0";
+            if (nameElem) nameElem.className = "font-serif text-sm font-normal text-fable-ink ml-1.5 truncate";
+            if (checkElem) checkElem.classList.add('hidden');
+          }
+        }
       });
-      const activeChip = document.getElementById('chip-' + ticker);
-      if (activeChip) {
-        activeChip.classList.add('bg-fable-ink', 'text-white', 'border-fable-ink');
-        activeChip.classList.remove('bg-white', 'text-fable-muted', 'border-fable-border');
-      }
+
       renderRadar();
     }
 
