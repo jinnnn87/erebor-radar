@@ -1074,6 +1074,52 @@
       </div>
     </div>
 
+    <!-- TAB 6: AI 평의회 (AI Council - Real-time API Recommendation) -->
+    <div id="view-ai" class="tab-view hidden space-y-3.5 sm:space-y-4 text-xs">
+      
+      <!-- API Key Setup Modal/Section (Shown if no key) -->
+      <div id="ai-key-section" class="p-3.5 sm:p-4 bg-fable-cream/80 rounded-2xl border border-fable-border space-y-3">
+        <h3 class="font-serif text-base sm:text-lg text-fable-ink">OpenAI API 연동</h3>
+        <p class="text-fable-muted leading-relaxed text-[11px] sm:text-[12px]">실시간 포트폴리오 분석 및 종목 추천을 위해 OpenAI API 키(GPT-4o)가 필요합니다. 키는 로컬 브라우저에만 안전하게 저장됩니다.</p>
+        <div class="flex gap-2">
+          <input type="password" id="api-key-input" placeholder="sk-..." class="flex-grow p-2 rounded-xl border border-fable-border bg-white text-xs font-mono outline-none focus:border-fable-ink transition-colors">
+          <button onclick="saveApiKey()" class="px-4 py-2 bg-fable-ink text-white font-bold rounded-xl active:scale-95 transition-transform">저장</button>
+        </div>
+      </div>
+
+      <!-- AI Action Section (Shown if key exists) -->
+      <div id="ai-action-section" class="hidden space-y-3.5 sm:space-y-4">
+        
+        <div class="p-3.5 sm:p-4 bg-fable-coralLight/30 rounded-2xl border border-fable-coral/40 space-y-3 text-center">
+          <div class="w-10 h-10 mx-auto rounded-full bg-fable-coralLight flex items-center justify-center text-fable-coral">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+          </div>
+          <div>
+            <h3 class="font-bold text-fable-coral text-[13px] sm:text-sm">AI 평의회 소집</h3>
+            <p class="text-fable-coral/70 mt-1 text-[11px] sm:text-xs">현재 포트폴리오 비중과 관망 종목을 분석하여 최적의 리밸런싱 전략과 새로운 관심 종목을 추천합니다.</p>
+          </div>
+          <button id="ai-request-btn" onclick="requestAIRecommendation()" class="w-full sm:w-auto px-5 py-2.5 bg-fable-coral text-white font-bold rounded-xl active:scale-95 transition-transform shadow-md disabled:opacity-50">
+            실시간 AI 분석 요청
+          </button>
+          <div class="mt-2">
+            <button onclick="removeApiKey()" class="text-[10px] text-fable-subtle underline">API 키 재설정</button>
+          </div>
+        </div>
+
+        <!-- AI Output Report -->
+        <div id="ai-report-container" class="hidden p-4 sm:p-5 bg-fable-ivory rounded-2xl border border-fable-border shadow-sm">
+          <div class="flex items-center gap-2 mb-3 pb-3 border-b border-fable-border/50">
+            <span class="w-2 h-2 rounded-full bg-fable-coral animate-pulse"></span>
+            <span class="font-serif font-bold text-fable-ink text-[13px]">Erebor AI Council Report</span>
+          </div>
+          <div id="ai-report-content" class="prose prose-sm prose-p:text-fable-muted prose-headings:text-fable-ink prose-a:text-fable-coral leading-relaxed text-[12px] sm:text-[13px] whitespace-pre-wrap">
+            <!-- Markdown content will be injected here -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+
     <!-- Editorial Footer -->
     <div class="mt-4 sm:mt-5 pt-3 border-t border-fable-border flex justify-center items-center text-[10px] sm:text-[11px] text-fable-subtle font-mono">
       <span class="font-serif italic text-fable-ink">Erebor Absolute Return Engine</span>
@@ -1365,7 +1411,8 @@
       { id: 'radar', num: '02', title: '다차원 레이더', sub: '5대 자본배치 역량 스파이더 레이더 차트' },
       { id: 'range', num: '03', title: '안전마진 채널', sub: '보유 5종목 손익구간 · 관망 3종목 진입대기선' },
       { id: 'sim', num: '04', title: '멀티 리밸런싱 랩', sub: '5대 보유 종목 분할 매도 & 현금 요새 실시간 시뮬레이터' },
-      { id: 'pnl', num: '05', title: '수익률 분석', sub: '종목별 누적 손익 및 포트폴리오 초과수익 기여도' }
+      { id: 'pnl', num: '05', title: '수익률 분석', sub: '종목별 누적 손익 및 포트폴리오 초과수익 기여도' },
+      { id: 'ai', num: '06', title: 'AI 평의회', sub: '실시간 포트폴리오 분석 및 맞춤형 종목 추천 (API 연동)' }
     ];
 
     let currentTabIndex = 0;
@@ -2259,12 +2306,126 @@
         e.target.close();
       }
     });
+    // -------------------------------------------------------------
+    // 7. AI COUNCIL FUNCTIONS (OpenAI 연동)
+    // -------------------------------------------------------------
+    function checkApiKeyUI() {
+      const key = localStorage.getItem('erebor_openai_key');
+      if (key) {
+        document.getElementById('ai-key-section').classList.add('hidden');
+        document.getElementById('ai-action-section').classList.remove('hidden');
+      } else {
+        document.getElementById('ai-key-section').classList.remove('hidden');
+        document.getElementById('ai-action-section').classList.add('hidden');
+      }
+    }
+
+    function saveApiKey() {
+      const input = document.getElementById('api-key-input');
+      const val = input.value.trim();
+      if (val.startsWith('sk-')) {
+        localStorage.setItem('erebor_openai_key', val);
+        input.value = '';
+        checkApiKeyUI();
+      } else {
+        alert("올바른 OpenAI API Key(sk-... 로 시작)를 입력해주세요.");
+      }
+    }
+
+    function removeApiKey() {
+      localStorage.removeItem('erebor_openai_key');
+      document.getElementById('ai-report-container').classList.add('hidden');
+      document.getElementById('ai-report-content').innerHTML = '';
+      checkApiKeyUI();
+    }
+
+    async function requestAIRecommendation() {
+      const apiKey = localStorage.getItem('erebor_openai_key');
+      if (!apiKey) return;
+
+      const btn = document.getElementById('ai-request-btn');
+      const reportContainer = document.getElementById('ai-report-container');
+      const content = document.getElementById('ai-report-content');
+
+      btn.disabled = true;
+      btn.innerText = "분석 중... (약 10~20초 소요)";
+      reportContainer.classList.remove('hidden');
+      content.innerHTML = '<div class="text-center py-4 text-fable-subtle animate-pulse">Erebor AI 모델이 포트폴리오 데이터를 분석하고 있습니다...</div>';
+
+      // 포트폴리오 요약 생성
+      const portfolioSummary = Object.values(portfolioData.stocks).map(s => 
+        `- ${s.name}: ${s.weight}% 비중 (손익: ${s.pnlRate}%)`
+      ).join('\n');
+      
+      const watchlistSummary = portfolioData.watchlist.map(w => 
+        `- ${w.name} (목표가: ${w.targetPrice}원)`
+      ).join('\n');
+
+      const systemPrompt = `당신은 Anthropic 및 Fable 스타일의 철학을 가진 월스트리트의 최고 기관 투자자이자 전략가(Erebor Capital)입니다. 
+항상 전문가답고, 매우 간결하며, 통찰력 있는 어조로 답변하세요.
+답변은 Markdown 포맷을 사용하여 깔끔하게 작성하세요.`;
+
+      const userPrompt = `현재 포트폴리오 상태:
+- CMA 현금 비중: 4.88%
+- 보유 종목 요약:
+${portfolioSummary}
+
+현재 관망 중인 관심 종목:
+${watchlistSummary}
+
+요청 사항:
+1. 현재 포트폴리오의 편중성(리스크)이나 특징을 1~2문장으로 간략히 분석하세요.
+2. 현재 보유 중이지 않으며, 관심 종목에도 없는 **완전히 새로운 종목 2개**를 추천하세요. 현재 포트폴리오의 단점을 보완하거나 헷지할 수 있는 종목이어야 합니다.
+3. 추천 종목 각각에 대해 왜 이 종목이 현재 포트폴리오에 어울리는지 1문장 투자 논거(Thesis)를 제시하세요.`;
+
+      try {
+        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`
+          },
+          body: JSON.stringify({
+            model: 'gpt-4o-mini',
+            messages: [
+              { role: 'system', content: systemPrompt },
+              { role: 'user', content: userPrompt }
+            ],
+            temperature: 0.7,
+            max_tokens: 800
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error('API 호출 실패: ' + response.status);
+        }
+
+        const data = await response.json();
+        const markdown = data.choices[0].message.content;
+        
+        // 간단한 Markdown -> HTML 변환 (굵은 글씨, 줄바꿈, 리스트)
+        let htmlRender = markdown
+          .replace(/### (.*?)\n/g, '<h4 class="font-bold text-fable-ink mt-4 mb-2 text-sm">$1</h4>')
+          .replace(/## (.*?)\n/g, '<h3 class="font-serif text-fable-ink mt-5 mb-2 text-base">$1</h3>')
+          .replace(/\*\*(.*?)\*\*/g, '<strong class="text-fable-ink">$1</strong>')
+          .replace(/\- (.*?)\n/g, '<li class="ml-4 list-disc mb-1">$1</li>')
+          .replace(/\n/g, '<br/>');
+
+        content.innerHTML = htmlRender;
+      } catch (err) {
+        content.innerHTML = `<div class="text-red-500">분석 중 오류가 발생했습니다: ${err.message}<br>API 키가 유효한지 확인해주세요.</div>`;
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "실시간 AI 분석 재요청";
+      }
+    }
 
     window.addEventListener('DOMContentLoaded', () => {
       renderWatchlistUI();
       renderRadar();
       updatePresetButtonsUI('council');
       selectSimStock('000660');
+      checkApiKeyUI();
     });
   </script>
 </body>
