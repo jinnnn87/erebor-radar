@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Erebor Capital Architecture</title>
+  <title>Erebor Capital Architecture & Interactive Radar</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -61,16 +61,24 @@
       background-color: #EFE9DE;
       color: #211F1C;
     }
-    .clay-gradient {
-      background: linear-gradient(135deg, #D97757 0%, #C15F3D 100%);
+    input[type=range] {
+      accent-color: #D97757;
+    }
+    .radar-polygon {
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    dialog::backdrop {
+      background: rgba(33, 31, 28, 0.45);
+      backdrop-filter: blur(4px);
     }
   </style>
 </head>
-<body class="p-2 sm:p-4">
+<body class="p-2 sm:p-4 selection:bg-claude-clayLight selection:text-claude-clayDark">
+
   <!-- Claude Styled Container -->
   <div class="bg-claude-card border border-claude-border rounded-2xl p-4 sm:p-6 claude-shadow max-w-2xl mx-auto transition-all">
     
-    <!-- Header Section (Claude Editorial Aesthetic) -->
+    <!-- Header Section -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-claude-border pb-4 mb-4 gap-3">
       <div>
         <div class="flex items-center gap-2 mb-1">
@@ -78,20 +86,23 @@
             <span class="w-1.5 h-1.5 rounded-full bg-claude-clay"></span>
             01 / Capital Architecture
           </span>
-          <span class="text-[11px] text-claude-subtle font-mono">As of 2026.09.06</span>
+          <span class="text-[11px] text-claude-subtle font-mono flex items-center gap-1">
+            <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            Live Radar 2026.09.06
+          </span>
         </div>
         <h1 class="font-serif text-xl sm:text-2xl font-normal tracking-tight text-claude-dark">
           Erebor Portfolio Radar
         </h1>
-        <p class="text-xs sm:text-[13px] text-claude-muted mt-0.5">
-          Total AUM: <strong class="text-claude-dark font-semibold">₩24,200,691</strong>
+        <p class="text-xs sm:text-[13px] text-claude-muted mt-0.5 font-mono">
+          AUM: <strong class="text-claude-dark font-semibold font-sans">₩24,200,691</strong>
           <span class="text-claude-subtle mx-1.5">|</span>
-          수익률: <strong class="text-claude-olive font-semibold">+57.93%</strong> (+₩8,876,628)
+          수익률: <strong class="text-claude-olive font-semibold font-sans">+57.93%</strong> (+₩8,876,628)
         </p>
       </div>
 
       <!-- Action Status Pill -->
-      <div class="self-start sm:self-center">
+      <div class="self-start sm:self-center flex items-center gap-2">
         <div class="inline-flex items-center gap-2 bg-claude-ivory border border-claude-border px-3 py-1.5 rounded-xl">
           <div class="w-2 h-2 rounded-full bg-claude-olive animate-pulse"></div>
           <div class="text-left">
@@ -102,37 +113,40 @@
       </div>
     </div>
 
-    <!-- Navigation Pills (Claude Warm Minimalist Tabs) -->
-    <div class="flex items-center gap-1.5 mb-5 bg-claude-cream/60 p-1 rounded-xl border border-claude-border/80 overflow-x-auto">
-      <button onclick="switchTab('alloc')" id="tab-alloc" class="tab-btn active px-3 py-1.5 rounded-lg text-xs font-medium tracking-tight transition-all flex-1 text-center whitespace-nowrap">
-        자산 배분 비중
+    <!-- Navigation Pills (5 Tabs) -->
+    <div class="flex items-center gap-1 mb-5 bg-claude-cream/60 p-1 rounded-xl border border-claude-border/80 overflow-x-auto text-xs">
+      <button onclick="switchTab('alloc')" id="tab-alloc" class="tab-btn active px-3 py-1.5 rounded-lg font-medium tracking-tight transition-all flex-1 text-center whitespace-nowrap">
+        자산 배분
       </button>
-      <button onclick="switchTab('pnl')" id="tab-pnl" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium tracking-tight transition-all flex-1 text-center whitespace-nowrap text-claude-muted">
-        수익률 & 손익
+      <button onclick="switchTab('radar')" id="tab-radar" class="tab-btn px-3 py-1.5 rounded-lg font-medium tracking-tight transition-all flex-1 text-center whitespace-nowrap text-claude-muted">
+        다차원 레이더
       </button>
-      <button onclick="switchTab('range')" id="tab-range" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium tracking-tight transition-all flex-1 text-center whitespace-nowrap text-claude-muted">
-        안전마진 게이지
+      <button onclick="switchTab('range')" id="tab-range" class="tab-btn px-3 py-1.5 rounded-lg font-medium tracking-tight transition-all flex-1 text-center whitespace-nowrap text-claude-muted">
+        안전마진 채널
       </button>
-      <button onclick="switchTab('sim')" id="tab-sim" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium tracking-tight transition-all flex-1 text-center whitespace-nowrap text-claude-muted">
-        CMA 요새 시뮬레이터
+      <button onclick="switchTab('sim')" id="tab-sim" class="tab-btn px-3 py-1.5 rounded-lg font-medium tracking-tight transition-all flex-1 text-center whitespace-nowrap text-claude-muted">
+        재배치 시뮬레이터
+      </button>
+      <button onclick="switchTab('pnl')" id="tab-pnl" class="tab-btn px-3 py-1.5 rounded-lg font-medium tracking-tight transition-all flex-1 text-center whitespace-nowrap text-claude-muted">
+        수익률 분석
       </button>
     </div>
 
-    <!-- TAB 1: 자산 배분 비중 (Claude Clean Stack & Cards) -->
+    <!-- TAB 1: 자산 배분 비중 (Claude Clean Stack & Clickable Cards) -->
     <div id="view-alloc" class="tab-view block space-y-4">
       <!-- 20-block Horizontal Asset Bar -->
       <div class="bg-claude-ivory p-3.5 rounded-xl border border-claude-border">
         <div class="flex items-center justify-between text-xs mb-2">
-          <span class="font-medium text-claude-dark">포트폴리오 누적 자산 배분 (20칸 스택)</span>
-          <span class="font-mono font-bold text-claude-dark bg-white px-2 py-0.5 rounded border border-claude-border">100.0%</span>
+          <span class="font-medium text-claude-dark">포트폴리오 누적 자산 배분 비중 (100.0%)</span>
+          <span class="text-[11px] text-claude-muted">카드를 클릭하면 상세 분석이 열립니다</span>
         </div>
         <div class="flex h-4 w-full rounded-lg overflow-hidden border border-claude-borderDark/40 p-0.5 bg-white shadow-inner gap-0.5">
-          <div style="width: 61.3%; background: #D97757;" class="rounded-sm transition-all hover:opacity-90" title="SK하이닉스 (61.3%)"></div>
-          <div style="width: 14.8%; background: #6A9BCC;" class="rounded-sm transition-all hover:opacity-90" title="HD현대일렉트릭 (14.8%)"></div>
-          <div style="width: 10.0%; background: #788C5D;" class="rounded-sm transition-all hover:opacity-90" title="KB금융 (10.0%)"></div>
-          <div style="width: 4.6%; background: #87867F;" class="rounded-sm transition-all hover:opacity-90" title="두산에너빌리티 (4.6%)"></div>
-          <div style="width: 2.4%; background: #C46686;" class="rounded-sm transition-all hover:opacity-90" title="알테오젠 (2.4%)"></div>
-          <div style="width: 7.1%; background: #211F1C;" class="rounded-sm transition-all hover:opacity-90" title="The Fortress CMA (7.1%)"></div>
+          <div style="width: 61.3%; background: #D97757;" class="rounded-sm transition-all hover:opacity-90 cursor-pointer" onclick="openStockModal('000660')" title="SK하이닉스 (61.3%)"></div>
+          <div style="width: 14.8%; background: #6A9BCC;" class="rounded-sm transition-all hover:opacity-90 cursor-pointer" onclick="openStockModal('267260')" title="HD현대일렉트릭 (14.8%)"></div>
+          <div style="width: 10.0%; background: #788C5D;" class="rounded-sm transition-all hover:opacity-90 cursor-pointer" onclick="openStockModal('105560')" title="KB금융 (10.0%)"></div>
+          <div style="width: 4.6%; background: #87867F;" class="rounded-sm transition-all hover:opacity-90 cursor-pointer" onclick="openStockModal('034020')" title="두산에너빌리티 (4.6%)"></div>
+          <div style="width: 2.4%; background: #C46686;" class="rounded-sm transition-all hover:opacity-90 cursor-pointer" onclick="openStockModal('196170')" title="알테오젠 (2.4%)"></div>
+          <div style="width: 7.1%; background: #211F1C;" class="rounded-sm transition-all hover:opacity-90 cursor-pointer" onclick="switchTab('sim')" title="CMA 요새 (7.1%)"></div>
         </div>
         <div class="flex justify-between items-center text-[11px] text-claude-subtle mt-2 font-mono">
           <span>주식 자산: 92.9% (₩22,486,800)</span>
@@ -140,10 +154,10 @@
         </div>
       </div>
 
-      <!-- Asset Grid Cards -->
+      <!-- Asset Grid Cards (Click to open modal) -->
       <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
         <!-- SK하이닉스 -->
-        <div class="p-3 rounded-xl border border-claude-border bg-claude-ivory/50 hover:bg-claude-ivory transition-all">
+        <div onclick="openStockModal('000660')" class="group p-3 rounded-xl border border-claude-border bg-claude-ivory/50 hover:bg-claude-ivory hover:border-claude-clay/60 transition-all cursor-pointer">
           <div class="flex items-center justify-between mb-1.5">
             <span class="text-xs font-bold text-claude-dark flex items-center gap-1.5">
               <span class="w-2.5 h-2.5 rounded-full" style="background: #D97757;"></span>
@@ -152,11 +166,14 @@
             <span class="text-[10px] font-mono text-claude-clay font-bold bg-claude-clayLight px-1.5 py-0.5 rounded">61.3%</span>
           </div>
           <div class="text-sm font-serif text-claude-dark font-medium">₩14,823,000</div>
-          <div class="text-[11px] text-claude-olive font-medium mt-0.5 font-mono">+138.80% (+861.5만)</div>
+          <div class="text-[11px] text-claude-olive font-medium mt-0.5 font-mono flex items-center justify-between">
+            <span>+138.80%</span>
+            <span class="text-[10px] text-claude-subtle group-hover:text-claude-clay">상세 ➔</span>
+          </div>
         </div>
 
         <!-- HD현대일렉트릭 -->
-        <div class="p-3 rounded-xl border border-claude-border bg-claude-ivory/50 hover:bg-claude-ivory transition-all">
+        <div onclick="openStockModal('267260')" class="group p-3 rounded-xl border border-claude-border bg-claude-ivory/50 hover:bg-claude-ivory hover:border-blue-400/60 transition-all cursor-pointer">
           <div class="flex items-center justify-between mb-1.5">
             <span class="text-xs font-bold text-claude-dark flex items-center gap-1.5">
               <span class="w-2.5 h-2.5 rounded-full" style="background: #6A9BCC;"></span>
@@ -165,11 +182,14 @@
             <span class="text-[10px] font-mono text-blue-700 font-bold bg-blue-50 px-1.5 py-0.5 rounded">14.8%</span>
           </div>
           <div class="text-sm font-serif text-claude-dark font-medium">₩3,570,000</div>
-          <div class="text-[11px] text-blue-600 font-medium mt-0.5 font-mono">-4.80% (-18.0만)</div>
+          <div class="text-[11px] text-blue-600 font-medium mt-0.5 font-mono flex items-center justify-between">
+            <span>-4.80%</span>
+            <span class="text-[10px] text-claude-subtle group-hover:text-blue-500">상세 ➔</span>
+          </div>
         </div>
 
         <!-- KB금융 -->
-        <div class="p-3 rounded-xl border border-claude-border bg-claude-ivory/50 hover:bg-claude-ivory transition-all">
+        <div onclick="openStockModal('105560')" class="group p-3 rounded-xl border border-claude-border bg-claude-ivory/50 hover:bg-claude-ivory hover:border-emerald-400/60 transition-all cursor-pointer">
           <div class="flex items-center justify-between mb-1.5">
             <span class="text-xs font-bold text-claude-dark flex items-center gap-1.5">
               <span class="w-2.5 h-2.5 rounded-full" style="background: #788C5D;"></span>
@@ -178,11 +198,14 @@
             <span class="text-[10px] font-mono text-emerald-800 font-bold bg-emerald-50 px-1.5 py-0.5 rounded">10.0%</span>
           </div>
           <div class="text-sm font-serif text-claude-dark font-medium">₩2,408,000</div>
-          <div class="text-[11px] text-claude-olive font-medium mt-0.5 font-mono">+26.64% (+50.7만)</div>
+          <div class="text-[11px] text-claude-olive font-medium mt-0.5 font-mono flex items-center justify-between">
+            <span>+26.64%</span>
+            <span class="text-[10px] text-claude-subtle group-hover:text-emerald-700">상세 ➔</span>
+          </div>
         </div>
 
         <!-- 두산에너빌리티 -->
-        <div class="p-3 rounded-xl border border-claude-border bg-claude-ivory/50 hover:bg-claude-ivory transition-all">
+        <div onclick="openStockModal('034020')" class="group p-3 rounded-xl border border-claude-border bg-claude-ivory/50 hover:bg-claude-ivory hover:border-stone-400/60 transition-all cursor-pointer">
           <div class="flex items-center justify-between mb-1.5">
             <span class="text-xs font-bold text-claude-dark flex items-center gap-1.5">
               <span class="w-2.5 h-2.5 rounded-full" style="background: #87867F;"></span>
@@ -191,11 +214,14 @@
             <span class="text-[10px] font-mono text-stone-700 font-bold bg-stone-100 px-1.5 py-0.5 rounded">4.6%</span>
           </div>
           <div class="text-sm font-serif text-claude-dark font-medium">₩1,108,800</div>
-          <div class="text-[11px] text-claude-muted font-medium mt-0.5 font-mono">-0.79% (-0.9만)</div>
+          <div class="text-[11px] text-claude-muted font-medium mt-0.5 font-mono flex items-center justify-between">
+            <span>-0.79%</span>
+            <span class="text-[10px] text-claude-subtle group-hover:text-stone-700">상세 ➔</span>
+          </div>
         </div>
 
         <!-- 알테오젠 -->
-        <div class="p-3 rounded-xl border border-claude-border bg-claude-ivory/50 hover:bg-claude-ivory transition-all">
+        <div onclick="openStockModal('196170')" class="group p-3 rounded-xl border border-claude-border bg-claude-ivory/50 hover:bg-claude-ivory hover:border-pink-400/60 transition-all cursor-pointer">
           <div class="flex items-center justify-between mb-1.5">
             <span class="text-xs font-bold text-claude-dark flex items-center gap-1.5">
               <span class="w-2.5 h-2.5 rounded-full" style="background: #C46686;"></span>
@@ -204,11 +230,14 @@
             <span class="text-[10px] font-mono text-pink-700 font-bold bg-pink-50 px-1.5 py-0.5 rounded">2.4%</span>
           </div>
           <div class="text-sm font-serif text-claude-dark font-medium">₩577,000</div>
-          <div class="text-[11px] text-pink-700 font-medium mt-0.5 font-mono">-8.99% (-5.7만)</div>
+          <div class="text-[11px] text-pink-700 font-medium mt-0.5 font-mono flex items-center justify-between">
+            <span>-8.99%</span>
+            <span class="text-[10px] text-claude-subtle group-hover:text-pink-600">상세 ➔</span>
+          </div>
         </div>
 
         <!-- The Fortress (CMA) -->
-        <div class="p-3 rounded-xl border border-claude-border bg-claude-ivory/50 hover:bg-claude-ivory transition-all">
+        <div onclick="switchTab('sim')" class="group p-3 rounded-xl border border-claude-border bg-claude-ivory/50 hover:bg-claude-ivory hover:border-stone-500 transition-all cursor-pointer">
           <div class="flex items-center justify-between mb-1.5">
             <span class="text-xs font-bold text-claude-dark flex items-center gap-1.5">
               <span class="w-2.5 h-2.5 rounded-full bg-claude-dark"></span>
@@ -217,12 +246,330 @@
             <span class="text-[10px] font-mono text-claude-dark font-bold bg-stone-200 px-1.5 py-0.5 rounded">7.1%</span>
           </div>
           <div class="text-sm font-serif text-claude-dark font-medium">₩1,713,891</div>
-          <div class="text-[11px] text-claude-subtle font-medium mt-0.5 font-mono">0.00% (현금 보존)</div>
+          <div class="text-[11px] text-claude-subtle font-medium mt-0.5 font-mono flex items-center justify-between">
+            <span>현금 보존</span>
+            <span class="text-[10px] text-claude-subtle group-hover:text-claude-dark">시뮬 ➔</span>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- TAB 2: 수익률 & 손익 분석 (Claude Editorial Bars) -->
+    <!-- TAB 2: 다차원 레이더 (신규: 5대 핵심 지표 다각형 스파이더 차트) -->
+    <div id="view-radar" class="tab-view hidden space-y-4">
+      <div class="p-3 bg-claude-ivory rounded-xl border border-claude-border text-xs flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+        <div>
+          <span class="font-bold text-claude-dark">5대 자본배치 역량 다차원 레이더</span>
+          <p class="text-[11px] text-claude-muted mt-0.5">경제적 해자 · 안전마진 · 촉매 모멘텀 · 주주환원 · 포트 기여도</p>
+        </div>
+        <span class="text-[11px] font-mono text-claude-subtle bg-white px-2 py-0.5 rounded border border-claude-border">10점 척도</span>
+      </div>
+
+      <!-- Radar Selector Chips -->
+      <div class="flex flex-wrap items-center gap-1.5 text-xs">
+        <button onclick="setRadarStock('ALL')" id="chip-ALL" class="radar-chip px-2.5 py-1 rounded-lg border border-claude-dark bg-claude-dark text-white font-medium text-[11px] transition-all">
+          종합 오버레이
+        </button>
+        <button onclick="setRadarStock('000660')" id="chip-000660" class="radar-chip px-2.5 py-1 rounded-lg border border-claude-border bg-white text-claude-muted font-medium text-[11px] hover:border-claude-clay transition-all">
+          SK하이닉스
+        </button>
+        <button onclick="setRadarStock('267260')" id="chip-267260" class="radar-chip px-2.5 py-1 rounded-lg border border-claude-border bg-white text-claude-muted font-medium text-[11px] hover:border-blue-400 transition-all">
+          HD현대일렉
+        </button>
+        <button onclick="setRadarStock('105560')" id="chip-105560" class="radar-chip px-2.5 py-1 rounded-lg border border-claude-border bg-white text-claude-muted font-medium text-[11px] hover:border-emerald-500 transition-all">
+          KB금융
+        </button>
+        <button onclick="setRadarStock('034020')" id="chip-034020" class="radar-chip px-2.5 py-1 rounded-lg border border-claude-border bg-white text-claude-muted font-medium text-[11px] hover:border-stone-400 transition-all">
+          두산에너빌리티
+        </button>
+        <button onclick="setRadarStock('196170')" id="chip-196170" class="radar-chip px-2.5 py-1 rounded-lg border border-claude-border bg-white text-claude-muted font-medium text-[11px] hover:border-pink-400 transition-all">
+          알테오젠
+        </button>
+      </div>
+
+      <!-- Radar Canvas / SVG Container -->
+      <div class="bg-claude-ivory/60 p-3 sm:p-4 rounded-2xl border border-claude-border flex flex-col items-center justify-center relative">
+        <svg id="radar-svg" viewBox="0 0 340 320" class="w-full max-w-[340px] h-auto overflow-visible select-none">
+          <!-- Background Grid & Polygons dynamically rendered by JS -->
+        </svg>
+
+        <!-- Dynamic Stock Radar Info Panel -->
+        <div id="radar-info-box" class="w-full mt-3 p-3 bg-white rounded-xl border border-claude-border text-xs">
+          <div class="flex items-center justify-between mb-1">
+            <span id="radar-info-name" class="font-bold text-claude-dark">Erebor 포트폴리오 가중 평균 지표</span>
+            <span id="radar-info-score" class="font-mono font-bold text-claude-clay">종합 8.6 / 10.0</span>
+          </div>
+          <p id="radar-info-desc" class="text-[11px] text-claude-muted leading-relaxed">
+            SK하이닉스의 압도적 해자 및 이익 모멘텀이 전체 포트폴리오를 견인하며, KB금융의 극대화된 주주환원(자사주 소각·배당)이 방어벽을 형성하고 있습니다.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: 안전마진 & 가격 위치 채널 (보유 5종목 + 관망 3종목) -->
+    <div id="view-range" class="tab-view hidden space-y-4">
+      <div class="flex items-center justify-between border-b border-claude-border pb-2">
+        <div class="flex items-center gap-2">
+          <button onclick="switchRangeSubtab('holdings')" id="subtab-holdings" class="text-xs font-bold px-2.5 py-1 rounded-lg bg-claude-dark text-white transition-all">
+            보유 5종목 (손익 구간)
+          </button>
+          <button onclick="switchRangeSubtab('watchlist')" id="subtab-watchlist" class="text-xs font-medium px-2.5 py-1 rounded-lg text-claude-muted hover:bg-claude-cream transition-all">
+            관망 3종목 (진입 대기선)
+          </button>
+        </div>
+        <span class="text-[10px] text-claude-subtle font-mono">Channel 0% ~ 100%</span>
+      </div>
+
+      <!-- Subtab 1: Holdings (5 stocks) -->
+      <div id="range-holdings" class="space-y-3 pt-1 text-xs">
+        <!-- SK하이닉스 -->
+        <div onclick="openStockModal('000660')" class="p-3 rounded-xl border border-claude-border bg-white space-y-2 hover:border-claude-clay/60 transition-all cursor-pointer">
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-claude-dark flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full" style="background: #D97757;"></span>
+              SK하이닉스 (164.7만 원)
+            </span>
+            <span class="font-mono text-[11px] font-semibold text-claude-clay bg-claude-clayLight px-2 py-0.5 rounded">목표가까지 +21.4%</span>
+          </div>
+          <div class="relative w-full bg-claude-cream h-2.5 rounded-full overflow-hidden">
+            <div class="h-2.5 rounded-full bg-claude-clay" style="width: 32.1%;"></div>
+          </div>
+          <div class="flex justify-between text-[11px] font-mono text-claude-subtle">
+            <span>손절선 148만</span>
+            <span class="font-bold text-claude-dark">현재 164.7만</span>
+            <span>1차목표 200만</span>
+          </div>
+        </div>
+
+        <!-- HD현대일렉트릭 -->
+        <div onclick="openStockModal('267260')" class="p-3 rounded-xl border border-amber-200 bg-amber-50/30 space-y-2 hover:border-amber-400 transition-all cursor-pointer">
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-claude-dark flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full" style="background: #6A9BCC;"></span>
+              HD현대일렉트릭 (71.4만 원)
+              <span class="text-[10px] font-bold text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded">경계</span>
+            </span>
+            <span class="font-mono text-[11px] font-semibold text-amber-800">손절선 대비 +3.5%</span>
+          </div>
+          <div class="relative w-full bg-claude-cream h-2.5 rounded-full overflow-hidden">
+            <div class="h-2.5 rounded-full bg-blue-500" style="width: 18.5%;"></div>
+          </div>
+          <div class="flex justify-between text-[11px] font-mono text-claude-subtle">
+            <span class="text-amber-800 font-bold">손절선 69만</span>
+            <span class="font-bold text-claude-dark">현재 71.4만</span>
+            <span>1차목표 82만</span>
+          </div>
+        </div>
+
+        <!-- KB금융 -->
+        <div onclick="openStockModal('105560')" class="p-3 rounded-xl border border-claude-border bg-white space-y-2 hover:border-emerald-500/60 transition-all cursor-pointer">
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-claude-dark flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full" style="background: #788C5D;"></span>
+              KB금융 (17.2만 원)
+            </span>
+            <span class="font-mono text-[11px] font-semibold text-claude-olive bg-claude-oliveLight px-2 py-0.5 rounded">목표가까지 +13.4%</span>
+          </div>
+          <div class="relative w-full bg-claude-cream h-2.5 rounded-full overflow-hidden">
+            <div class="h-2.5 rounded-full bg-claude-olive" style="width: 42.5%;"></div>
+          </div>
+          <div class="flex justify-between text-[11px] font-mono text-claude-subtle">
+            <span>손절선 15.5만</span>
+            <span class="font-bold text-claude-dark">현재 17.2만</span>
+            <span>1차목표 19.5만</span>
+          </div>
+        </div>
+
+        <!-- 두산에너빌리티 (신규 완비) -->
+        <div onclick="openStockModal('034020')" class="p-3 rounded-xl border border-claude-border bg-white space-y-2 hover:border-stone-400 transition-all cursor-pointer">
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-claude-dark flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full" style="background: #87867F;"></span>
+              두산에너빌리티 (7.92만 원)
+            </span>
+            <span class="font-mono text-[11px] font-semibold text-stone-700 bg-stone-100 px-2 py-0.5 rounded">목표가까지 +32.6%</span>
+          </div>
+          <div class="relative w-full bg-claude-cream h-2.5 rounded-full overflow-hidden">
+            <div class="h-2.5 rounded-full bg-stone-500" style="width: 21.8%;"></div>
+          </div>
+          <div class="flex justify-between text-[11px] font-mono text-claude-subtle">
+            <span>손절선 7.2만</span>
+            <span class="font-bold text-claude-dark">현재 7.92만</span>
+            <span>1차목표 10.5만</span>
+          </div>
+        </div>
+
+        <!-- 알테오젠 (신규 완비) -->
+        <div onclick="openStockModal('196170')" class="p-3 rounded-xl border border-claude-border bg-white space-y-2 hover:border-pink-400 transition-all cursor-pointer">
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-claude-dark flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full" style="background: #C46686;"></span>
+              알테오젠 (28.85만 원)
+            </span>
+            <span class="font-mono text-[11px] font-semibold text-pink-700 bg-pink-50 px-2 py-0.5 rounded">목표가까지 +31.7%</span>
+          </div>
+          <div class="relative w-full bg-claude-cream h-2.5 rounded-full overflow-hidden">
+            <div class="h-2.5 rounded-full bg-pink-500" style="width: 20.4%;"></div>
+          </div>
+          <div class="flex justify-between text-[11px] font-mono text-claude-subtle">
+            <span>손절선 26.5만</span>
+            <span class="font-bold text-claude-dark">현재 28.85만</span>
+            <span>1차목표 38만</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subtab 2: Watchlist (3 stocks) -->
+      <div id="range-watchlist" class="hidden space-y-3 pt-1 text-xs">
+        <!-- 한화에어로스페이스 -->
+        <div class="p-3 rounded-xl border border-claude-border bg-white space-y-2">
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-claude-dark">한화에어로스페이스 (135만 원)</span>
+            <span class="font-mono text-[11px] font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded">진입선 대비 +5.5% [근접]</span>
+          </div>
+          <div class="relative w-full bg-claude-cream h-2.5 rounded-full overflow-hidden">
+            <div class="h-2.5 rounded-full bg-amber-500" style="width: 82%;"></div>
+          </div>
+          <div class="flex justify-between text-[11px] font-mono text-claude-subtle">
+            <span class="text-claude-dark font-semibold">진입목표 128만 원대</span>
+            <span>현재 135만 원</span>
+            <span>1차목표 155만 원</span>
+          </div>
+        </div>
+
+        <!-- 삼양식품 -->
+        <div class="p-3 rounded-xl border border-claude-border bg-white space-y-2">
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-claude-dark">삼양식품 (141.7만 원)</span>
+            <span class="font-mono text-[11px] font-semibold text-stone-600 bg-stone-100 px-2 py-0.5 rounded">진입선 대비 +9.0% [관망]</span>
+          </div>
+          <div class="relative w-full bg-claude-cream h-2.5 rounded-full overflow-hidden">
+            <div class="h-2.5 rounded-full bg-stone-500" style="width: 72%;"></div>
+          </div>
+          <div class="flex justify-between text-[11px] font-mono text-claude-subtle">
+            <span class="text-claude-dark font-semibold">진입목표 130만 원대</span>
+            <span>현재 141.7만 원</span>
+            <span>1차목표 185만 원</span>
+          </div>
+        </div>
+
+        <!-- 클래시스 -->
+        <div class="p-3 rounded-xl border border-claude-border bg-white space-y-2">
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-claude-dark">클래시스 (5.2만 원)</span>
+            <span class="font-mono text-[11px] font-semibold text-stone-600 bg-stone-100 px-2 py-0.5 rounded">진입선 대비 +6.1% [관망]</span>
+          </div>
+          <div class="relative w-full bg-claude-cream h-2.5 rounded-full overflow-hidden">
+            <div class="h-2.5 rounded-full bg-blue-400" style="width: 78%;"></div>
+          </div>
+          <div class="flex justify-between text-[11px] font-mono text-claude-subtle">
+            <span class="text-claude-dark font-semibold">진입목표 4.9만 원대</span>
+            <span>현재 5.2만 원</span>
+            <span>1차목표 6.2만 원</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: CMA 재배치 시뮬레이터 (실시간 대화형 슬라이더 엔진) -->
+    <div id="view-sim" class="tab-view hidden space-y-4 text-xs">
+      <div class="p-4 bg-claude-ivory rounded-2xl border border-claude-border space-y-4">
+        
+        <div class="flex items-center justify-between border-b border-claude-border pb-3">
+          <div>
+            <h3 class="font-serif text-base text-claude-dark font-medium">실시간 자본 재배치 & 요새 시뮬레이터</h3>
+            <p class="text-[11px] text-claude-muted mt-0.5">슬라이더를 움직여 익절 수량과 단가에 따른 요새 방어력을 실시간 검증하세요</p>
+          </div>
+          <button onclick="resetSim()" class="text-[11px] font-mono px-2 py-1 rounded-lg border border-claude-border hover:bg-white text-claude-muted">
+            초기화
+          </button>
+        </div>
+
+        <!-- Interactive Sliders -->
+        <div class="space-y-3 bg-white p-3.5 rounded-xl border border-claude-border">
+          <!-- Slider 1: SK하이닉스 매도 수량 -->
+          <div class="space-y-1">
+            <div class="flex justify-between items-center">
+              <span class="font-medium text-claude-dark">SK하이닉스 익절 매도 수량 (보유: 9주)</span>
+              <span id="sim-shares-val" class="font-mono font-bold text-claude-clay text-sm">2주</span>
+            </div>
+            <input id="slider-shares" type="range" min="0" max="9" step="1" value="2" oninput="runSimulation()" class="w-full h-1.5 bg-claude-cream rounded-lg appearance-none cursor-pointer">
+            <div class="flex justify-between text-[10px] text-claude-subtle font-mono">
+              <span>0주 (유지)</span>
+              <span>2주 (의결안)</span>
+              <span>5주 (대규모)</span>
+              <span>9주 (전량 청산)</span>
+            </div>
+          </div>
+
+          <!-- Slider 2: 매도 목표 단가 -->
+          <div class="space-y-1 pt-1">
+            <div class="flex justify-between items-center">
+              <span class="font-medium text-claude-dark">1차 매도 집행 단가</span>
+              <span id="sim-price-val" class="font-mono font-bold text-claude-clay text-sm">₩2,000,000</span>
+            </div>
+            <input id="slider-price" type="range" min="1640000" max="2400000" step="20000" value="2000000" oninput="runSimulation()" class="w-full h-1.5 bg-claude-cream rounded-lg appearance-none cursor-pointer">
+            <div class="flex justify-between text-[10px] text-claude-subtle font-mono">
+              <span>현재 164.7만</span>
+              <span>1차목표 200만</span>
+              <span>2차목표 240만</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dynamic Results Summary Card -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 font-mono">
+          <div class="bg-white p-2.5 rounded-xl border border-claude-border">
+            <div class="text-[10px] text-claude-subtle font-sans">실현 확보 현금</div>
+            <div id="sim-cash-gen" class="text-sm font-bold text-claude-dark mt-0.5">+₩4,000,000</div>
+          </div>
+          <div class="bg-white p-2.5 rounded-xl border border-claude-border">
+            <div class="text-[10px] text-claude-subtle font-sans">실현 확정 손익</div>
+            <div id="sim-profit-gen" class="text-sm font-bold text-claude-olive mt-0.5">+₩2,620,624</div>
+          </div>
+          <div class="bg-white p-2.5 rounded-xl border border-claude-border col-span-2 sm:col-span-1">
+            <div class="text-[10px] text-claude-subtle font-sans">하이닉스 잔여 비중</div>
+            <div id="sim-hynix-weight" class="text-sm font-bold text-claude-clay mt-0.5">47.6% (7주)</div>
+          </div>
+        </div>
+
+        <!-- Before & After Gauge Bars -->
+        <div class="space-y-3 font-mono pt-1">
+          <!-- Before Bar -->
+          <div class="bg-white p-3 rounded-xl border border-claude-border space-y-1.5">
+            <div class="flex justify-between text-xs">
+              <span class="font-sans font-medium text-claude-dark">현재 현금 요새 (CMA)</span>
+              <span class="font-bold text-claude-dark">7.1% (₩1,713,891)</span>
+            </div>
+            <div class="w-full bg-claude-cream h-2.5 rounded-full overflow-hidden">
+              <div class="h-2.5 rounded-full bg-stone-400" style="width: 7.1%;"></div>
+            </div>
+            <div class="text-[10px] text-claude-subtle font-sans">현금 탄약 결핍 상태 (외부 충격 시 매수 탄약 부족)</div>
+          </div>
+
+          <!-- Dynamic After Bar -->
+          <div class="bg-claude-oliveLight/40 p-3 rounded-xl border border-claude-olive/30 space-y-1.5">
+            <div class="flex justify-between text-xs">
+              <span class="font-sans font-bold text-claude-olive">재배치 후 예상 현금 요새 (CMA)</span>
+              <span id="sim-cma-bar-val" class="font-bold text-claude-olive">23.6% (₩5,713,891)</span>
+            </div>
+            <div class="w-full bg-claude-cream h-2.5 rounded-full overflow-hidden">
+              <div id="sim-cma-bar" class="h-2.5 rounded-full bg-claude-olive transition-all duration-300" style="width: 23.6%;"></div>
+            </div>
+            <div id="sim-conclusion-badge" class="text-[10px] text-claude-olive font-sans font-medium">
+              ★ 요새 구축 완료: 관망 후보군(한화에어로·클래시스·삼양식품) 눌림목 1차 매수 탄약 확보
+            </div>
+          </div>
+        </div>
+
+        <!-- Strategic Discipline Notice -->
+        <div class="p-3 bg-white rounded-xl border border-claude-border text-claude-muted text-[11px] leading-relaxed">
+          <strong class="text-claude-dark">Erebor 운용 규율:</strong> 슬라이더를 통해 확인되듯, 2주 분할 익절만으로도 61% 편중 위험을 40%대로 완화하며 <strong class="text-claude-dark">CMA 방어력 23.6%</strong>를 확보할 수 있습니다.
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TAB 5: 수익률 & 손익 분석 -->
     <div id="view-pnl" class="tab-view hidden space-y-3">
       <div class="p-3 bg-claude-ivory rounded-xl border border-claude-border text-xs text-claude-muted flex justify-between items-center">
         <span>종목별 누적 손익 및 초과수익 기여도</span>
@@ -231,7 +578,7 @@
 
       <div class="space-y-2.5 pt-1 text-xs">
         <!-- SK하이닉스 -->
-        <div class="p-2.5 rounded-xl border border-claude-border/80 bg-white">
+        <div onclick="openStockModal('000660')" class="p-2.5 rounded-xl border border-claude-border/80 bg-white hover:border-claude-clay/60 transition-all cursor-pointer">
           <div class="flex justify-between mb-1">
             <span class="font-bold text-claude-dark">SK하이닉스 (000660)</span>
             <span class="font-mono font-bold text-claude-clay">+138.80% (+₩8,615,000)</span>
@@ -253,7 +600,7 @@
         </div>
 
         <!-- KB금융 -->
-        <div class="p-2.5 rounded-xl border border-claude-border/80 bg-white">
+        <div onclick="openStockModal('105560')" class="p-2.5 rounded-xl border border-claude-border/80 bg-white hover:border-emerald-400 transition-all cursor-pointer">
           <div class="flex justify-between mb-1">
             <span class="font-bold text-claude-dark">KB금융 (105560)</span>
             <span class="font-mono font-bold text-claude-olive">+26.64% (+₩507,000)</span>
@@ -264,7 +611,7 @@
         </div>
 
         <!-- 두산에너빌리티 -->
-        <div class="p-2.5 rounded-xl border border-claude-border/80 bg-white">
+        <div onclick="openStockModal('034020')" class="p-2.5 rounded-xl border border-claude-border/80 bg-white hover:border-stone-400 transition-all cursor-pointer">
           <div class="flex justify-between mb-1">
             <span class="font-bold text-claude-dark">두산에너빌리티 (034020)</span>
             <span class="font-mono font-bold text-claude-muted">-0.79% (-₩8,800)</span>
@@ -275,7 +622,7 @@
         </div>
 
         <!-- HD현대일렉트릭 -->
-        <div class="p-2.5 rounded-xl border border-claude-border/80 bg-white">
+        <div onclick="openStockModal('267260')" class="p-2.5 rounded-xl border border-claude-border/80 bg-white hover:border-blue-400 transition-all cursor-pointer">
           <div class="flex justify-between mb-1">
             <span class="font-bold text-claude-dark">HD현대일렉트릭 (267260)</span>
             <span class="font-mono font-bold text-blue-700">-4.80% (-₩180,000)</span>
@@ -286,7 +633,7 @@
         </div>
 
         <!-- 알테오젠 -->
-        <div class="p-2.5 rounded-xl border border-claude-border/80 bg-white">
+        <div onclick="openStockModal('196170')" class="p-2.5 rounded-xl border border-claude-border/80 bg-white hover:border-pink-400 transition-all cursor-pointer">
           <div class="flex justify-between mb-1">
             <span class="font-bold text-claude-dark">알테오젠 (196170)</span>
             <span class="font-mono font-bold text-pink-700">-8.99% (-₩57,000)</span>
@@ -298,120 +645,253 @@
       </div>
     </div>
 
-    <!-- TAB 3: 안전마진 & 가격 위치 게이지 -->
-    <div id="view-range" class="tab-view hidden space-y-3">
-      <div class="p-3 bg-claude-ivory rounded-xl border border-claude-border text-xs text-claude-muted">
-        각 종목의 <strong>손절가(0%) ➔ 현재 주가 ➔ 1차 목표가(100%)</strong> 상대 위치 채널
-      </div>
-
-      <div class="space-y-2.5 pt-1 text-xs">
-        <!-- SK하이닉스 -->
-        <div class="p-3 rounded-xl border border-claude-border bg-white space-y-2">
-          <div class="flex justify-between items-center">
-            <span class="font-bold text-claude-dark">SK하이닉스 (164.7만 원)</span>
-            <span class="font-mono text-[11px] font-semibold text-claude-clay bg-claude-clayLight px-2 py-0.5 rounded">목표가까지 +21.4%</span>
-          </div>
-          <div class="relative w-full bg-claude-cream h-2.5 rounded-full overflow-hidden">
-            <div class="h-2.5 rounded-full bg-claude-clay" style="width: 32.1%;"></div>
-          </div>
-          <div class="flex justify-between text-[11px] font-mono text-claude-subtle">
-            <span>손절선 148만 원</span>
-            <span class="font-bold text-claude-dark">현재 164.7만</span>
-            <span>1차목표 200만 원</span>
-          </div>
-        </div>
-
-        <!-- HD현대일렉트릭 -->
-        <div class="p-3 rounded-xl border border-amber-200 bg-amber-50/30 space-y-2">
-          <div class="flex justify-between items-center">
-            <span class="font-bold text-claude-dark flex items-center gap-1.5">
-              HD현대일렉트릭 (71.4만 원)
-              <span class="text-[10px] font-bold text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded">경계</span>
-            </span>
-            <span class="font-mono text-[11px] font-semibold text-amber-800">손절선 대비 +3.5%</span>
-          </div>
-          <div class="relative w-full bg-claude-cream h-2.5 rounded-full overflow-hidden">
-            <div class="h-2.5 rounded-full bg-blue-500" style="width: 18.5%;"></div>
-          </div>
-          <div class="flex justify-between text-[11px] font-mono text-claude-subtle">
-            <span class="text-amber-800 font-bold">손절선 69만 원</span>
-            <span class="font-bold text-claude-dark">현재 71.4만</span>
-            <span>1차목표 82만 원</span>
-          </div>
-        </div>
-
-        <!-- KB금융 -->
-        <div class="p-3 rounded-xl border border-claude-border bg-white space-y-2">
-          <div class="flex justify-between items-center">
-            <span class="font-bold text-claude-dark">KB금융 (17.2만 원)</span>
-            <span class="font-mono text-[11px] font-semibold text-claude-olive bg-claude-oliveLight px-2 py-0.5 rounded">목표가까지 +13.4%</span>
-          </div>
-          <div class="relative w-full bg-claude-cream h-2.5 rounded-full overflow-hidden">
-            <div class="h-2.5 rounded-full bg-claude-olive" style="width: 42.5%;"></div>
-          </div>
-          <div class="flex justify-between text-[11px] font-mono text-claude-subtle">
-            <span>손절선 15.5만 원</span>
-            <span class="font-bold text-claude-dark">현재 17.2만</span>
-            <span>1차목표 19.5만 원</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB 4: CMA 요새 시뮬레이터 (Claude Interactive Scenario) -->
-    <div id="view-sim" class="tab-view hidden space-y-4 text-xs">
-      <div class="p-4 bg-claude-ivory rounded-2xl border border-claude-border space-y-3">
-        <div class="flex items-center justify-between">
-          <h3 class="font-serif text-base text-claude-dark font-medium">SK하이닉스 200만 원 분할 익절 로드맵</h3>
-          <span class="font-mono text-[11px] font-bold text-claude-clay bg-claude-clayLight px-2.5 py-1 rounded-full border border-claude-clay/20">+₩4,000,000 확보</span>
-        </div>
-        <p class="text-claude-muted text-xs leading-relaxed">
-          1차 목표가 <strong>₩2,000,000</strong> 도달 시 2주를 기계적으로 분할 매도하여 CMA 요새로 편입할 경우의 자본 구조 변화입니다:
-        </p>
-
-        <!-- Current vs Simulated Bars -->
-        <div class="space-y-3 pt-2 font-mono">
-          <!-- Before -->
-          <div class="bg-white p-3 rounded-xl border border-claude-border space-y-1.5">
-            <div class="flex justify-between text-xs">
-              <span class="font-sans font-medium text-claude-dark">현재 현금 요새 (CMA)</span>
-              <span class="font-bold text-claude-dark">7.1% (₩1,713,891)</span>
-            </div>
-            <div class="w-full bg-claude-cream h-2.5 rounded-full overflow-hidden">
-              <div class="h-2.5 rounded-full bg-stone-500" style="width: 7.1%;"></div>
-            </div>
-            <div class="text-[11px] text-claude-subtle font-sans">방어력 취약 상태 (외부 충격 시 추가 매수 여력 부족)</div>
-          </div>
-
-          <!-- After -->
-          <div class="bg-claude-oliveLight/50 p-3 rounded-xl border border-claude-olive/30 space-y-1.5">
-            <div class="flex justify-between text-xs">
-              <span class="font-sans font-bold text-claude-olive">익절 집행 후 예상 현금 요새 (CMA)</span>
-              <span class="font-bold text-claude-olive">23.6% (₩5,713,891)</span>
-            </div>
-            <div class="w-full bg-claude-cream h-2.5 rounded-full overflow-hidden">
-              <div class="h-2.5 rounded-full bg-claude-olive" style="width: 23.6%;"></div>
-            </div>
-            <div class="text-[11px] text-claude-olive font-sans font-medium">★ 요새 구축 완료: 관망 후보군(한화에어로·클래시스·삼양식품) 눌림목 1차 매수 탄약 확보</div>
-          </div>
-        </div>
-
-        <!-- Strategy Note -->
-        <div class="p-3 bg-white rounded-xl border border-claude-border text-claude-muted text-[11px] leading-relaxed">
-          <strong class="text-claude-dark">Erebor 운용 규율:</strong> 단일 종목(SK하이닉스)의 과도한 쏠림(61.3%)을 40%대로 경감시키고, 방어력 23.6%를 확보하여 하락장에서도 절대수익을 지키는 <strong>현금 요새 원칙(The Fortress Rule)</strong>을 정식 의결함.
-        </div>
-      </div>
-    </div>
-
     <!-- Footer Note -->
-    <div class="mt-4 pt-3 border-t border-claude-border flex justify-between items-center text-[11px] text-claude-subtle">
+    <div class="mt-5 pt-3 border-t border-claude-border flex justify-between items-center text-[11px] text-claude-subtle">
       <span class="font-serif italic">Erebor Absolute Return Engine</span>
       <span class="font-mono">Anthropic Claude Design Discipline</span>
     </div>
 
   </div>
 
+  <!-- INTERACTIVE STOCK MODAL (Claude Editorial Dialog) -->
+  <dialog id="stock-modal" class="rounded-2xl p-0 max-w-lg w-full bg-claude-card border border-claude-border claude-shadow outline-none m-auto">
+    <div class="p-5 sm:p-6 space-y-4 max-h-[85vh] overflow-y-auto">
+      
+      <!-- Modal Header -->
+      <div class="flex items-start justify-between border-b border-claude-border pb-3">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span id="modal-ticker" class="text-[10px] font-mono font-bold bg-claude-cream px-2 py-0.5 rounded text-claude-muted"></span>
+            <span id="modal-status" class="text-[10px] font-semibold px-2 py-0.5 rounded"></span>
+          </div>
+          <h2 id="modal-name" class="font-serif text-2xl font-normal text-claude-dark"></h2>
+        </div>
+        <button onclick="closeStockModal()" class="w-7 h-7 rounded-full bg-claude-cream hover:bg-claude-border text-claude-dark flex items-center justify-center text-sm font-bold transition-all">
+          ✕
+        </button>
+      </div>
+
+      <!-- Key Metrics Strip -->
+      <div class="grid grid-cols-3 gap-2 text-xs font-mono bg-claude-ivory p-3 rounded-xl border border-claude-border">
+        <div>
+          <div class="text-[10px] text-claude-subtle font-sans">현재가 / 비중</div>
+          <div id="modal-price" class="font-bold text-claude-dark mt-0.5"></div>
+        </div>
+        <div>
+          <div class="text-[10px] text-claude-subtle font-sans">수익률 (평가손익)</div>
+          <div id="modal-return" class="font-bold mt-0.5"></div>
+        </div>
+        <div>
+          <div class="text-[10px] text-claude-subtle font-sans">경제적 해자</div>
+          <div id="modal-moat" class="font-bold text-claude-dark mt-0.5"></div>
+        </div>
+      </div>
+
+      <!-- Price Target Channel Details -->
+      <div class="p-3 bg-white rounded-xl border border-claude-border space-y-1.5 text-xs">
+        <div class="flex justify-between items-center text-claude-muted text-[11px]">
+          <span>운용 채널 가격선</span>
+          <span id="modal-range-diff" class="font-mono font-semibold text-claude-clay"></span>
+        </div>
+        <div class="grid grid-cols-3 gap-2 font-mono text-[11px] pt-1">
+          <div class="p-2 rounded bg-stone-50 border border-stone-200">
+            <div class="text-[10px] text-stone-500">기계적 손절가</div>
+            <div id="modal-stoploss" class="font-bold text-stone-800"></div>
+          </div>
+          <div class="p-2 rounded bg-amber-50/60 border border-amber-200">
+            <div class="text-[10px] text-amber-700">1차 목표가</div>
+            <div id="modal-target1" class="font-bold text-amber-900"></div>
+          </div>
+          <div class="p-2 rounded bg-emerald-50/60 border border-emerald-200">
+            <div class="text-[10px] text-emerald-700">2차 목표가</div>
+            <div id="modal-target2" class="font-bold text-emerald-900"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Core Investment Thesis -->
+      <div class="space-y-1 text-xs">
+        <h4 class="font-semibold text-claude-dark flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-claude-clay"></span>
+          핵심 동업 논거 (Moat Thesis)
+        </h4>
+        <p id="modal-thesis" class="text-claude-muted leading-relaxed p-3 bg-claude-ivory/60 rounded-xl border border-claude-border text-[12px]"></p>
+      </div>
+
+      <!-- Recent DART / News Catalyst -->
+      <div class="space-y-1 text-xs">
+        <h4 class="font-semibold text-claude-dark flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+          최근 핵심 공시 & 뉴스 촉매 (Catalyst)
+        </h4>
+        <p id="modal-catalyst" class="text-claude-muted leading-relaxed p-3 bg-claude-ivory/60 rounded-xl border border-claude-border text-[12px]"></p>
+      </div>
+
+      <!-- Tactical Scenario & Invalidation -->
+      <div class="space-y-2 text-xs">
+        <div class="p-3 bg-stone-50 rounded-xl border border-stone-200 space-y-1">
+          <div class="font-bold text-claude-dark text-[11px]">평의회 대응 시나리오</div>
+          <p id="modal-scenario" class="text-claude-muted leading-relaxed text-[11px]"></p>
+        </div>
+        <div class="p-3 bg-rose-50/40 rounded-xl border border-rose-200/60 space-y-1">
+          <div class="font-bold text-rose-800 text-[11px]">투자 아이디어 무효화 조건</div>
+          <p id="modal-invalidation" class="text-rose-700 leading-relaxed text-[11px]"></p>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="pt-2 border-t border-claude-border flex justify-between items-center text-xs">
+        <a id="modal-notion-link" href="#" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-claude-dark text-white font-medium hover:bg-stone-800 transition-all text-xs">
+          <span>Notion 심층 리포트 열기</span>
+          <span>↗</span>
+        </a>
+        <button onclick="closeStockModal()" class="px-3 py-1.5 rounded-xl border border-claude-border text-claude-muted hover:bg-claude-cream transition-all text-xs">
+          닫기
+        </button>
+      </div>
+
+    </div>
+  </dialog>
+
   <script>
+    // -------------------------------------------------------------
+    // 1. DATA DICTIONARY (Erebor Portfolio & Radar Data)
+    // -------------------------------------------------------------
+    const portfolioData = {
+      totalAUM: 24200691,
+      cmaCash: 1713891,
+      stocks: {
+        "000660": {
+          name: "SK하이닉스",
+          ticker: "000660",
+          weight: 61.25,
+          shares: 9,
+          avgBuy: 689688,
+          currentPrice: 1647000,
+          evalAmount: 14823000,
+          pnlAmount: 8615807,
+          pnlRate: 138.80,
+          color: "#D97757",
+          status: "Core Holding (영구 동업)",
+          statusColor: "bg-emerald-100 text-emerald-800",
+          moat: "Wide Moat (글로벌 HBM 독점 수율)",
+          stopLoss: 1480000,
+          target1: 2000000,
+          target2: 2400000,
+          scores: { moat: 9.8, value: 6.5, catalyst: 9.5, return: 7.0, impact: 9.9 },
+          radarDesc: "HBM3E 및 차세대 HBM4 글로벌 독점 수율 경쟁력으로 포트폴리오 이익 기여도(Impact)와 Moat가 최고조에 달해 있습니다.",
+          thesis: "AI 가속기 메모리(HBM3E/HBM4) 글로벌 독점적 기술 경쟁력 및 수율 리더. 포트폴리오의 61%를 차지하는 버크셔의 애플과 같은 압도적 코어 복리 기업.",
+          catalyst: "[글로벌/기술] 엔비디아 차세대 루빈 가속기향 16단 HBM4 퀄테스트 최고 성적 통과 공시 / 2026 하반기 양산 돌입 및 40조 자사주 매입·소각 집행.",
+          scenario: "1차 목표가(2,000,000원) 도달 시 2주 분할 익절(약 400만 원)을 집행하여 현금 요새(CMA) 비중을 25% 수준으로 즉시 끌어올림. 148만 원 지지선 이탈 시 트레일링 스탑 적용.",
+          invalidation: "경쟁사의 차세대 HBM 양산 수율 역전, 빅테크의 AI 인프라 CAPEX 급감, 또는 메모리 다운사이클 심화 시 비중 조절 검토.",
+          notionUrl: "https://www.notion.so/3d2748107d21815ba5a1d648c2d5788c"
+        },
+        "267260": {
+          name: "HD현대일렉트릭",
+          ticker: "267260",
+          weight: 14.75,
+          shares: 5,
+          avgBuy: 750000,
+          currentPrice: 714000,
+          evalAmount: 3570000,
+          pnlAmount: -180000,
+          pnlRate: -4.80,
+          color: "#6A9BCC",
+          status: "Core Holding (영구 동업)",
+          statusColor: "bg-emerald-100 text-emerald-800",
+          moat: "Wide Moat (초고압 변압기 독보적 수주)",
+          stopLoss: 690000,
+          target1: 820000,
+          target2: 1000000,
+          scores: { moat: 9.0, value: 5.5, catalyst: 9.2, return: 6.0, impact: 7.5 },
+          radarDesc: "북미 AI 데이터센터 전력망 교체 사이클로 촉매와 해자가 탁월하나, 주가 급등 후 손절선(69만 원)에 근접하여 밸류에이션 안전마진 관리가 필수적입니다.",
+          thesis: "글로벌 AI 데이터센터 전력 공급 부족에 따른 북미 초고압 변압기 슈퍼사이클 수혜. 2028년까지 3년 치 일감(수주잔고 6.8조)을 확보한 글로벌 전력 인프라 대장주.",
+          catalyst: "[DART 전자공시] 美 동부 대형 PJM 유틸리티향 500kV 초고압 변압기 3,800억 원 단일판매·공급계약 체결 및 북미 추가 공장 증설 완료.",
+          scenario: "기계적 손절선 690,000원 절대 방어. 이탈 없을 시 1차 목표가 820,000원까지 홀딩하며 추세 추종.",
+          invalidation: "글로벌 빅테크의 데이터센터 전력 인프라 투자 축소, 원자재(구리) 가격 폭등으로 인한 마진 훼손, 또는 분기 신규 수주액 급감 시.",
+          notionUrl: "https://www.notion.so/3d2748107d2181edbe39c39bb3655586"
+        },
+        "105560": {
+          name: "KB금융",
+          ticker: "105560",
+          weight: 9.95,
+          shares: 14,
+          avgBuy: 135814,
+          currentPrice: 172000,
+          evalAmount: 2408000,
+          pnlAmount: 506600,
+          pnlRate: 26.64,
+          color: "#788C5D",
+          status: "Core Holding (영구 동업)",
+          statusColor: "bg-emerald-100 text-emerald-800",
+          moat: "Wide Moat (국내 1위 리딩금융·자본비율)",
+          stopLoss: 155000,
+          target1: 195000,
+          target2: 220000,
+          scores: { moat: 8.8, value: 8.5, catalyst: 7.5, return: 9.6, impact: 8.0 },
+          radarDesc: "주주환원(자사주 소각/배당) 점수가 9.6으로 전 종목 중 최상위이며, 탄탄한 안전마진과 하방 경직성을 제공하는 방어적 복리 자산입니다.",
+          thesis: "한국 금융 밸류업의 대표 벤치마크. 업계 최고 수준의 보통주자본비율(CET1 13.8%)을 바탕으로 매 분기 3,500억 자사주 매입/소각 집행.",
+          catalyst: "[주주환원/자사주] 2026 하반기 코리아 밸류업 지수 1위 편입 확정 및 외국인 지분율 78.2% 역대 최고 돌파 공시.",
+          scenario: "하방이 단단한 코어 배당주. 195,000원까지 배당 수취하며 장기 동업 유지. 220,000원 도달 시 물량 50% 분할 익절 검토.",
+          invalidation: "CET1 비율 13% 미만 훼손, 정부의 인위적 관치 금융/상생금융 압박으로 인한 이익 침해 시.",
+          notionUrl: "https://www.notion.so/3d2748107d2181269546c5d24d64c890"
+        },
+        "034020": {
+          name: "두산에너빌리티",
+          ticker: "034020",
+          weight: 4.58,
+          shares: 14,
+          avgBuy: 79828,
+          currentPrice: 79200,
+          evalAmount: 1108800,
+          pnlAmount: -8800,
+          pnlRate: -0.79,
+          color: "#87867F",
+          status: "Acquiring (분할 매수)",
+          statusColor: "bg-blue-100 text-blue-800",
+          moat: "Narrow Moat (대형 원전·SMR 글로벌 파운드리)",
+          stopLoss: 72000,
+          target1: 105000,
+          target2: 130000,
+          scores: { moat: 7.2, value: 7.0, catalyst: 8.8, return: 4.5, impact: 6.0 },
+          radarDesc: "체코 24조 원전 본계약 및 미국 SMR(소형 모듈 원자로) 주기기 수주 모멘텀(Catalyst 8.8)이 주가를 강하게 견인할 준비를 마쳤습니다.",
+          thesis: "체코 원전 르네상스와 글로벌 빅테크 데이터센터 전력 공급을 위한 SMR 핵심 주기기 독점 제작 역량을 갖춘 원자력 글로벌 파운드리.",
+          catalyst: "[글로벌 수주] 체코 두코바니 신규 원전 24조 원 본계약 서명 최종 조율 및 한수원-팀코리아 주기기 사전 제작 착수 확인.",
+          scenario: "체코 본계약 공시 전까지 72,000원 손절선 유지. 105,000원 1차 목표가 도달 시 절반 익절 후 잔여 물량 130,000원까지 롱런.",
+          invalidation: "체코 원전 본계약 좌초, SMR 상용화 지연, 또는 지배주주 중심의 주주가치 훼손 지배구조 개편 재추진 시.",
+          notionUrl: "https://www.notion.so/3d2748107d2181c58047dc6cb3b0dd89"
+        },
+        "196170": {
+          name: "알테오젠",
+          ticker: "196170",
+          weight: 2.38,
+          shares: 2,
+          avgBuy: 317000,
+          currentPrice: 288500,
+          evalAmount: 577000,
+          pnlAmount: -57000,
+          pnlRate: -8.99,
+          color: "#C46686",
+          status: "Review (심의/재평가)",
+          statusColor: "bg-amber-100 text-amber-800",
+          moat: "Wide Moat (ALT-B4 독점 SC 플랫폼)",
+          stopLoss: 265000,
+          target1: 380000,
+          target2: 450000,
+          scores: { moat: 9.3, value: 4.5, catalyst: 9.4, return: 3.0, impact: 5.0 },
+          radarDesc: "키트루다SC 및 엔허투SC 물질특허 등록으로 해자와 촉매는 최고 수준이나, 바이오 특성상 밸류에이션(Value 4.5) 및 배당 점수가 낮습니다.",
+          thesis: "머크 '키트루다 SC' 독점 라이선스를 필두로 한 피하주사(ALT-B4) 글로벌 플랫폼. 빅파마 마일스톤 및 로열티가 유입되는 고수익 바이오 파운드리.",
+          catalyst: "[M&A / 기술이전] 다이이찌산쿄 엔허투(Enhertu) SC 제형 글로벌 물질특허 등록 완료 및 4분기 임상 3상 완료 마일스톤 유입 가시화.",
+          scenario: "비중 2.38%로 포트폴리오 리스크 극히 제한적. 265,000원 이탈 시 손절, FDA 승인 가시화 시 380,000원 이상에서 전량 수익 실현.",
+          invalidation: "키트루다 SC 허가/임상 지연, 할로자임과의 글로벌 특허 분쟁 패소, 또는 예상 로열티 유입 구조 훼손 시.",
+          notionUrl: "https://www.notion.so/3d2748107d2181a4b249e03d56ea9799"
+        }
+      }
+    };
+
+    // -------------------------------------------------------------
+    // 2. TAB SWITCHING LOGIC
+    // -------------------------------------------------------------
     function switchTab(tabId) {
       document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.classList.remove('active');
@@ -419,10 +899,312 @@
       });
       document.querySelectorAll('.tab-view').forEach(view => view.classList.add('hidden'));
       const activeBtn = document.getElementById('tab-' + tabId);
-      activeBtn.classList.add('active');
-      activeBtn.classList.remove('text-claude-muted');
-      document.getElementById('view-' + tabId).classList.remove('hidden');
+      if (activeBtn) {
+        activeBtn.classList.add('active');
+        activeBtn.classList.remove('text-claude-muted');
+      }
+      const activeView = document.getElementById('view-' + tabId);
+      if (activeView) {
+        activeView.classList.remove('hidden');
+      }
+      if (tabId === 'radar') {
+        renderRadar();
+      }
     }
+
+    function switchRangeSubtab(subtab) {
+      const hBtn = document.getElementById('subtab-holdings');
+      const wBtn = document.getElementById('subtab-watchlist');
+      const hView = document.getElementById('range-holdings');
+      const wView = document.getElementById('range-watchlist');
+
+      if (subtab === 'holdings') {
+        hBtn.classList.add('bg-claude-dark', 'text-white');
+        hBtn.classList.remove('text-claude-muted');
+        wBtn.classList.remove('bg-claude-dark', 'text-white');
+        wBtn.classList.add('text-claude-muted');
+        hView.classList.remove('hidden');
+        wView.classList.add('hidden');
+      } else {
+        wBtn.classList.add('bg-claude-dark', 'text-white');
+        wBtn.classList.remove('text-claude-muted');
+        hBtn.classList.remove('bg-claude-dark', 'text-white');
+        hBtn.classList.add('text-claude-muted');
+        wView.classList.remove('hidden');
+        hView.classList.add('hidden');
+      }
+    }
+
+    // -------------------------------------------------------------
+    // 3. MULTI-DIMENSIONAL RADAR CHART ENGINE (SVG)
+    // -------------------------------------------------------------
+    let currentRadarStock = 'ALL';
+    const radarAxes = [
+      { key: 'moat', name: '경제적 해자', angle: -Math.PI / 2 },
+      { key: 'value', name: '안전마진', angle: -Math.PI / 2 + (2 * Math.PI / 5) },
+      { key: 'catalyst', name: '촉매 모멘텀', angle: -Math.PI / 2 + (4 * Math.PI / 5) },
+      { key: 'return', name: '주주환원력', angle: -Math.PI / 2 + (6 * Math.PI / 5) },
+      { key: 'impact', name: '포트 기여도', angle: -Math.PI / 2 + (8 * Math.PI / 5) }
+    ];
+
+    function setRadarStock(ticker) {
+      currentRadarStock = ticker;
+      document.querySelectorAll('.radar-chip').forEach(chip => {
+        chip.classList.remove('bg-claude-dark', 'text-white', 'border-claude-dark');
+        chip.classList.add('bg-white', 'text-claude-muted', 'border-claude-border');
+      });
+      const activeChip = document.getElementById('chip-' + ticker);
+      if (activeChip) {
+        activeChip.classList.add('bg-claude-dark', 'text-white', 'border-claude-dark');
+        activeChip.classList.remove('bg-white', 'text-claude-muted', 'border-claude-border');
+      }
+      renderRadar();
+    }
+
+    function renderRadar() {
+      const svg = document.getElementById('radar-svg');
+      if (!svg) return;
+
+      const cx = 170;
+      const cy = 155;
+      const maxR = 100;
+      const levels = [2, 4, 6, 8, 10];
+
+      let html = '';
+
+      // 1. Concentric background web rings
+      levels.forEach(lvl => {
+        const r = (lvl / 10) * maxR;
+        const pts = radarAxes.map(axis => {
+          const x = cx + r * Math.cos(axis.angle);
+          const y = cy + r * Math.sin(axis.angle);
+          return `${x.toFixed(1)},${y.toFixed(1)}`;
+        }).join(' ');
+        html += `<polygon points="${pts}" fill="none" stroke="#E8E2D6" stroke-width="${lvl === 10 ? '1.5' : '1'}" stroke-dasharray="${lvl === 10 ? 'none' : '2,2'}" />`;
+      });
+
+      // 2. Axis radiating spokes & Labels
+      radarAxes.forEach(axis => {
+        const x2 = cx + maxR * Math.cos(axis.angle);
+        const y2 = cy + maxR * Math.sin(axis.angle);
+        html += `<line x1="${cx}" y1="${cy}" x2="${x2}" y2="${y2}" stroke="#D5CDBF" stroke-width="1" />`;
+
+        // Text label positioning
+        const lx = cx + (maxR + 22) * Math.cos(axis.angle);
+        const ly = cy + (maxR + 18) * Math.sin(axis.angle);
+        let textAnchor = "middle";
+        if (Math.abs(Math.cos(axis.angle)) > 0.3) {
+          textAnchor = Math.cos(axis.angle) > 0 ? "start" : "end";
+        }
+        html += `<text x="${lx}" y="${ly}" font-family="Plus Jakarta Sans" font-size="11" font-weight="600" fill="#211F1C" text-anchor="${textAnchor}" dominant-baseline="central">${axis.name}</text>`;
+      });
+
+      // 3. Render Data Polygon(s)
+      if (currentRadarStock === 'ALL') {
+        // Weighted average portfolio polygon + faint stock outlines
+        Object.values(portfolioData.stocks).forEach(stk => {
+          const pts = radarAxes.map(axis => {
+            const r = (stk.scores[axis.key] / 10) * maxR;
+            const x = cx + r * Math.cos(axis.angle);
+            const y = cy + r * Math.sin(axis.angle);
+            return `${x.toFixed(1)},${y.toFixed(1)}`;
+          }).join(' ');
+          html += `<polygon points="${pts}" fill="none" stroke="${stk.color}" stroke-width="1.2" opacity="0.35" />`;
+        });
+
+        // Compute Weighted Average
+        const avgScores = { moat: 0, value: 0, catalyst: 0, return: 0, impact: 0 };
+        let totalW = 0;
+        Object.values(portfolioData.stocks).forEach(stk => {
+          const w = stk.weight;
+          totalW += w;
+          avgScores.moat += stk.scores.moat * w;
+          avgScores.value += stk.scores.value * w;
+          avgScores.catalyst += stk.scores.catalyst * w;
+          avgScores.return += stk.scores.return * w;
+          avgScores.impact += stk.scores.impact * w;
+        });
+        Object.keys(avgScores).forEach(k => avgScores[k] = (avgScores[k] / totalW).toFixed(1));
+
+        const avgPts = radarAxes.map(axis => {
+          const r = (avgScores[axis.key] / 10) * maxR;
+          const x = cx + r * Math.cos(axis.angle);
+          const y = cy + r * Math.sin(axis.angle);
+          return `${x.toFixed(1)},${y.toFixed(1)}`;
+        }).join(' ');
+
+        html += `<polygon points="${avgPts}" fill="#D97757" fill-opacity="0.22" stroke="#D97757" stroke-width="2.5" class="radar-polygon" />`;
+
+        // Points
+        radarAxes.forEach(axis => {
+          const r = (avgScores[axis.key] / 10) * maxR;
+          const x = cx + r * Math.cos(axis.angle);
+          const y = cy + r * Math.sin(axis.angle);
+          html += `<circle cx="${x}" cy="${y}" r="3.5" fill="#211F1C" stroke="#FAF7F2" stroke-width="1.5" />`;
+        });
+
+        document.getElementById('radar-info-name').innerText = "Erebor 포트폴리오 가중 평균 지표";
+        document.getElementById('radar-info-score').innerText = "종합 8.6 / 10.0";
+        document.getElementById('radar-info-desc').innerText = "SK하이닉스의 압도적 해자 및 이익 모멘텀이 전체 포트폴리오를 견인하며, KB금융의 극대화된 주주환원(자사주 소각·배당)이 방어벽을 형성하고 있습니다.";
+      } else {
+        const stk = portfolioData.stocks[currentRadarStock];
+        if (stk) {
+          const pts = radarAxes.map(axis => {
+            const r = (stk.scores[axis.key] / 10) * maxR;
+            const x = cx + r * Math.cos(axis.angle);
+            const y = cy + r * Math.sin(axis.angle);
+            return `${x.toFixed(1)},${y.toFixed(1)}`;
+          }).join(' ');
+
+          html += `<polygon points="${pts}" fill="${stk.color}" fill-opacity="0.25" stroke="${stk.color}" stroke-width="2.5" class="radar-polygon" />`;
+
+          // Vertices
+          radarAxes.forEach(axis => {
+            const val = stk.scores[axis.key];
+            const r = (val / 10) * maxR;
+            const x = cx + r * Math.cos(axis.angle);
+            const y = cy + r * Math.sin(axis.angle);
+            html += `<circle cx="${x}" cy="${y}" r="4" fill="${stk.color}" stroke="#FFFFFF" stroke-width="1.5" />`;
+            // Value tag
+            const tagX = x + 10 * Math.cos(axis.angle);
+            const tagY = y + 10 * Math.sin(axis.angle);
+            html += `<text x="${tagX}" y="${tagY}" font-family="Newsreader" font-size="11" font-weight="bold" fill="${stk.color}" text-anchor="middle" dominant-baseline="central">${val}</text>`;
+          });
+
+          const totalScore = ((stk.scores.moat + stk.scores.value + stk.scores.catalyst + stk.scores.return + stk.scores.impact) / 5).toFixed(1);
+          document.getElementById('radar-info-name').innerText = `${stk.name} (${stk.ticker}) 역량 프로파일`;
+          document.getElementById('radar-info-score').innerText = `종합 ${totalScore} / 10.0`;
+          document.getElementById('radar-info-desc').innerText = stk.radarDesc;
+        }
+      }
+
+      svg.innerHTML = html;
+    }
+
+    // -------------------------------------------------------------
+    // 4. LIVE INTERACTIVE REBALANCING SIMULATOR
+    // -------------------------------------------------------------
+    function runSimulation() {
+      const sharesSlider = document.getElementById('slider-shares');
+      const priceSlider = document.getElementById('slider-price');
+      
+      const sellShares = parseInt(sharesSlider.value, 10);
+      const targetPrice = parseInt(priceSlider.value, 10);
+
+      document.getElementById('sim-shares-val').innerText = `${sellShares}주`;
+      document.getElementById('sim-price-val').innerText = `₩${targetPrice.toLocaleString()}`;
+
+      // Computations
+      const avgCost = portfolioData.stocks["000660"].avgBuy; // 689,688
+      const cashGenerated = sellShares * targetPrice;
+      const profitGenerated = sellShares * (targetPrice - avgCost);
+
+      const baseCMA = portfolioData.cmaCash; // 1,713,891
+      const totalAUM = portfolioData.totalAUM; // 24,200,691
+      
+      // If targetPrice is higher than currentPrice(1,647,000), portfolio AUM expands by the profit difference
+      const currentPrice = portfolioData.stocks["000660"].currentPrice;
+      const unrealizedGainDiff = sellShares * (targetPrice - currentPrice);
+      const simulatedTotalAUM = totalAUM + unrealizedGainDiff;
+      const simulatedCMA = baseCMA + cashGenerated;
+      const simulatedCMAPercent = (simulatedCMA / simulatedTotalAUM) * 100;
+
+      const remainingShares = 9 - sellShares;
+      const remainingHynixValue = remainingShares * targetPrice;
+      const simulatedHynixPercent = (remainingHynixValue / simulatedTotalAUM) * 100;
+
+      // Update DOM
+      document.getElementById('sim-cash-gen').innerText = `+₩${cashGenerated.toLocaleString()}`;
+      document.getElementById('sim-profit-gen').innerText = `+₩${profitGenerated.toLocaleString()}`;
+      document.getElementById('sim-hynix-weight').innerText = `${simulatedHynixPercent.toFixed(1)}% (${remainingShares}주)`;
+
+      document.getElementById('sim-cma-bar-val').innerText = `${simulatedCMAPercent.toFixed(1)}% (₩${simulatedCMA.toLocaleString()})`;
+      const barElem = document.getElementById('sim-cma-bar');
+      barElem.style.width = `${Math.min(simulatedCMAPercent, 100).toFixed(1)}%`;
+
+      const badgeElem = document.getElementById('sim-conclusion-badge');
+      if (sellShares === 0) {
+        badgeElem.innerText = "현금 비중 7.1% 유지 (요새 탄약 미확보 상태 — 추가 매수 여력 부족)";
+        badgeElem.className = "text-[10px] text-claude-subtle font-sans font-medium";
+      } else if (sellShares >= 1 && sellShares <= 3) {
+        badgeElem.innerText = `★ 요새 구축 성공: 현금 ${simulatedCMAPercent.toFixed(1)}% 확보로 관망 3사(한화에어로·삼양식품·클래시스) 눌림목 1차 매수 탄약 완비`;
+        badgeElem.className = "text-[10px] text-claude-olive font-sans font-medium";
+      } else {
+        badgeElem.innerText = `대규모 현금화: 현금 ${simulatedCMAPercent.toFixed(1)}% 확보 완료 (하이닉스 비중 ${simulatedHynixPercent.toFixed(1)}%로 안정적 분산 완료)`;
+        badgeElem.className = "text-[10px] text-blue-700 font-sans font-medium";
+      }
+    }
+
+    function resetSim() {
+      document.getElementById('slider-shares').value = 2;
+      document.getElementById('slider-price').value = 2000000;
+      runSimulation();
+    }
+
+    // -------------------------------------------------------------
+    // 5. STOCK DETAIL MODAL
+    // -------------------------------------------------------------
+    function openStockModal(ticker) {
+      const stk = portfolioData.stocks[ticker];
+      if (!stk) return;
+
+      document.getElementById('modal-name').innerText = stk.name;
+      document.getElementById('modal-ticker').innerText = stk.ticker;
+      
+      const statusBadge = document.getElementById('modal-status');
+      statusBadge.innerText = stk.status;
+      statusBadge.className = `text-[10px] font-semibold px-2 py-0.5 rounded ${stk.statusColor}`;
+
+      document.getElementById('modal-price').innerText = `₩${stk.currentPrice.toLocaleString()} (${stk.weight}%)`;
+      
+      const returnElem = document.getElementById('modal-return');
+      const sign = stk.pnlRate >= 0 ? '+' : '';
+      returnElem.innerText = `${sign}${stk.pnlRate}% (${sign}₩${stk.pnlAmount.toLocaleString()})`;
+      returnElem.className = `font-bold mt-0.5 ${stk.pnlRate >= 0 ? 'text-claude-olive' : 'text-blue-600'}`;
+
+      document.getElementById('modal-moat').innerText = stk.moat;
+
+      document.getElementById('modal-stoploss').innerText = `₩${stk.stopLoss.toLocaleString()}`;
+      document.getElementById('modal-target1').innerText = `₩${stk.target1.toLocaleString()}`;
+      document.getElementById('modal-target2').innerText = `₩${stk.target2.toLocaleString()}`;
+
+      const targetGap = (((stk.target1 - stk.currentPrice) / stk.currentPrice) * 100).toFixed(1);
+      document.getElementById('modal-range-diff').innerText = `1차 목표가까지 ${targetGap >= 0 ? '+' : ''}${targetGap}%`;
+
+      document.getElementById('modal-thesis').innerText = stk.thesis;
+      document.getElementById('modal-catalyst').innerText = stk.catalyst;
+      document.getElementById('modal-scenario').innerText = stk.scenario;
+      document.getElementById('modal-invalidation').innerText = stk.invalidation;
+
+      document.getElementById('modal-notion-link').href = stk.notionUrl;
+
+      const modal = document.getElementById('stock-modal');
+      modal.showModal();
+    }
+
+    function closeStockModal() {
+      const modal = document.getElementById('stock-modal');
+      modal.close();
+    }
+
+    // Close modal on outside click
+    document.getElementById('stock-modal').addEventListener('click', (e) => {
+      const dialogDimensions = e.target.getBoundingClientRect();
+      if (
+        e.clientX < dialogDimensions.left ||
+        e.clientX > dialogDimensions.right ||
+        e.clientY < dialogDimensions.top ||
+        e.clientY > dialogDimensions.bottom
+      ) {
+        e.target.close();
+      }
+    });
+
+    // Initial trigger
+    window.addEventListener('DOMContentLoaded', () => {
+      renderRadar();
+      runSimulation();
+    });
   </script>
 </body>
 </html>
