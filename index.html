@@ -2391,8 +2391,8 @@ ${watchlistSummary}
 3. 추천 종목 각각에 대해 왜 이 종목이 현재 포트폴리오에 어울리는지 1문장 투자 논거(Thesis)를 제시하세요.`;
 
       try {
-        // 1. 계정 및 리전에서 사용 가능한 최신 모델 자동 탐색 (Model Auto-Discovery)
-        let targetModel = 'models/gemini-2.0-flash';
+        // 1. 계정 및 리전에서 사용 가능한 모델 큐 구성 (우선순위 정렬)
+        let modelQueue = [];
         try {
           const listRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(apiKey)}`, {
             headers: { 'x-goog-api-key': apiKey }
@@ -2402,55 +2402,100 @@ ${watchlistSummary}
             const candidates = (listData.models || []).filter(m => 
               m.supportedGenerationMethods && m.supportedGenerationMethods.includes('generateContent')
             );
-            // 3.8 플래시 -> 2.5 플래시 -> 2.0 플래시 -> 기타 플래시 모델 순으로 최적 매칭
-            const preferred = candidates.find(m => m.name.includes('3.8') && m.name.includes('flash')) ||
-                              candidates.find(m => m.name.includes('2.5') && m.name.includes('flash')) ||
-                              candidates.find(m => m.name.includes('2.0') && m.name.includes('flash')) ||
-                              candidates.find(m => m.name.includes('flash')) ||
-                              candidates[0];
-            if (preferred) {
-              targetModel = preferred.name;
-            }
+            
+            // 우선순위: 3.8 플래시 -> 2.5 플래시 -> 2.0 플래시 -> 기타 플래시 -> 3.8 프로 -> 기타 모델
+            const priorityFilters = [
+              m => m.name.includes('3.8') && m.name.includes('flash'),
+              m => m.name.includes('2.5') && m.name.includes('flash'),
+              m => m.name.includes('2.0') && m.name.includes('flash'),
+              m => m.name.includes('flash'),
+              m => m.name.includes('3.8'),
+              m => m.name.includes('2.5'),
+              m => m.name.includes('2.0')
+            ];
+
+            const added = new Set();
+            priorityFilters.forEach(fn => {
+              candidates.filter(fn).forEach(c => {
+                if (!added.has(c.name)) {
+                  modelQueue.push(c.name);
+                  added.add(c.name);
+                }
+              });
+            });
+            candidates.forEach(c => {
+              if (!added.has(c.name)) {
+                modelQueue.push(c.name);
+                added.add(c.name);
+              }
+            });
           }
         } catch (e) {
-          console.warn('Model auto-discovery fallback', e);
+          console.warn('Model list failed', e);
         }
 
-        // 2. 선택된 모델로 실시간 분석 호출
-        const cleanModel = targetModel.startsWith('models/') ? targetModel : `models/${targetModel}`;
-        const url = `https://generativelanguage.googleapis.com/v1beta/${cleanModel}:generateContent?key=${encodeURIComponent(apiKey)}`;
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-goog-api-key': apiKey
-          },
-          body: JSON.stringify({
-            systemInstruction: {
-              parts: [{ text: systemPrompt }]
-            },
-            contents: [{
-              parts: [{ text: userPrompt }]
-            }],
-            generationConfig: {
-              temperature: 0.7,
-              maxOutputTokens: 800
-            }
-          })
-        });
+        if (modelQueue.length === 0) {
+          modelQueue = ['models/gemini-2.0-flash', 'models/gemini-2.5-flash', 'models/gemini-3.8-flash'];
+        }
 
-        if (!response.ok) {
-          let errDetail = '';
+        // 2. 모델 큐를 순회하며 503(고수요/과부하) 발생 시 즉시 다음 후보 모델로 자동 Fallback
+        let lastError = null;
+        let successData = null;
+        let usedModel = '';
+
+        for (const targetModel of modelQueue) {
+          const cleanModel = targetModel.startsWith('models/') ? targetModel : `models/${targetModel}`;
           try {
-            const errJson = await response.json();
-            errDetail = errJson.error?.message ? ` (${errJson.error.message})` : '';
-          } catch(e) {}
-          throw new Error(`API 호출 실패 [${cleanModel}]: ` + response.status + errDetail);
+            content.innerHTML = `<div class="text-center py-4 text-fable-subtle animate-pulse">${cleanModel.replace('models/', '')} 모델로 포트폴리오 분석 중...</div>`;
+            const url = `https://generativelanguage.googleapis.com/v1beta/${cleanModel}:generateContent?key=${encodeURIComponent(apiKey)}`;
+            const response = await fetch(url, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'x-goog-api-key': apiKey
+              },
+              body: JSON.stringify({
+                systemInstruction: {
+                  parts: [{ text: systemPrompt }]
+                },
+                contents: [{
+                  parts: [{ text: userPrompt }]
+                }],
+                generationConfig: {
+                  temperature: 0.7,
+                  maxOutputTokens: 800
+                }
+              })
+            });
+
+            if (response.ok) {
+              successData = await response.json();
+              usedModel = cleanModel;
+              break;
+            } else {
+              let errDetail = '';
+              try {
+                const errJson = await response.json();
+                errDetail = errJson.error?.message ? ` (${errJson.error.message})` : '';
+              } catch(e) {}
+              console.warn(`Model ${cleanModel} returned ${response.status}${errDetail}. Trying next model in queue...`);
+              lastError = new Error(`[${cleanModel}]: ${response.status}${errDetail}`);
+              // 503 (High demand) 또는 429 (Rate limit) 등의 경우 멈추지 않고 바로 다음 모델 시도!
+              continue;
+            }
+          } catch (err) {
+            console.warn(`Model ${cleanModel} network exception`, err);
+            lastError = err;
+            continue;
+          }
         }
 
-        const data = await response.json();
-        const markdown = data.candidates[0].content.parts[0].text;
-        document.getElementById('ai-model-badge').innerText = cleanModel.replace('models/', '');
+        if (!successData) {
+          throw lastError || new Error("모든 AI 모델 호출에 실패했습니다.");
+        }
+
+        const markdown = successData.candidates[0].content.parts[0].text;
+        document.getElementById('ai-model-badge').innerText = usedModel.replace('models/', '');
         
         // 간단한 Markdown -> HTML 변환 (굵은 글씨, 줄바꿈, 리스트)
         let htmlRender = markdown
