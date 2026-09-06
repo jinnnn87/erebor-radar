@@ -657,55 +657,9 @@
         </div>
       </div>
 
-      <!-- Subtab 2: Watchlist (3 stocks) -->
+      <!-- Subtab 2: Watchlist (Dynamic) -->
       <div id="range-watchlist" class="hidden space-y-2.5 sm:space-y-3 pt-1 text-xs">
-        <!-- 한화에어로스페이스 -->
-        <div class="p-3 rounded-xl border border-fable-border bg-fable-surface space-y-1.5">
-          <div class="flex justify-between items-center">
-            <span class="font-bold text-fable-ink truncate">한화에어로 (135만)</span>
-            <span class="font-mono text-[10px] sm:text-[11px] font-semibold text-amber-800 bg-amber-100 px-2 py-0.5 rounded whitespace-nowrap">진입선 +5.5% [근접]</span>
-          </div>
-          <div class="relative w-full bg-fable-cream h-2.5 rounded-full overflow-hidden border border-fable-border/60">
-            <div class="h-2.5 rounded-full bg-fable-amber" style="width: 82%;"></div>
-          </div>
-          <div class="flex justify-between text-[10px] sm:text-[11px] font-mono text-fable-subtle">
-            <span class="text-fable-ink font-semibold">진입목표 128만</span>
-            <span>현재 135만</span>
-            <span>1차목표 155만</span>
-          </div>
-        </div>
-
-        <!-- 삼양식품 -->
-        <div class="p-3 rounded-xl border border-fable-border bg-fable-surface space-y-1.5">
-          <div class="flex justify-between items-center">
-            <span class="font-bold text-fable-ink truncate">삼양식품 (141.7만)</span>
-            <span class="font-mono text-[10px] sm:text-[11px] font-semibold text-stone-700 bg-stone-100 px-2 py-0.5 rounded whitespace-nowrap">진입선 +9.0% [관망]</span>
-          </div>
-          <div class="relative w-full bg-fable-cream h-2.5 rounded-full overflow-hidden border border-fable-border/60">
-            <div class="h-2.5 rounded-full bg-fable-slate" style="width: 72%;"></div>
-          </div>
-          <div class="flex justify-between text-[10px] sm:text-[11px] font-mono text-fable-subtle">
-            <span class="text-fable-ink font-semibold">진입목표 130만</span>
-            <span>현재 141.7만</span>
-            <span>1차목표 185만</span>
-          </div>
-        </div>
-
-        <!-- 클래시스 -->
-        <div class="p-3 rounded-xl border border-fable-border bg-fable-surface space-y-1.5">
-          <div class="flex justify-between items-center">
-            <span class="font-bold text-fable-ink truncate">클래시스 (5.2만)</span>
-            <span class="font-mono text-[10px] sm:text-[11px] font-semibold text-stone-700 bg-stone-100 px-2 py-0.5 rounded whitespace-nowrap">진입선 +6.1% [관망]</span>
-          </div>
-          <div class="relative w-full bg-fable-cream h-2.5 rounded-full overflow-hidden border border-fable-border/60">
-            <div class="h-2.5 rounded-full bg-fable-cloud" style="width: 78%;"></div>
-          </div>
-          <div class="flex justify-between text-[10px] sm:text-[11px] font-mono text-fable-subtle">
-            <span class="text-fable-ink font-semibold">진입목표 4.9만</span>
-            <span>현재 5.2만</span>
-            <span>1차목표 6.2만</span>
-          </div>
-        </div>
+        <!-- Watchlist items will be rendered here by renderWatchlistUI() -->
       </div>
     </div>
 
@@ -1034,22 +988,8 @@
               <span class="uppercase">Fortress Firepower // 확보 현금 재투자 시뮬레이터</span>
               <span id="sim-firepower-cash" class="font-bold text-fable-ink font-mono">+₩4,000,000</span>
             </div>
-            <div class="grid grid-cols-3 gap-1.5 text-center font-mono text-[10px]">
-              <div class="p-1.5 rounded-lg bg-white border border-fable-border">
-                <div class="text-[9px] text-fable-subtle font-sans">한화에어로스페이스</div>
-                <div id="sim-fire-hanwha" class="font-bold text-fable-coral mt-0.5">3주 매수 가능</div>
-                <div class="text-[8px] text-fable-faded">적정가 125만 기준</div>
-              </div>
-              <div class="p-1.5 rounded-lg bg-white border border-fable-border">
-                <div class="text-[9px] text-fable-subtle font-sans">삼양식품</div>
-                <div id="sim-fire-samyang" class="font-bold text-fable-matcha mt-0.5">3주 매수 가능</div>
-                <div class="text-[8px] text-fable-faded">적정가 130만 기준</div>
-              </div>
-              <div class="p-1.5 rounded-lg bg-white border border-fable-border">
-                <div class="text-[9px] text-fable-subtle font-sans">클래시스</div>
-                <div id="sim-fire-classys" class="font-bold text-fable-cloud mt-0.5">75주 매수 가능</div>
-                <div class="text-[8px] text-fable-faded">적정가 5.3만 기준</div>
-              </div>
+            <div id="sim-firepower-grid" class="grid gap-1.5 text-center font-mono text-[10px]">
+              <!-- Watchlist simulator items will be rendered here dynamically -->
             </div>
           </div>
 
@@ -1379,7 +1319,42 @@
           invalidation: "키트루다 SC 허가/임상 지연, 할로자임과의 글로벌 특허 분쟁 패소, 또는 예상 로열티 유입 구조 훼손 시.",
           notionUrl: "https://www.notion.so/3d2748107d2181a4b249e03d56ea9799"
         }
-      }
+      },
+      watchlist: [
+        {
+          name: "한화에어로스페이스",
+          shortName: "한화에어로",
+          currentPrice: 1350000,
+          entryPrice: 1280000,
+          targetPrice: 1550000,
+          widthPct: 82,
+          colorClass: "bg-fable-amber",
+          statusText: "진입선 +5.5% [근접]",
+          statusClass: "text-amber-800 bg-amber-100"
+        },
+        {
+          name: "삼양식품",
+          shortName: "삼양식품",
+          currentPrice: 1417000,
+          entryPrice: 1300000,
+          targetPrice: 1850000,
+          widthPct: 72,
+          colorClass: "bg-fable-slate",
+          statusText: "진입선 +9.0% [관망]",
+          statusClass: "text-stone-700 bg-stone-100"
+        },
+        {
+          name: "클래시스",
+          shortName: "클래시스",
+          currentPrice: 52000,
+          entryPrice: 49000,
+          targetPrice: 62000,
+          widthPct: 78,
+          colorClass: "bg-fable-cloud",
+          statusText: "진입선 +6.1% [관망]",
+          statusClass: "text-stone-700 bg-stone-100"
+        }
+      ]
     };
 
     // -------------------------------------------------------------
@@ -2150,7 +2125,9 @@
         concElem.innerText = `✦ 1단계 안전마진 확보: 현금 ${newCMAPercent.toFixed(1)}% 구축 (선별적 눌림목 1차 진입 가능)`;
       } else if (newCMAPercent >= 20 && newCMAPercent <= 35) {
         concElem.className = "p-2.5 rounded-xl border border-fable-matcha/40 bg-fable-matchaLight/60 text-[10px] sm:text-[11px] text-fable-matcha font-medium flex items-center gap-1.5";
-        concElem.innerText = `✦ 이상적 요새 구축 완료: 현금 ${newCMAPercent.toFixed(1)}% 확보로 관망 3사(한화에어로·삼양식품·클래시스) 눌림목 1차 매수 탄약 완비`;
+        const wNames = portfolioData.watchlist.map(w => w.shortName).join('·');
+        const wTitle = portfolioData.watchlist.length > 0 ? `관망 ${portfolioData.watchlist.length}사(${wNames})` : "관망 종목";
+        concElem.innerText = `✦ 이상적 요새 구축 완료: 현금 ${newCMAPercent.toFixed(1)}% 확보로 ${wTitle} 눌림목 1차 매수 탄약 완비`;
       } else {
         concElem.className = "p-2.5 rounded-xl border border-fable-coral/40 bg-fable-coralLight text-[10px] sm:text-[11px] text-fable-coral font-medium flex items-center gap-1.5";
         concElem.innerText = `대규모 현금 요새화: 현금 ${newCMAPercent.toFixed(1)}% 확보 (시장 하락 헷지 및 초저평가 바겐세일 즉각 대응 체제)`;
@@ -2158,16 +2135,75 @@
 
       // Reinvestment Firepower Calculation
       document.getElementById('sim-firepower-cash').innerText = `+₩${totalCashGen.toLocaleString()}`;
-      const hanwhaShares = Math.floor(totalCashGen / 1250000);
-      const samyangShares = Math.floor(totalCashGen / 1300000);
-      const classysShares = Math.floor(totalCashGen / 53000);
-
-      document.getElementById('sim-fire-hanwha').innerText = `${hanwhaShares}주 매수 가능`;
-      document.getElementById('sim-fire-samyang').innerText = `${samyangShares}주 매수 가능`;
-      document.getElementById('sim-fire-classys').innerText = `${classysShares}주 매수 가능`;
+      
+      portfolioData.watchlist.forEach((item, index) => {
+        const shares = Math.floor(totalCashGen / item.entryPrice);
+        const elem = document.getElementById(`sim-fire-item-${index}`);
+        if (elem) {
+          elem.innerText = `${shares}주 매수 가능`;
+          if (shares > 0) {
+            const textColor = item.colorClass.replace('bg-', 'text-');
+            elem.className = `font-bold ${textColor} mt-0.5`;
+          } else {
+            elem.className = "font-bold text-fable-ink mt-0.5";
+          }
+        }
+      });
     }
 
-    // 5. STOCK DETAIL MODAL
+    // -------------------------------------------------------------
+    // 5. WATCHLIST DYNAMIC RENDERING
+    // -------------------------------------------------------------
+    function renderWatchlistUI() {
+      // Tab 3: Range Watchlist
+      const rangeContainer = document.getElementById('range-watchlist');
+      let rangeHTML = '';
+      
+      portfolioData.watchlist.forEach(item => {
+        rangeHTML += `
+          <div class="p-3 rounded-xl border border-fable-border bg-fable-surface space-y-1.5">
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-fable-ink truncate">${item.shortName} (${(item.currentPrice / 10000).toLocaleString()}만)</span>
+              <span class="font-mono text-[10px] sm:text-[11px] font-semibold ${item.statusClass} px-2 py-0.5 rounded whitespace-nowrap">${item.statusText}</span>
+            </div>
+            <div class="relative w-full bg-fable-cream h-2.5 rounded-full overflow-hidden border border-fable-border/60">
+              <div class="h-2.5 rounded-full ${item.colorClass}" style="width: ${item.widthPct}%;"></div>
+            </div>
+            <div class="flex justify-between text-[10px] sm:text-[11px] font-mono text-fable-subtle">
+              <span class="text-fable-ink font-semibold">진입목표 ${(item.entryPrice / 10000).toLocaleString()}만</span>
+              <span>현재 ${(item.currentPrice / 10000).toLocaleString()}만</span>
+              <span>1차목표 ${(item.targetPrice / 10000).toLocaleString()}만</span>
+            </div>
+          </div>
+        `;
+      });
+      if (rangeContainer) {
+        rangeContainer.innerHTML = rangeHTML;
+      }
+
+      // Tab 4: Reinvestment Firepower Grid Base
+      const firepowerGrid = document.getElementById('sim-firepower-grid');
+      let fpHTML = '';
+      const numItems = portfolioData.watchlist.length;
+      
+      if (firepowerGrid) {
+        firepowerGrid.style.gridTemplateColumns = `repeat(${numItems > 0 ? numItems : 1}, minmax(0, 1fr))`;
+        
+        portfolioData.watchlist.forEach((item, index) => {
+          fpHTML += `
+            <div class="p-1.5 rounded-lg bg-white border border-fable-border">
+              <div class="text-[9px] text-fable-subtle font-sans truncate">${item.name}</div>
+              <div id="sim-fire-item-${index}" class="font-bold text-fable-ink mt-0.5">0주 매수 가능</div>
+              <div class="text-[8px] text-fable-faded truncate">적정가 ${(item.entryPrice / 10000).toLocaleString()}만 기준</div>
+            </div>
+          `;
+        });
+        firepowerGrid.innerHTML = fpHTML;
+      }
+    }
+
+    // -------------------------------------------------------------
+    // 6. STOCK DETAIL MODAL
     // -------------------------------------------------------------
     function openStockModal(ticker) {
       const stk = portfolioData.stocks[ticker];
@@ -2225,6 +2261,7 @@
     });
 
     window.addEventListener('DOMContentLoaded', () => {
+      renderWatchlistUI();
       renderRadar();
       updatePresetButtonsUI('council');
       selectSimStock('000660');
