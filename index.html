@@ -6,10 +6,10 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="format-detection" content="telephone=no">
-  <title>Erebor Capital Architecture & Interactive Radar</title>
+  <title>Erebor Capital Architecture — Claude Fable & Mythos 5.1 Edition</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -18,27 +18,30 @@
           fontFamily: {
             serif: ['Newsreader', 'Georgia', 'serif'],
             sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', '"Apple SD Gothic Neo"', '"Pretendard"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'Menlo', 'Monaco', 'monospace'],
           },
           colors: {
-            claude: {
-              ivory: '#FAF7F2',
-              cream: '#F4EFE6',
-              card: '#FFFFFF',
-              border: '#E8E2D6',
-              borderDark: '#D5CDBF',
-              clay: '#D97757',       // Claude Terracotta
-              clayLight: '#FBECE6',
-              clayDark: '#C15F3D',
-              dark: '#211F1C',       // Claude Dark Espresso
-              muted: '#68655E',
-              subtle: '#969186',
-              olive: '#788C5D',
-              oliveLight: '#F2F5ED',
-              blue: '#6A9BCC',
-              blueLight: '#EDF4FB',
-              fig: '#C46686',
-              figLight: '#FAEDF2',
-              gray: '#87867F',
+            fable: {
+              ivory: '#FAF9F5',       // Fable 5.1 Paper Ivory
+              cream: '#F4F4EB',       // Fable 5.1 Surface Cream
+              surface: '#FFFFFF',     // Clean Card Surface
+              border: '#E5E3D8',      // Fable 5.1 Hairline Border
+              borderDark: '#DCD8CD',  // Active/Hover Border
+              ink: '#141413',         // Fable 5.1 Primary Black Ink
+              muted: '#44443E',       // Secondary Text
+              subtle: '#7C7C74',      // Tertiary Text / Metadata
+              faded: '#B0AEA5',       // Dotted Leader Color
+              coral: '#D97757',       // Fable 5.1 Terracotta / Coral
+              coralLight: '#FBF1ED',
+              matcha: '#788C5D',      // Fable 5.1 Matcha Green (Performance)
+              matchaLight: '#F2F5ED',
+              cloud: '#6A9BCC',       // Fable 5.1 Cloud Blue
+              cloudLight: '#EEF4FA',
+              heather: '#C46686',     // Fable 5.1 Heather Plum
+              heatherLight: '#FAEDF2',
+              slate: '#87867F',       // Fable 5.1 Slate Gray
+              amber: '#D47F2A',       // Fable 5.1 Amber Warning
+              amberLight: '#FDF7EE',
             }
           }
         }
@@ -54,14 +57,27 @@
     }
     body {
       background-color: transparent;
-      color: #211F1C;
+      color: #141413;
       font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", sans-serif;
       -webkit-font-smoothing: antialiased;
       -webkit-tap-highlight-color: transparent;
       padding-bottom: calc(0.75rem + var(--sab));
     }
-    .claude-shadow {
-      box-shadow: 0 1px 3px rgba(33, 31, 28, 0.04), 0 6px 16px rgba(33, 31, 28, 0.03);
+    .fable-frame {
+      background-color: #FAF9F5;
+      border: 1px solid #E5E3D8;
+      box-shadow: 0 1px 2px rgba(20, 20, 19, 0.03), 0 4px 14px rgba(20, 20, 19, 0.02);
+    }
+    .index-leader {
+      flex-grow: 1;
+      overflow: hidden;
+      white-space: nowrap;
+      letter-spacing: 3px;
+      color: #C8C5B9;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      margin: 0 8px;
+      user-select: none;
     }
     .no-scrollbar::-webkit-scrollbar {
       display: none;
@@ -71,13 +87,14 @@
       scrollbar-width: none;
       -webkit-overflow-scrolling: touch;
     }
-    /* Custom iOS Native-Feel Sliders */
+    /* Fable 5.1 Custom Slider */
     input[type=range] {
       -webkit-appearance: none;
       appearance: none;
       width: 100%;
-      height: 7px;
-      background: #F4EFE6;
+      height: 6px;
+      background: #F4F4EB;
+      border: 1px solid #E5E3D8;
       border-radius: 9999px;
       outline: none;
       touch-action: pan-y;
@@ -85,29 +102,28 @@
     input[type=range]::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
-      width: 26px;
-      height: 26px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
-      background: #FFFFFF;
-      border: 2.5px solid #D97757;
-      box-shadow: 0 2px 6px rgba(33, 31, 28, 0.25);
+      background: #FAF9F5;
+      border: 2px solid #D97757;
+      box-shadow: 0 2px 5px rgba(20, 20, 19, 0.15);
       cursor: pointer;
       transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
     input[type=range]:active::-webkit-slider-thumb {
-      transform: scale(1.18);
-      box-shadow: 0 4px 10px rgba(217, 119, 87, 0.35);
-      background: #FAF7F2;
+      transform: scale(1.16);
+      box-shadow: 0 3px 8px rgba(217, 119, 87, 0.3);
+      background: #FFFFFF;
     }
     .radar-polygon {
       transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
     dialog::backdrop {
-      background: rgba(33, 31, 28, 0.45);
+      background: rgba(20, 20, 19, 0.4);
       backdrop-filter: blur(4px);
       -webkit-backdrop-filter: blur(4px);
     }
-    /* iPhone 14 Pro Bottom-Sheet Transformation */
     @media (max-width: 640px) {
       dialog#stock-modal {
         margin: auto 0 0 0 !important;
@@ -119,280 +135,263 @@
         border-right: none !important;
         border-bottom: none !important;
         max-height: 88vh !important;
-        animation: slideUpModal 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        animation: slideUpFable 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       }
     }
-    @keyframes slideUpModal {
+    @keyframes slideUpFable {
       from { transform: translateY(100%); }
       to { transform: translateY(0); }
     }
   </style>
 </head>
-<body class="p-2 sm:p-4 selection:bg-claude-clayLight selection:text-claude-clayDark">
+<body class="p-2 sm:p-4 selection:bg-fable-coralLight selection:text-fable-coral">
 
-  <!-- Claude Styled Container (iPhone 14 Pro & Desktop Optimized) -->
-  <div class="bg-claude-card border border-claude-border rounded-2xl p-3.5 sm:p-6 claude-shadow max-w-2xl mx-auto transition-all">
+  <!-- Claude Fable 5.1 Container -->
+  <div class="fable-frame rounded-2xl p-3.5 sm:p-6 max-w-2xl mx-auto transition-all">
     
-    <!-- Header Section -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-claude-border pb-3 sm:pb-4 mb-3 sm:mb-4 gap-2.5 sm:gap-3">
-      <div>
-        <div class="flex items-center gap-2 mb-1">
-          <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] sm:text-[11px] font-medium tracking-wide bg-claude-cream text-claude-muted border border-claude-border">
-            <span class="w-1.5 h-1.5 rounded-full bg-claude-clay"></span>
-            01 / Capital Architecture
-          </span>
-          <span class="text-[10px] sm:text-[11px] text-claude-subtle font-mono flex items-center gap-1">
-            <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            Live Radar 2026.09.06
-          </span>
-        </div>
-        <h1 class="font-serif text-lg sm:text-2xl font-normal tracking-tight text-claude-dark">
-          Erebor Portfolio Radar
-        </h1>
-        <p class="text-xs sm:text-[13px] text-claude-muted mt-0.5 font-mono flex flex-wrap items-center gap-1">
-          <span>AUM: <strong class="text-claude-dark font-semibold font-sans">₩24,200,691</strong></span>
-          <span class="text-claude-subtle">|</span>
-          <span>수익률: <strong class="text-claude-olive font-semibold font-sans">+57.93%</strong> (+₩8.87M)</span>
-        </p>
-      </div>
+    <!-- Fable 5.1 Hero Header -->
+    <div class="border-b border-fable-border pb-3.5 sm:pb-4 mb-3.5 sm:mb-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3">
+        <div>
+          <!-- Prehead & Date in Anthropic style -->
+          <div class="flex items-center gap-2 mb-1.5">
+            <span class="text-[10px] font-mono tracking-widest uppercase text-fable-subtle flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-fable-coral"></span>
+              SEPTEMBER 2026 // CAPITAL ARCHITECTURE
+            </span>
+            <span class="text-fable-border">|</span>
+            <span class="text-[10px] font-mono tracking-wide text-fable-matcha font-medium flex items-center gap-1">
+              <span class="inline-block w-1.5 h-1.5 rounded-full bg-fable-matcha animate-pulse"></span>
+              LIVE DISCIPLINE
+            </span>
+          </div>
 
-      <!-- Action Status Pill -->
-      <div class="self-start sm:self-center flex items-center gap-2">
-        <div class="inline-flex items-center gap-2 bg-claude-ivory border border-claude-border px-2.5 py-1.5 rounded-xl">
-          <div class="w-2 h-2 rounded-full bg-claude-olive animate-pulse shrink-0"></div>
-          <div class="text-left">
-            <div class="text-[9px] uppercase tracking-wider text-claude-subtle font-semibold">Council Action</div>
-            <div class="text-[11px] sm:text-xs font-semibold text-claude-dark whitespace-nowrap">전체 포지션 유지 (Hold)</div>
+          <!-- Editorial Title -->
+          <h1 class="font-serif text-xl sm:text-2xl font-normal tracking-tight text-fable-ink">
+            Erebor Portfolio Radar
+          </h1>
+
+          <!-- Summary Line -->
+          <p class="text-xs sm:text-[13px] text-fable-muted mt-1 font-mono flex flex-wrap items-center gap-1.5">
+            <span>AUM: <strong class="text-fable-ink font-bold font-sans">₩24,200,691</strong></span>
+            <span class="text-fable-subtle">·</span>
+            <span>수익률: <strong class="text-fable-matcha font-bold font-sans">+57.93%</strong> (+₩8,876,628)</span>
+          </p>
+        </div>
+
+        <!-- Action Status Pill (Fable 5.1 Guardrail Badge) -->
+        <div class="self-start sm:self-center">
+          <div class="inline-flex items-center gap-2 bg-fable-cream border border-fable-border px-3 py-1.5 rounded-xl">
+            <div class="w-2 h-2 rounded-full bg-fable-matcha animate-pulse shrink-0"></div>
+            <div class="text-left">
+              <div class="text-[9px] uppercase font-mono tracking-wider text-fable-subtle">Council Action</div>
+              <div class="text-[11px] sm:text-xs font-semibold text-fable-ink whitespace-nowrap">전체 포지션 유지 (Hold)</div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ANTHROPIC HOMEPAGE-INSPIRED UNIFIED EDITORIAL NAVIGATION -->
+    <!-- FABLE & MYTHOS DOTTED-LEADER UNIFIED INDEX NAVIGATOR -->
     <div class="relative mb-4 sm:mb-5 z-20">
-      <div class="flex items-center justify-between bg-claude-ivory/80 border border-claude-border rounded-xl p-1.5 sm:p-2">
+      <div class="bg-fable-cream/80 border border-fable-border rounded-xl p-1.5 sm:p-2 flex items-center justify-between">
         
-        <!-- Dropdown Trigger Button -->
-        <button id="nav-dropdown-btn" onclick="toggleNavMenu()" type="button" class="flex items-center gap-2 text-left group px-2 py-1 rounded-lg hover:bg-white/80 transition-all flex-1 select-none">
-          <span id="nav-current-num" class="font-mono text-[11px] font-bold text-claude-clay bg-claude-clayLight px-2 py-0.5 rounded border border-claude-clay/20 shrink-0">
-            01
-          </span>
-          <div class="flex flex-col min-w-0">
-            <div class="flex items-center gap-1.5">
-              <span id="nav-current-title" class="font-serif text-sm sm:text-base font-semibold text-claude-dark group-hover:text-claude-clay transition-colors truncate">
-                자산 배분 비중
-              </span>
-              <svg id="nav-chevron" class="w-3.5 h-3.5 text-claude-muted transition-transform duration-200 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M6 9l6 6 6-6"/>
-              </svg>
-            </div>
-            <span id="nav-current-sub" class="text-[10px] sm:text-[11px] text-claude-subtle font-sans truncate">
-              포트폴리오 누적 비중 및 6대 자산 카드
-            </span>
+        <!-- Dropdown Trigger Button with Dotted Leader -->
+        <button id="nav-dropdown-btn" onclick="toggleNavMenu()" type="button" class="flex items-center justify-between group px-2 py-1 rounded-lg hover:bg-white/80 transition-all flex-1 select-none min-w-0">
+          <div class="flex items-center min-w-0 flex-1">
+            <span id="nav-current-num" class="font-mono text-xs font-bold text-fable-coral shrink-0">[ 01 ]</span>
+            <span class="index-leader hidden sm:inline-block">....................................................................</span>
+            <span class="mx-1.5 sm:hidden text-fable-faded font-mono">/</span>
+            <span id="nav-current-title" class="font-serif text-sm sm:text-base font-semibold text-fable-ink group-hover:text-fable-coral transition-colors truncate">자산 배분 비중</span>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0 ml-2">
+            <svg id="nav-chevron" class="w-3.5 h-3.5 text-fable-subtle transition-transform duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
           </div>
         </button>
 
         <!-- Quick Stepper Controls (Prev / Next) -->
-        <div class="flex items-center gap-1 shrink-0 ml-2 border-l border-claude-border/80 pl-2">
-          <button onclick="stepTab(-1)" type="button" class="w-7 h-7 rounded-lg bg-white border border-claude-border hover:bg-claude-cream flex items-center justify-center text-claude-dark text-xs font-bold transition-all active:scale-90" title="이전 항목">
+        <div class="flex items-center gap-1 shrink-0 ml-2 border-l border-fable-border pl-2">
+          <button onclick="stepTab(-1)" type="button" class="w-7 h-7 rounded-lg bg-white border border-fable-border hover:bg-fable-cream flex items-center justify-center text-fable-ink text-xs font-bold transition-all active:scale-90" title="이전 항목">
             ‹
           </button>
-          <span id="nav-step-indicator" class="font-mono text-[10px] text-claude-subtle px-1 whitespace-nowrap">
+          <span id="nav-step-indicator" class="font-mono text-[10px] text-fable-subtle px-1 whitespace-nowrap">
             1/5
           </span>
-          <button onclick="stepTab(1)" type="button" class="w-7 h-7 rounded-lg bg-white border border-claude-border hover:bg-claude-cream flex items-center justify-center text-claude-dark text-xs font-bold transition-all active:scale-90" title="다음 항목">
+          <button onclick="stepTab(1)" type="button" class="w-7 h-7 rounded-lg bg-white border border-fable-border hover:bg-fable-cream flex items-center justify-center text-fable-ink text-xs font-bold transition-all active:scale-90" title="다음 항목">
             ›
           </button>
         </div>
 
       </div>
 
-      <!-- Anthropic Consolidated Menu Dropdown List -->
-      <div id="nav-dropdown-menu" class="hidden absolute top-full left-0 right-0 mt-1.5 bg-claude-card border border-claude-border rounded-2xl p-2 claude-shadow z-30 space-y-1 transition-all">
-        <div class="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider text-claude-subtle border-b border-claude-border mb-1 flex justify-between items-center">
-          <span>Erebor Editorial Index</span>
+      <!-- Fable 5.1 Dotted Index Dropdown List -->
+      <div id="nav-dropdown-menu" class="hidden absolute top-full left-0 right-0 mt-1.5 bg-fable-surface border border-fable-border rounded-2xl p-2.5 shadow-lg z-30 space-y-1 transition-all">
+        <div class="px-2 py-1 text-[10px] font-mono uppercase tracking-widest text-fable-subtle border-b border-fable-border mb-1.5 flex justify-between items-center">
+          <span>Table of Contents // Index</span>
           <span>5 Sections</span>
         </div>
 
         <!-- 01 자산 배분 -->
-        <button onclick="selectMenu('alloc')" id="menu-item-alloc" type="button" class="menu-item w-full flex items-center justify-between p-2.5 rounded-xl text-left transition-all bg-claude-ivory border border-claude-border">
-          <div class="flex items-center gap-2.5 min-w-0">
-            <span class="font-mono text-xs font-bold text-claude-clay shrink-0">01</span>
-            <div class="min-w-0">
-              <div class="font-serif text-sm font-semibold text-claude-dark">자산 배분 비중</div>
-              <div class="text-[10px] text-claude-muted truncate">포트폴리오 누적 구성 (주식 92.9% · 현금 7.1%)</div>
-            </div>
-          </div>
-          <span class="menu-check text-xs text-claude-clay font-bold shrink-0 ml-2">✓</span>
+        <button onclick="selectMenu('alloc')" id="menu-item-alloc" type="button" class="menu-item w-full flex items-center justify-between p-2 rounded-xl text-left transition-all bg-fable-ivory border border-fable-border">
+          <span class="font-mono text-xs font-bold text-fable-coral shrink-0">[ 01 ]</span>
+          <span class="index-leader">....................................................................</span>
+          <span class="font-serif text-sm font-semibold text-fable-ink shrink-0 ml-1">자산 배분 비중</span>
+          <span class="menu-check text-xs text-fable-coral font-bold shrink-0 ml-2">✓</span>
         </button>
 
         <!-- 02 다차원 레이더 -->
-        <button onclick="selectMenu('radar')" id="menu-item-radar" type="button" class="menu-item w-full flex items-center justify-between p-2.5 rounded-xl text-left transition-all hover:bg-claude-ivory/60 border border-transparent">
-          <div class="flex items-center gap-2.5 min-w-0">
-            <span class="font-mono text-xs font-semibold text-claude-muted shrink-0">02</span>
-            <div class="min-w-0">
-              <div class="font-serif text-sm font-normal text-claude-dark">다차원 레이더</div>
-              <div class="text-[10px] text-claude-muted truncate">5대 자본배치 역량 스파이더 레이더 차트</div>
-            </div>
-          </div>
-          <span class="menu-check text-xs text-claude-clay font-bold shrink-0 ml-2 hidden">✓</span>
+        <button onclick="selectMenu('radar')" id="menu-item-radar" type="button" class="menu-item w-full flex items-center justify-between p-2 rounded-xl text-left transition-all hover:bg-fable-ivory/80 border border-transparent">
+          <span class="font-mono text-xs text-fable-subtle shrink-0">[ 02 ]</span>
+          <span class="index-leader">....................................................................</span>
+          <span class="font-serif text-sm font-normal text-fable-ink shrink-0 ml-1">다차원 레이더</span>
+          <span class="menu-check text-xs text-fable-coral font-bold shrink-0 ml-2 hidden">✓</span>
         </button>
 
         <!-- 03 안전마진 채널 -->
-        <button onclick="selectMenu('range')" id="menu-item-range" type="button" class="menu-item w-full flex items-center justify-between p-2.5 rounded-xl text-left transition-all hover:bg-claude-ivory/60 border border-transparent">
-          <div class="flex items-center gap-2.5 min-w-0">
-            <span class="font-mono text-xs font-semibold text-claude-muted shrink-0">03</span>
-            <div class="min-w-0">
-              <div class="font-serif text-sm font-normal text-claude-dark">안전마진 채널</div>
-              <div class="text-[10px] text-claude-muted truncate">보유 5종목 손익구간 · 관망 3종목 진입대기선</div>
-            </div>
-          </div>
-          <span class="menu-check text-xs text-claude-clay font-bold shrink-0 ml-2 hidden">✓</span>
+        <button onclick="selectMenu('range')" id="menu-item-range" type="button" class="menu-item w-full flex items-center justify-between p-2 rounded-xl text-left transition-all hover:bg-fable-ivory/80 border border-transparent">
+          <span class="font-mono text-xs text-fable-subtle shrink-0">[ 03 ]</span>
+          <span class="index-leader">....................................................................</span>
+          <span class="font-serif text-sm font-normal text-fable-ink shrink-0 ml-1">안전마진 채널</span>
+          <span class="menu-check text-xs text-fable-coral font-bold shrink-0 ml-2 hidden">✓</span>
         </button>
 
         <!-- 04 재배치 시뮬레이터 -->
-        <button onclick="selectMenu('sim')" id="menu-item-sim" type="button" class="menu-item w-full flex items-center justify-between p-2.5 rounded-xl text-left transition-all hover:bg-claude-ivory/60 border border-transparent">
-          <div class="flex items-center gap-2.5 min-w-0">
-            <span class="font-mono text-xs font-semibold text-claude-muted shrink-0">04</span>
-            <div class="min-w-0">
-              <div class="font-serif text-sm font-normal text-claude-dark">재배치 시뮬레이터</div>
-              <div class="text-[10px] text-claude-muted truncate">SK하이닉스 분할 익절 & CMA 요새 실시간 슬라이더</div>
-            </div>
-          </div>
-          <span class="menu-check text-xs text-claude-clay font-bold shrink-0 ml-2 hidden">✓</span>
+        <button onclick="selectMenu('sim')" id="menu-item-sim" type="button" class="menu-item w-full flex items-center justify-between p-2 rounded-xl text-left transition-all hover:bg-fable-ivory/80 border border-transparent">
+          <span class="font-mono text-xs text-fable-subtle shrink-0">[ 04 ]</span>
+          <span class="index-leader">....................................................................</span>
+          <span class="font-serif text-sm font-normal text-fable-ink shrink-0 ml-1">재배치 시뮬레이터</span>
+          <span class="menu-check text-xs text-fable-coral font-bold shrink-0 ml-2 hidden">✓</span>
         </button>
 
         <!-- 05 수익률 분석 -->
-        <button onclick="selectMenu('pnl')" id="menu-item-pnl" type="button" class="menu-item w-full flex items-center justify-between p-2.5 rounded-xl text-left transition-all hover:bg-claude-ivory/60 border border-transparent">
-          <div class="flex items-center gap-2.5 min-w-0">
-            <span class="font-mono text-xs font-semibold text-claude-muted shrink-0">05</span>
-            <div class="min-w-0">
-              <div class="font-serif text-sm font-normal text-claude-dark">수익률 분석</div>
-              <div class="text-[10px] text-claude-muted truncate">종목별 누적 손익 및 포트폴리오 초과수익 기여도</div>
-            </div>
-          </div>
-          <span class="menu-check text-xs text-claude-clay font-bold shrink-0 ml-2 hidden">✓</span>
+        <button onclick="selectMenu('pnl')" id="menu-item-pnl" type="button" class="menu-item w-full flex items-center justify-between p-2 rounded-xl text-left transition-all hover:bg-fable-ivory/80 border border-transparent">
+          <span class="font-mono text-xs text-fable-subtle shrink-0">[ 05 ]</span>
+          <span class="index-leader">....................................................................</span>
+          <span class="font-serif text-sm font-normal text-fable-ink shrink-0 ml-1">수익률 분석</span>
+          <span class="menu-check text-xs text-fable-coral font-bold shrink-0 ml-2 hidden">✓</span>
         </button>
       </div>
     </div>
 
-    <!-- TAB 1: 자산 배분 비중 (Claude Clean Stack & Tactile Mobile Cards) -->
+    <!-- TAB 1: 자산 배분 비중 (Claude Fable Benchmark Card Style) -->
     <div id="view-alloc" class="tab-view block space-y-3.5 sm:space-y-4">
-      <!-- 20-block Horizontal Asset Bar -->
-      <div class="bg-claude-ivory p-3 sm:p-3.5 rounded-xl border border-claude-border">
-        <div class="flex items-center justify-between text-xs mb-2">
-          <span class="font-medium text-claude-dark text-[11px] sm:text-xs">자산 배분 비중 (100.0%)</span>
-          <span class="text-[10px] sm:text-[11px] text-claude-muted">터치 시 상세 분석 팝업</span>
+      <!-- 20-block Horizontal Asset Bar Frame -->
+      <div class="bg-fable-surface p-3 sm:p-4 rounded-xl border border-fable-border">
+        <div class="flex items-center justify-between text-xs mb-2.5">
+          <span class="font-bold text-fable-ink text-[11px] sm:text-xs">자산 배분 비중 (100.0%)</span>
+          <span class="text-[10px] font-mono text-fable-subtle">[ 터치 시 심층 분석 팝업 ]</span>
         </div>
-        <div class="flex h-4 w-full rounded-lg overflow-hidden border border-claude-borderDark/40 p-0.5 bg-white shadow-inner gap-0.5">
+        <div class="flex h-4 w-full rounded-lg overflow-hidden border border-fable-border p-0.5 bg-fable-cream shadow-inner gap-0.5">
           <div style="width: 61.3%; background: #D97757;" class="rounded-sm transition-all hover:opacity-90 active:opacity-75 cursor-pointer" onclick="openStockModal('000660')" title="SK하이닉스 (61.3%)"></div>
           <div style="width: 14.8%; background: #6A9BCC;" class="rounded-sm transition-all hover:opacity-90 active:opacity-75 cursor-pointer" onclick="openStockModal('267260')" title="HD현대일렉트릭 (14.8%)"></div>
           <div style="width: 10.0%; background: #788C5D;" class="rounded-sm transition-all hover:opacity-90 active:opacity-75 cursor-pointer" onclick="openStockModal('105560')" title="KB금융 (10.0%)"></div>
           <div style="width: 4.6%; background: #87867F;" class="rounded-sm transition-all hover:opacity-90 active:opacity-75 cursor-pointer" onclick="openStockModal('034020')" title="두산에너빌리티 (4.6%)"></div>
           <div style="width: 2.4%; background: #C46686;" class="rounded-sm transition-all hover:opacity-90 active:opacity-75 cursor-pointer" onclick="selectMenu('range')" title="알테오젠 (2.4%)"></div>
-          <div style="width: 7.1%; background: #211F1C;" class="rounded-sm transition-all hover:opacity-90 active:opacity-75 cursor-pointer" onclick="selectMenu('sim')" title="CMA 요새 (7.1%)"></div>
+          <div style="width: 7.1%; background: #141413;" class="rounded-sm transition-all hover:opacity-90 active:opacity-75 cursor-pointer" onclick="selectMenu('sim')" title="CMA 요새 (7.1%)"></div>
         </div>
-        <div class="flex justify-between items-center text-[10px] sm:text-[11px] text-claude-subtle mt-2 font-mono">
-          <span>주식 자산: 92.9% (₩22.48M)</span>
-          <span>현금 요새: 7.1% (₩1.71M)</span>
+        <div class="flex justify-between items-center text-[10px] sm:text-[11px] text-fable-subtle mt-2.5 font-mono">
+          <span>주식 자산: 92.9% (₩22,486,800)</span>
+          <span>현금 요새: 7.1% (₩1,713,891)</span>
         </div>
       </div>
 
-      <!-- Asset Grid Cards (Touch Optimized with active feedback) -->
+      <!-- Asset Grid Cards (Fable & Mythos Paper Cards) -->
       <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-2.5">
         <!-- SK하이닉스 -->
-        <div onclick="openStockModal('000660')" class="group p-2.5 sm:p-3 rounded-xl border border-claude-border bg-claude-ivory/50 hover:bg-claude-ivory active:scale-[0.98] transition-all cursor-pointer">
-          <div class="flex items-center justify-between mb-1">
-            <span class="text-xs font-bold text-claude-dark flex items-center gap-1.5 truncate">
-              <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background: #D97757;"></span>
+        <div onclick="openStockModal('000660')" class="group p-3 rounded-xl border border-fable-border bg-fable-surface hover:border-fable-coral/60 active:scale-[0.98] transition-all cursor-pointer">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-xs font-bold text-fable-ink flex items-center gap-1.5 truncate">
+              <span class="w-2.5 h-2.5 rounded-sm shrink-0" style="background: #D97757;"></span>
               SK하이닉스
             </span>
-            <span class="text-[9px] font-mono text-claude-clay font-bold bg-claude-clayLight px-1.5 py-0.5 rounded">61.3%</span>
+            <span class="text-[9px] font-mono text-fable-coral font-bold bg-fable-coralLight px-1.5 py-0.5 rounded">61.3%</span>
           </div>
-          <div class="text-xs sm:text-sm font-serif text-claude-dark font-medium whitespace-nowrap">₩14,823,000</div>
-          <div class="text-[10px] sm:text-[11px] text-claude-olive font-medium mt-0.5 font-mono flex items-center justify-between">
+          <div class="text-xs sm:text-sm font-serif text-fable-ink font-medium whitespace-nowrap">₩14,823,000</div>
+          <div class="text-[10px] sm:text-[11px] text-fable-matcha font-medium mt-0.5 font-mono flex items-center justify-between">
             <span>+138.80%</span>
-            <span class="text-[9px] text-claude-subtle group-hover:text-claude-clay">상세 ➔</span>
+            <span class="text-[9px] text-fable-subtle group-hover:text-fable-coral">상세 ➔</span>
           </div>
         </div>
 
         <!-- HD현대일렉트릭 -->
-        <div onclick="openStockModal('267260')" class="group p-2.5 sm:p-3 rounded-xl border border-claude-border bg-claude-ivory/50 hover:bg-claude-ivory active:scale-[0.98] transition-all cursor-pointer">
-          <div class="flex items-center justify-between mb-1">
-            <span class="text-xs font-bold text-claude-dark flex items-center gap-1.5 truncate">
-              <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background: #6A9BCC;"></span>
+        <div onclick="openStockModal('267260')" class="group p-3 rounded-xl border border-fable-border bg-fable-surface hover:border-fable-cloud/60 active:scale-[0.98] transition-all cursor-pointer">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-xs font-bold text-fable-ink flex items-center gap-1.5 truncate">
+              <span class="w-2.5 h-2.5 rounded-sm shrink-0" style="background: #6A9BCC;"></span>
               HD현대일렉
             </span>
-            <span class="text-[9px] font-mono text-blue-700 font-bold bg-blue-50 px-1.5 py-0.5 rounded">14.8%</span>
+            <span class="text-[9px] font-mono text-blue-700 font-bold bg-fable-cloudLight px-1.5 py-0.5 rounded">14.8%</span>
           </div>
-          <div class="text-xs sm:text-sm font-serif text-claude-dark font-medium whitespace-nowrap">₩3,570,000</div>
+          <div class="text-xs sm:text-sm font-serif text-fable-ink font-medium whitespace-nowrap">₩3,570,000</div>
           <div class="text-[10px] sm:text-[11px] text-blue-600 font-medium mt-0.5 font-mono flex items-center justify-between">
             <span>-4.80%</span>
-            <span class="text-[9px] text-claude-subtle group-hover:text-blue-500">상세 ➔</span>
+            <span class="text-[9px] text-fable-subtle group-hover:text-blue-500">상세 ➔</span>
           </div>
         </div>
 
         <!-- KB금융 -->
-        <div onclick="openStockModal('105560')" class="group p-2.5 sm:p-3 rounded-xl border border-claude-border bg-claude-ivory/50 hover:bg-claude-ivory active:scale-[0.98] transition-all cursor-pointer">
-          <div class="flex items-center justify-between mb-1">
-            <span class="text-xs font-bold text-claude-dark flex items-center gap-1.5 truncate">
-              <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background: #788C5D;"></span>
+        <div onclick="openStockModal('105560')" class="group p-3 rounded-xl border border-fable-border bg-fable-surface hover:border-fable-matcha/60 active:scale-[0.98] transition-all cursor-pointer">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-xs font-bold text-fable-ink flex items-center gap-1.5 truncate">
+              <span class="w-2.5 h-2.5 rounded-sm shrink-0" style="background: #788C5D;"></span>
               KB금융
             </span>
-            <span class="text-[9px] font-mono text-emerald-800 font-bold bg-emerald-50 px-1.5 py-0.5 rounded">10.0%</span>
+            <span class="text-[9px] font-mono text-emerald-800 font-bold bg-fable-matchaLight px-1.5 py-0.5 rounded">10.0%</span>
           </div>
-          <div class="text-xs sm:text-sm font-serif text-claude-dark font-medium whitespace-nowrap">₩2,408,000</div>
-          <div class="text-[10px] sm:text-[11px] text-claude-olive font-medium mt-0.5 font-mono flex items-center justify-between">
+          <div class="text-xs sm:text-sm font-serif text-fable-ink font-medium whitespace-nowrap">₩2,408,000</div>
+          <div class="text-[10px] sm:text-[11px] text-fable-matcha font-medium mt-0.5 font-mono flex items-center justify-between">
             <span>+26.64%</span>
-            <span class="text-[9px] text-claude-subtle group-hover:text-emerald-700">상세 ➔</span>
+            <span class="text-[9px] text-fable-subtle group-hover:text-emerald-700">상세 ➔</span>
           </div>
         </div>
 
         <!-- 두산에너빌리티 -->
-        <div onclick="openStockModal('034020')" class="group p-2.5 sm:p-3 rounded-xl border border-claude-border bg-claude-ivory/50 hover:bg-claude-ivory active:scale-[0.98] transition-all cursor-pointer">
-          <div class="flex items-center justify-between mb-1">
-            <span class="text-xs font-bold text-claude-dark flex items-center gap-1.5 truncate">
-              <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background: #87867F;"></span>
+        <div onclick="openStockModal('034020')" class="group p-3 rounded-xl border border-fable-border bg-fable-surface hover:border-fable-slate active:scale-[0.98] transition-all cursor-pointer">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-xs font-bold text-fable-ink flex items-center gap-1.5 truncate">
+              <span class="w-2.5 h-2.5 rounded-sm shrink-0" style="background: #87867F;"></span>
               두산에너빌
             </span>
             <span class="text-[9px] font-mono text-stone-700 font-bold bg-stone-100 px-1.5 py-0.5 rounded">4.6%</span>
           </div>
-          <div class="text-xs sm:text-sm font-serif text-claude-dark font-medium whitespace-nowrap">₩1,108,800</div>
-          <div class="text-[10px] sm:text-[11px] text-claude-muted font-medium mt-0.5 font-mono flex items-center justify-between">
+          <div class="text-xs sm:text-sm font-serif text-fable-ink font-medium whitespace-nowrap">₩1,108,800</div>
+          <div class="text-[10px] sm:text-[11px] text-fable-muted font-medium mt-0.5 font-mono flex items-center justify-between">
             <span>-0.79%</span>
-            <span class="text-[9px] text-claude-subtle group-hover:text-stone-700">상세 ➔</span>
+            <span class="text-[9px] text-fable-subtle group-hover:text-stone-700">상세 ➔</span>
           </div>
         </div>
 
         <!-- 알테오젠 -->
-        <div onclick="openStockModal('196170')" class="group p-2.5 sm:p-3 rounded-xl border border-claude-border bg-claude-ivory/50 hover:bg-claude-ivory active:scale-[0.98] transition-all cursor-pointer">
-          <div class="flex items-center justify-between mb-1">
-            <span class="text-xs font-bold text-claude-dark flex items-center gap-1.5 truncate">
-              <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background: #C46686;"></span>
+        <div onclick="openStockModal('196170')" class="group p-3 rounded-xl border border-fable-border bg-fable-surface hover:border-fable-heather active:scale-[0.98] transition-all cursor-pointer">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-xs font-bold text-fable-ink flex items-center gap-1.5 truncate">
+              <span class="w-2.5 h-2.5 rounded-sm shrink-0" style="background: #C46686;"></span>
               알테오젠
             </span>
-            <span class="text-[9px] font-mono text-pink-700 font-bold bg-pink-50 px-1.5 py-0.5 rounded">2.4%</span>
+            <span class="text-[9px] font-mono text-pink-700 font-bold bg-fable-heatherLight px-1.5 py-0.5 rounded">2.4%</span>
           </div>
-          <div class="text-xs sm:text-sm font-serif text-claude-dark font-medium whitespace-nowrap">₩577,000</div>
+          <div class="text-xs sm:text-sm font-serif text-fable-ink font-medium whitespace-nowrap">₩577,000</div>
           <div class="text-[10px] sm:text-[11px] text-pink-700 font-medium mt-0.5 font-mono flex items-center justify-between">
             <span>-8.99%</span>
-            <span class="text-[9px] text-claude-subtle group-hover:text-pink-600">상세 ➔</span>
+            <span class="text-[9px] text-fable-subtle group-hover:text-pink-600">상세 ➔</span>
           </div>
         </div>
 
         <!-- The Fortress (CMA) -->
-        <div onclick="selectMenu('sim')" class="group p-2.5 sm:p-3 rounded-xl border border-claude-border bg-claude-ivory/50 hover:bg-claude-ivory active:scale-[0.98] transition-all cursor-pointer">
-          <div class="flex items-center justify-between mb-1">
-            <span class="text-xs font-bold text-claude-dark flex items-center gap-1.5 truncate">
-              <span class="w-2.5 h-2.5 rounded-full bg-claude-dark shrink-0"></span>
+        <div onclick="selectMenu('sim')" class="group p-3 rounded-xl border border-fable-border bg-fable-surface hover:border-fable-ink active:scale-[0.98] transition-all cursor-pointer">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-xs font-bold text-fable-ink flex items-center gap-1.5 truncate">
+              <span class="w-2.5 h-2.5 rounded-sm bg-fable-ink shrink-0"></span>
               CMA 요새
             </span>
-            <span class="text-[9px] font-mono text-claude-dark font-bold bg-stone-200 px-1.5 py-0.5 rounded">7.1%</span>
+            <span class="text-[9px] font-mono text-fable-ink font-bold bg-fable-cream px-1.5 py-0.5 rounded border border-fable-border">7.1%</span>
           </div>
-          <div class="text-xs sm:text-sm font-serif text-claude-dark font-medium whitespace-nowrap">₩1,713,891</div>
-          <div class="text-[10px] sm:text-[11px] text-claude-subtle font-medium mt-0.5 font-mono flex items-center justify-between">
-            <span>현금 보존</span>
-            <span class="text-[9px] text-claude-subtle group-hover:text-claude-dark">시뮬 ➔</span>
+          <div class="text-xs sm:text-sm font-serif text-fable-ink font-medium whitespace-nowrap">₩1,713,891</div>
+          <div class="text-[10px] sm:text-[11px] text-fable-subtle font-medium mt-0.5 font-mono flex items-center justify-between">
+            <span>현금 방어</span>
+            <span class="text-[9px] text-fable-subtle group-hover:text-fable-ink">시뮬 ➔</span>
           </div>
         </div>
       </div>
@@ -400,49 +399,49 @@
 
     <!-- TAB 2: 다차원 레이더 (5대 핵심 지표 다각형 스파이더 차트) -->
     <div id="view-radar" class="tab-view hidden space-y-3.5 sm:space-y-4">
-      <div class="p-3 bg-claude-ivory rounded-xl border border-claude-border text-xs flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1.5">
+      <div class="p-3 bg-fable-surface rounded-xl border border-fable-border text-xs flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1.5">
         <div>
-          <span class="font-bold text-claude-dark">5대 자본배치 역량 다차원 레이더</span>
-          <p class="text-[10px] sm:text-[11px] text-claude-muted mt-0.5">해자 · 안전마진 · 촉매 모멘텀 · 주주환원 · 포트 기여도</p>
+          <span class="font-bold text-fable-ink">5대 자본배치 역량 다차원 레이더</span>
+          <p class="text-[10px] sm:text-[11px] text-fable-muted mt-0.5 font-mono">MOAT · MARGIN OF SAFETY · CATALYST · SHAREHOLDER RETURN · IMPACT</p>
         </div>
-        <span class="text-[10px] font-mono text-claude-subtle bg-white px-2 py-0.5 rounded border border-claude-border">10점 척도</span>
+        <span class="text-[10px] font-mono text-fable-subtle bg-fable-cream px-2 py-0.5 rounded border border-fable-border">10.0 SCALE</span>
       </div>
 
-      <!-- Radar Selector Chips (Touch-friendly swipable row on mobile) -->
-      <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 text-xs">
-        <button onclick="setRadarStock('ALL')" id="chip-ALL" class="radar-chip px-3 py-1.5 rounded-lg border border-claude-dark bg-claude-dark text-white font-medium text-[11px] shrink-0 transition-all active:scale-[0.97]">
+      <!-- Radar Selector Chips -->
+      <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 text-xs font-mono">
+        <button onclick="setRadarStock('ALL')" id="chip-ALL" class="radar-chip px-3 py-1.5 rounded-lg border border-fable-ink bg-fable-ink text-white font-medium text-[11px] shrink-0 transition-all active:scale-[0.97]">
           종합 오버레이
         </button>
-        <button onclick="setRadarStock('000660')" id="chip-000660" class="radar-chip px-3 py-1.5 rounded-lg border border-claude-border bg-white text-claude-muted font-medium text-[11px] shrink-0 hover:border-claude-clay transition-all active:scale-[0.97]">
+        <button onclick="setRadarStock('000660')" id="chip-000660" class="radar-chip px-3 py-1.5 rounded-lg border border-fable-border bg-white text-fable-muted font-medium text-[11px] shrink-0 hover:border-fable-coral transition-all active:scale-[0.97]">
           SK하이닉스
         </button>
-        <button onclick="setRadarStock('267260')" id="chip-267260" class="radar-chip px-3 py-1.5 rounded-lg border border-claude-border bg-white text-claude-muted font-medium text-[11px] shrink-0 hover:border-blue-400 transition-all active:scale-[0.97]">
+        <button onclick="setRadarStock('267260')" id="chip-267260" class="radar-chip px-3 py-1.5 rounded-lg border border-fable-border bg-white text-fable-muted font-medium text-[11px] shrink-0 hover:border-fable-cloud transition-all active:scale-[0.97]">
           HD현대일렉
         </button>
-        <button onclick="setRadarStock('105560')" id="chip-105560" class="radar-chip px-3 py-1.5 rounded-lg border border-claude-border bg-white text-claude-muted font-medium text-[11px] shrink-0 hover:border-emerald-500 transition-all active:scale-[0.97]">
+        <button onclick="setRadarStock('105560')" id="chip-105560" class="radar-chip px-3 py-1.5 rounded-lg border border-fable-border bg-white text-fable-muted font-medium text-[11px] shrink-0 hover:border-fable-matcha transition-all active:scale-[0.97]">
           KB금융
         </button>
-        <button onclick="setRadarStock('034020')" id="chip-034020" class="radar-chip px-3 py-1.5 rounded-lg border border-claude-border bg-white text-claude-muted font-medium text-[11px] shrink-0 hover:border-stone-400 transition-all active:scale-[0.97]">
+        <button onclick="setRadarStock('034020')" id="chip-034020" class="radar-chip px-3 py-1.5 rounded-lg border border-fable-border bg-white text-fable-muted font-medium text-[11px] shrink-0 hover:border-fable-slate transition-all active:scale-[0.97]">
           두산에너빌리티
         </button>
-        <button onclick="setRadarStock('196170')" id="chip-196170" class="radar-chip px-3 py-1.5 rounded-lg border border-claude-border bg-white text-claude-muted font-medium text-[11px] shrink-0 hover:border-pink-400 transition-all active:scale-[0.97]">
+        <button onclick="setRadarStock('196170')" id="chip-196170" class="radar-chip px-3 py-1.5 rounded-lg border border-fable-border bg-white text-fable-muted font-medium text-[11px] shrink-0 hover:border-fable-heather transition-all active:scale-[0.97]">
           알테오젠
         </button>
       </div>
 
       <!-- Radar Canvas / SVG Container -->
-      <div class="bg-claude-ivory/60 p-2.5 sm:p-4 rounded-2xl border border-claude-border flex flex-col items-center justify-center relative">
+      <div class="bg-fable-surface p-3 sm:p-4 rounded-2xl border border-fable-border flex flex-col items-center justify-center relative">
         <svg id="radar-svg" viewBox="0 0 340 320" class="w-full max-w-[310px] sm:max-w-[340px] h-auto overflow-visible select-none">
           <!-- Background Grid & Polygons dynamically rendered by JS -->
         </svg>
 
         <!-- Dynamic Stock Radar Info Panel -->
-        <div id="radar-info-box" class="w-full mt-2.5 sm:mt-3 p-3 bg-white rounded-xl border border-claude-border text-xs">
+        <div id="radar-info-box" class="w-full mt-3 p-3 bg-fable-cream/60 rounded-xl border border-fable-border text-xs">
           <div class="flex items-center justify-between mb-1">
-            <span id="radar-info-name" class="font-bold text-claude-dark text-[11px] sm:text-xs truncate">Erebor 포트폴리오 가중 평균 지표</span>
-            <span id="radar-info-score" class="font-mono font-bold text-claude-clay text-[11px] sm:text-xs shrink-0 ml-1">종합 8.6 / 10.0</span>
+            <span id="radar-info-name" class="font-bold text-fable-ink text-[11px] sm:text-xs truncate">Erebor 포트폴리오 가중 평균 지표</span>
+            <span id="radar-info-score" class="font-mono font-bold text-fable-coral text-[11px] sm:text-xs shrink-0 ml-1">종합 8.6 / 10.0</span>
           </div>
-          <p id="radar-info-desc" class="text-[10px] sm:text-[11px] text-claude-muted leading-relaxed">
+          <p id="radar-info-desc" class="text-[10px] sm:text-[11px] text-fable-muted leading-relaxed">
             SK하이닉스의 압도적 해자 및 이익 모멘텀이 전체 포트폴리오를 견인하며, KB금융의 극대화된 주주환원(자사주 소각·배당)이 방어벽을 형성하고 있습니다.
           </p>
         </div>
@@ -451,112 +450,112 @@
 
     <!-- TAB 3: 안전마진 & 가격 위치 채널 (보유 5종목 + 관망 3종목) -->
     <div id="view-range" class="tab-view hidden space-y-3.5 sm:space-y-4">
-      <div class="flex items-center justify-between border-b border-claude-border pb-2">
-        <div class="flex items-center gap-1.5 sm:gap-2">
-          <button onclick="switchRangeSubtab('holdings')" id="subtab-holdings" class="text-[11px] sm:text-xs font-bold px-2.5 py-1.5 rounded-lg bg-claude-dark text-white transition-all active:scale-[0.97]">
-            보유 5종목 (손익 구간)
+      <div class="flex items-center justify-between border-b border-fable-border pb-2">
+        <div class="flex items-center gap-1.5 sm:gap-2 font-mono">
+          <button onclick="switchRangeSubtab('holdings')" id="subtab-holdings" class="text-[11px] sm:text-xs font-bold px-2.5 py-1.5 rounded-lg bg-fable-ink text-white transition-all active:scale-[0.97]">
+            보유 5종목 (채널)
           </button>
-          <button onclick="switchRangeSubtab('watchlist')" id="subtab-watchlist" class="text-[11px] sm:text-xs font-medium px-2.5 py-1.5 rounded-lg text-claude-muted hover:bg-claude-cream transition-all active:scale-[0.97]">
-            관망 3종목 (진입 대기선)
+          <button onclick="switchRangeSubtab('watchlist')" id="subtab-watchlist" class="text-[11px] sm:text-xs font-medium px-2.5 py-1.5 rounded-lg text-fable-subtle hover:bg-fable-cream transition-all active:scale-[0.97]">
+            관망 3종목 (진입선)
           </button>
         </div>
-        <span class="text-[9px] sm:text-[10px] text-claude-subtle font-mono">0% ~ 100%</span>
+        <span class="text-[9px] sm:text-[10px] text-fable-subtle font-mono">MARGIN [ 0% ~ 100% ]</span>
       </div>
 
       <!-- Subtab 1: Holdings (5 stocks) -->
       <div id="range-holdings" class="space-y-2.5 sm:space-y-3 pt-1 text-xs">
         <!-- SK하이닉스 -->
-        <div onclick="openStockModal('000660')" class="p-3 rounded-xl border border-claude-border bg-white space-y-1.5 hover:border-claude-clay/60 active:scale-[0.99] transition-all cursor-pointer">
+        <div onclick="openStockModal('000660')" class="p-3 rounded-xl border border-fable-border bg-fable-surface space-y-1.5 hover:border-fable-coral active:scale-[0.99] transition-all cursor-pointer">
           <div class="flex justify-between items-center">
-            <span class="font-bold text-claude-dark flex items-center gap-1.5 truncate">
-              <span class="w-2 h-2 rounded-full shrink-0" style="background: #D97757;"></span>
+            <span class="font-bold text-fable-ink flex items-center gap-1.5 truncate">
+              <span class="w-2.5 h-2.5 rounded-sm shrink-0" style="background: #D97757;"></span>
               SK하이닉스 (164.7만)
             </span>
-            <span class="font-mono text-[10px] sm:text-[11px] font-semibold text-claude-clay bg-claude-clayLight px-2 py-0.5 rounded whitespace-nowrap">목표가 +21.4%</span>
+            <span class="font-mono text-[10px] sm:text-[11px] font-semibold text-fable-coral bg-fable-coralLight px-2 py-0.5 rounded whitespace-nowrap">목표가 +21.4%</span>
           </div>
-          <div class="relative w-full bg-claude-cream h-2.5 rounded-full overflow-hidden">
-            <div class="h-2.5 rounded-full bg-claude-clay" style="width: 32.1%;"></div>
+          <div class="relative w-full bg-fable-cream h-2.5 rounded-full overflow-hidden border border-fable-border/60">
+            <div class="h-2.5 rounded-full bg-fable-coral" style="width: 32.1%;"></div>
           </div>
-          <div class="flex justify-between text-[10px] sm:text-[11px] font-mono text-claude-subtle">
+          <div class="flex justify-between text-[10px] sm:text-[11px] font-mono text-fable-subtle">
             <span>손절 148만</span>
-            <span class="font-bold text-claude-dark">현재 164.7만</span>
+            <span class="font-bold text-fable-ink">현재 164.7만</span>
             <span>1차 200만</span>
           </div>
         </div>
 
         <!-- HD현대일렉트릭 -->
-        <div onclick="openStockModal('267260')" class="p-3 rounded-xl border border-amber-200 bg-amber-50/30 space-y-1.5 hover:border-amber-400 active:scale-[0.99] transition-all cursor-pointer">
+        <div onclick="openStockModal('267260')" class="p-3 rounded-xl border border-amber-200 bg-amber-50/20 space-y-1.5 hover:border-amber-400 active:scale-[0.99] transition-all cursor-pointer">
           <div class="flex justify-between items-center">
-            <span class="font-bold text-claude-dark flex items-center gap-1.5 truncate">
-              <span class="w-2 h-2 rounded-full shrink-0" style="background: #6A9BCC;"></span>
+            <span class="font-bold text-fable-ink flex items-center gap-1.5 truncate">
+              <span class="w-2.5 h-2.5 rounded-sm shrink-0" style="background: #6A9BCC;"></span>
               HD현대일렉 (71.4만)
-              <span class="text-[9px] font-bold text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded">경계</span>
+              <span class="text-[9px] font-mono font-bold text-amber-800 bg-amber-100 px-1.5 py-0.5 rounded">WARNING</span>
             </span>
-            <span class="font-mono text-[10px] sm:text-[11px] font-semibold text-amber-800 whitespace-nowrap">손절 대비 +3.5%</span>
+            <span class="font-mono text-[10px] sm:text-[11px] font-semibold text-amber-800 whitespace-nowrap">손절선 대비 +3.5%</span>
           </div>
-          <div class="relative w-full bg-claude-cream h-2.5 rounded-full overflow-hidden">
-            <div class="h-2.5 rounded-full bg-blue-500" style="width: 18.5%;"></div>
+          <div class="relative w-full bg-fable-cream h-2.5 rounded-full overflow-hidden border border-fable-border/60">
+            <div class="h-2.5 rounded-full bg-fable-cloud" style="width: 18.5%;"></div>
           </div>
-          <div class="flex justify-between text-[10px] sm:text-[11px] font-mono text-claude-subtle">
+          <div class="flex justify-between text-[10px] sm:text-[11px] font-mono text-fable-subtle">
             <span class="text-amber-800 font-bold">손절 69만</span>
-            <span class="font-bold text-claude-dark">현재 71.4만</span>
+            <span class="font-bold text-fable-ink">현재 71.4만</span>
             <span>1차 82만</span>
           </div>
         </div>
 
         <!-- KB금융 -->
-        <div onclick="openStockModal('105560')" class="p-3 rounded-xl border border-claude-border bg-white space-y-1.5 hover:border-emerald-500/60 active:scale-[0.99] transition-all cursor-pointer">
+        <div onclick="openStockModal('105560')" class="p-3 rounded-xl border border-fable-border bg-fable-surface space-y-1.5 hover:border-fable-matcha active:scale-[0.99] transition-all cursor-pointer">
           <div class="flex justify-between items-center">
-            <span class="font-bold text-claude-dark flex items-center gap-1.5 truncate">
-              <span class="w-2 h-2 rounded-full shrink-0" style="background: #788C5D;"></span>
+            <span class="font-bold text-fable-ink flex items-center gap-1.5 truncate">
+              <span class="w-2.5 h-2.5 rounded-sm shrink-0" style="background: #788C5D;"></span>
               KB금융 (17.2만)
             </span>
-            <span class="font-mono text-[10px] sm:text-[11px] font-semibold text-claude-olive bg-claude-oliveLight px-2 py-0.5 rounded whitespace-nowrap">목표가 +13.4%</span>
+            <span class="font-mono text-[10px] sm:text-[11px] font-semibold text-fable-matcha bg-fable-matchaLight px-2 py-0.5 rounded whitespace-nowrap">목표가 +13.4%</span>
           </div>
-          <div class="relative w-full bg-claude-cream h-2.5 rounded-full overflow-hidden">
-            <div class="h-2.5 rounded-full bg-claude-olive" style="width: 42.5%;"></div>
+          <div class="relative w-full bg-fable-cream h-2.5 rounded-full overflow-hidden border border-fable-border/60">
+            <div class="h-2.5 rounded-full bg-fable-matcha" style="width: 42.5%;"></div>
           </div>
-          <div class="flex justify-between text-[10px] sm:text-[11px] font-mono text-claude-subtle">
+          <div class="flex justify-between text-[10px] sm:text-[11px] font-mono text-fable-subtle">
             <span>손절 15.5만</span>
-            <span class="font-bold text-claude-dark">현재 17.2만</span>
+            <span class="font-bold text-fable-ink">현재 17.2만</span>
             <span>1차 19.5만</span>
           </div>
         </div>
 
         <!-- 두산에너빌리티 -->
-        <div onclick="openStockModal('034020')" class="p-3 rounded-xl border border-claude-border bg-white space-y-1.5 hover:border-stone-400 active:scale-[0.99] transition-all cursor-pointer">
+        <div onclick="openStockModal('034020')" class="p-3 rounded-xl border border-fable-border bg-fable-surface space-y-1.5 hover:border-fable-slate active:scale-[0.99] transition-all cursor-pointer">
           <div class="flex justify-between items-center">
-            <span class="font-bold text-claude-dark flex items-center gap-1.5 truncate">
-              <span class="w-2 h-2 rounded-full shrink-0" style="background: #87867F;"></span>
+            <span class="font-bold text-fable-ink flex items-center gap-1.5 truncate">
+              <span class="w-2.5 h-2.5 rounded-sm shrink-0" style="background: #87867F;"></span>
               두산에너빌리티 (7.92만)
             </span>
             <span class="font-mono text-[10px] sm:text-[11px] font-semibold text-stone-700 bg-stone-100 px-2 py-0.5 rounded whitespace-nowrap">목표가 +32.6%</span>
           </div>
-          <div class="relative w-full bg-claude-cream h-2.5 rounded-full overflow-hidden">
-            <div class="h-2.5 rounded-full bg-stone-500" style="width: 21.8%;"></div>
+          <div class="relative w-full bg-fable-cream h-2.5 rounded-full overflow-hidden border border-fable-border/60">
+            <div class="h-2.5 rounded-full bg-fable-slate" style="width: 21.8%;"></div>
           </div>
-          <div class="flex justify-between text-[10px] sm:text-[11px] font-mono text-claude-subtle">
+          <div class="flex justify-between text-[10px] sm:text-[11px] font-mono text-fable-subtle">
             <span>손절 7.2만</span>
-            <span class="font-bold text-claude-dark">현재 7.92만</span>
+            <span class="font-bold text-fable-ink">현재 7.92만</span>
             <span>1차 10.5만</span>
           </div>
         </div>
 
         <!-- 알테오젠 -->
-        <div onclick="openStockModal('196170')" class="p-3 rounded-xl border border-claude-border bg-white space-y-1.5 hover:border-pink-400 active:scale-[0.99] transition-all cursor-pointer">
+        <div onclick="openStockModal('196170')" class="p-3 rounded-xl border border-fable-border bg-fable-surface space-y-1.5 hover:border-fable-heather active:scale-[0.99] transition-all cursor-pointer">
           <div class="flex justify-between items-center">
-            <span class="font-bold text-claude-dark flex items-center gap-1.5 truncate">
-              <span class="w-2 h-2 rounded-full shrink-0" style="background: #C46686;"></span>
+            <span class="font-bold text-fable-ink flex items-center gap-1.5 truncate">
+              <span class="w-2.5 h-2.5 rounded-sm shrink-0" style="background: #C46686;"></span>
               알테오젠 (28.85만)
             </span>
-            <span class="font-mono text-[10px] sm:text-[11px] font-semibold text-pink-700 bg-pink-50 px-2 py-0.5 rounded whitespace-nowrap">목표가 +31.7%</span>
+            <span class="font-mono text-[10px] sm:text-[11px] font-semibold text-pink-700 bg-fable-heatherLight px-2 py-0.5 rounded whitespace-nowrap">목표가 +31.7%</span>
           </div>
-          <div class="relative w-full bg-claude-cream h-2.5 rounded-full overflow-hidden">
-            <div class="h-2.5 rounded-full bg-pink-500" style="width: 20.4%;"></div>
+          <div class="relative w-full bg-fable-cream h-2.5 rounded-full overflow-hidden border border-fable-border/60">
+            <div class="h-2.5 rounded-full bg-fable-heather" style="width: 20.4%;"></div>
           </div>
-          <div class="flex justify-between text-[10px] sm:text-[11px] font-mono text-claude-subtle">
+          <div class="flex justify-between text-[10px] sm:text-[11px] font-mono text-fable-subtle">
             <span>손절 26.5만</span>
-            <span class="font-bold text-claude-dark">현재 28.85만</span>
+            <span class="font-bold text-fable-ink">현재 28.85만</span>
             <span>1차 38만</span>
           </div>
         </div>
@@ -565,48 +564,48 @@
       <!-- Subtab 2: Watchlist (3 stocks) -->
       <div id="range-watchlist" class="hidden space-y-2.5 sm:space-y-3 pt-1 text-xs">
         <!-- 한화에어로스페이스 -->
-        <div class="p-3 rounded-xl border border-claude-border bg-white space-y-1.5">
+        <div class="p-3 rounded-xl border border-fable-border bg-fable-surface space-y-1.5">
           <div class="flex justify-between items-center">
-            <span class="font-bold text-claude-dark truncate">한화에어로 (135만)</span>
-            <span class="font-mono text-[10px] sm:text-[11px] font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded whitespace-nowrap">진입선 +5.5% [근접]</span>
+            <span class="font-bold text-fable-ink truncate">한화에어로 (135만)</span>
+            <span class="font-mono text-[10px] sm:text-[11px] font-semibold text-amber-800 bg-amber-100 px-2 py-0.5 rounded whitespace-nowrap">진입선 +5.5% [근접]</span>
           </div>
-          <div class="relative w-full bg-claude-cream h-2.5 rounded-full overflow-hidden">
-            <div class="h-2.5 rounded-full bg-amber-500" style="width: 82%;"></div>
+          <div class="relative w-full bg-fable-cream h-2.5 rounded-full overflow-hidden border border-fable-border/60">
+            <div class="h-2.5 rounded-full bg-fable-amber" style="width: 82%;"></div>
           </div>
-          <div class="flex justify-between text-[10px] sm:text-[11px] font-mono text-claude-subtle">
-            <span class="text-claude-dark font-semibold">진입목표 128만</span>
+          <div class="flex justify-between text-[10px] sm:text-[11px] font-mono text-fable-subtle">
+            <span class="text-fable-ink font-semibold">진입목표 128만</span>
             <span>현재 135만</span>
             <span>1차목표 155만</span>
           </div>
         </div>
 
         <!-- 삼양식품 -->
-        <div class="p-3 rounded-xl border border-claude-border bg-white space-y-1.5">
+        <div class="p-3 rounded-xl border border-fable-border bg-fable-surface space-y-1.5">
           <div class="flex justify-between items-center">
-            <span class="font-bold text-claude-dark truncate">삼양식품 (141.7만)</span>
-            <span class="font-mono text-[10px] sm:text-[11px] font-semibold text-stone-600 bg-stone-100 px-2 py-0.5 rounded whitespace-nowrap">진입선 +9.0% [관망]</span>
+            <span class="font-bold text-fable-ink truncate">삼양식품 (141.7만)</span>
+            <span class="font-mono text-[10px] sm:text-[11px] font-semibold text-stone-700 bg-stone-100 px-2 py-0.5 rounded whitespace-nowrap">진입선 +9.0% [관망]</span>
           </div>
-          <div class="relative w-full bg-claude-cream h-2.5 rounded-full overflow-hidden">
-            <div class="h-2.5 rounded-full bg-stone-500" style="width: 72%;"></div>
+          <div class="relative w-full bg-fable-cream h-2.5 rounded-full overflow-hidden border border-fable-border/60">
+            <div class="h-2.5 rounded-full bg-fable-slate" style="width: 72%;"></div>
           </div>
-          <div class="flex justify-between text-[10px] sm:text-[11px] font-mono text-claude-subtle">
-            <span class="text-claude-dark font-semibold">진입목표 130만</span>
+          <div class="flex justify-between text-[10px] sm:text-[11px] font-mono text-fable-subtle">
+            <span class="text-fable-ink font-semibold">진입목표 130만</span>
             <span>현재 141.7만</span>
             <span>1차목표 185만</span>
           </div>
         </div>
 
         <!-- 클래시스 -->
-        <div class="p-3 rounded-xl border border-claude-border bg-white space-y-1.5">
+        <div class="p-3 rounded-xl border border-fable-border bg-fable-surface space-y-1.5">
           <div class="flex justify-between items-center">
-            <span class="font-bold text-claude-dark truncate">클래시스 (5.2만)</span>
-            <span class="font-mono text-[10px] sm:text-[11px] font-semibold text-stone-600 bg-stone-100 px-2 py-0.5 rounded whitespace-nowrap">진입선 +6.1% [관망]</span>
+            <span class="font-bold text-fable-ink truncate">클래시스 (5.2만)</span>
+            <span class="font-mono text-[10px] sm:text-[11px] font-semibold text-stone-700 bg-stone-100 px-2 py-0.5 rounded whitespace-nowrap">진입선 +6.1% [관망]</span>
           </div>
-          <div class="relative w-full bg-claude-cream h-2.5 rounded-full overflow-hidden">
-            <div class="h-2.5 rounded-full bg-blue-400" style="width: 78%;"></div>
+          <div class="relative w-full bg-fable-cream h-2.5 rounded-full overflow-hidden border border-fable-border/60">
+            <div class="h-2.5 rounded-full bg-fable-cloud" style="width: 78%;"></div>
           </div>
-          <div class="flex justify-between text-[10px] sm:text-[11px] font-mono text-claude-subtle">
-            <span class="text-claude-dark font-semibold">진입목표 4.9만</span>
+          <div class="flex justify-between text-[10px] sm:text-[11px] font-mono text-fable-subtle">
+            <span class="text-fable-ink font-semibold">진입목표 4.9만</span>
             <span>현재 5.2만</span>
             <span>1차목표 6.2만</span>
           </div>
@@ -614,45 +613,45 @@
       </div>
     </div>
 
-    <!-- TAB 4: CMA 재배치 시뮬레이터 (실시간 대화형 슬라이더 엔진) -->
+    <!-- TAB 4: CMA 재배치 시뮬레이터 (Fable & Mythos Interactive Lab) -->
     <div id="view-sim" class="tab-view hidden space-y-3.5 sm:space-y-4 text-xs">
-      <div class="p-3.5 sm:p-4 bg-claude-ivory rounded-2xl border border-claude-border space-y-3 sm:space-y-4">
+      <div class="p-3.5 sm:p-4 bg-fable-cream/80 rounded-2xl border border-fable-border space-y-3 sm:space-y-4">
         
-        <div class="flex items-center justify-between border-b border-claude-border pb-2.5">
+        <div class="flex items-center justify-between border-b border-fable-border pb-2.5">
           <div>
-            <h3 class="font-serif text-sm sm:text-base text-claude-dark font-medium">자본 재배치 & 요새 시뮬레이터</h3>
-            <p class="text-[10px] sm:text-[11px] text-claude-muted mt-0.5">슬라이더를 밀어 요새 방어력을 실시간 검증하세요</p>
+            <h3 class="font-serif text-sm sm:text-base text-fable-ink font-medium">자본 재배치 & 요새 시뮬레이터</h3>
+            <p class="text-[10px] sm:text-[11px] text-fable-muted mt-0.5 font-mono">SIMULATION ENGINE: CASH FORTRESS REBALANCING</p>
           </div>
-          <button onclick="resetSim()" class="text-[11px] font-mono px-2.5 py-1.5 rounded-lg border border-claude-border hover:bg-white text-claude-muted active:scale-[0.96]">
+          <button onclick="resetSim()" class="text-[11px] font-mono px-2.5 py-1.5 rounded-lg border border-fable-border hover:bg-white text-fable-muted active:scale-[0.96]">
             초기화
           </button>
         </div>
 
         <!-- Interactive Sliders -->
-        <div class="space-y-3 bg-white p-3 sm:p-3.5 rounded-xl border border-claude-border">
+        <div class="space-y-3 bg-fable-surface p-3 sm:p-3.5 rounded-xl border border-fable-border">
           <!-- Slider 1: SK하이닉스 매도 수량 -->
           <div class="space-y-1.5">
             <div class="flex justify-between items-center">
-              <span class="font-medium text-claude-dark text-[11px] sm:text-xs">SK하이닉스 익절 수량 (보유 9주)</span>
-              <span id="sim-shares-val" class="font-mono font-bold text-claude-clay text-sm">2주</span>
+              <span class="font-medium text-fable-ink text-[11px] sm:text-xs">SK하이닉스 익절 수량 (보유 9주)</span>
+              <span id="sim-shares-val" class="font-mono font-bold text-fable-coral text-sm">2주</span>
             </div>
             <input id="slider-shares" type="range" min="0" max="9" step="1" value="2" oninput="runSimulation()" class="w-full">
-            <div class="flex justify-between text-[9px] sm:text-[10px] text-claude-subtle font-mono pt-0.5">
-              <span>0주 (유지)</span>
-              <span>2주 (의결안)</span>
-              <span>5주 (대규모)</span>
-              <span>9주 (청산)</span>
+            <div class="flex justify-between text-[9px] sm:text-[10px] text-fable-subtle font-mono pt-0.5">
+              <span>[ 0주 ]</span>
+              <span>[ 2주 의결 ]</span>
+              <span>[ 5주 대규모 ]</span>
+              <span>[ 9주 청산 ]</span>
             </div>
           </div>
 
           <!-- Slider 2: 매도 목표 단가 -->
-          <div class="space-y-1.5 pt-1.5 border-t border-stone-100">
+          <div class="space-y-1.5 pt-1.5 border-t border-fable-cream">
             <div class="flex justify-between items-center">
-              <span class="font-medium text-claude-dark text-[11px] sm:text-xs">1차 매도 집행 단가</span>
-              <span id="sim-price-val" class="font-mono font-bold text-claude-clay text-sm">₩2,000,000</span>
+              <span class="font-medium text-fable-ink text-[11px] sm:text-xs">1차 매도 집행 단가</span>
+              <span id="sim-price-val" class="font-mono font-bold text-fable-coral text-sm">₩2,000,000</span>
             </div>
             <input id="slider-price" type="range" min="1640000" max="2400000" step="20000" value="2000000" oninput="runSimulation()" class="w-full">
-            <div class="flex justify-between text-[9px] sm:text-[10px] text-claude-subtle font-mono pt-0.5">
+            <div class="flex justify-between text-[9px] sm:text-[10px] text-fable-subtle font-mono pt-0.5">
               <span>현재 164.7만</span>
               <span>1차 200만</span>
               <span>2차 240만</span>
@@ -662,184 +661,185 @@
 
         <!-- Dynamic Results Summary Card -->
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 font-mono">
-          <div class="bg-white p-2.5 rounded-xl border border-claude-border">
-            <div class="text-[9px] sm:text-[10px] text-claude-subtle font-sans">실현 확보 현금</div>
-            <div id="sim-cash-gen" class="text-xs sm:text-sm font-bold text-claude-dark mt-0.5 whitespace-nowrap">+₩4,000,000</div>
+          <div class="bg-fable-surface p-2.5 rounded-xl border border-fable-border">
+            <div class="text-[9px] sm:text-[10px] text-fable-subtle font-sans">실현 확보 현금</div>
+            <div id="sim-cash-gen" class="text-xs sm:text-sm font-bold text-fable-ink mt-0.5 whitespace-nowrap">+₩4,000,000</div>
           </div>
-          <div class="bg-white p-2.5 rounded-xl border border-claude-border">
-            <div class="text-[9px] sm:text-[10px] text-claude-subtle font-sans">실현 확정 손익</div>
-            <div id="sim-profit-gen" class="text-xs sm:text-sm font-bold text-claude-olive mt-0.5 whitespace-nowrap">+₩2,620,624</div>
+          <div class="bg-fable-surface p-2.5 rounded-xl border border-fable-border">
+            <div class="text-[9px] sm:text-[10px] text-fable-subtle font-sans">실현 확정 손익</div>
+            <div id="sim-profit-gen" class="text-xs sm:text-sm font-bold text-fable-matcha mt-0.5 whitespace-nowrap">+₩2,620,624</div>
           </div>
-          <div class="bg-white p-2.5 rounded-xl border border-claude-border col-span-2 sm:col-span-1">
-            <div class="text-[9px] sm:text-[10px] text-claude-subtle font-sans">하이닉스 잔여 비중</div>
-            <div id="sim-hynix-weight" class="text-xs sm:text-sm font-bold text-claude-clay mt-0.5 whitespace-nowrap">47.6% (7주)</div>
+          <div class="bg-fable-surface p-2.5 rounded-xl border border-fable-border col-span-2 sm:col-span-1">
+            <div class="text-[9px] sm:text-[10px] text-fable-subtle font-sans">하이닉스 잔여 비중</div>
+            <div id="sim-hynix-weight" class="text-xs sm:text-sm font-bold text-fable-coral mt-0.5 whitespace-nowrap">47.6% (7주)</div>
           </div>
         </div>
 
         <!-- Before & After Gauge Bars -->
         <div class="space-y-2.5 font-mono pt-1">
           <!-- Before Bar -->
-          <div class="bg-white p-2.5 sm:p-3 rounded-xl border border-claude-border space-y-1">
+          <div class="bg-fable-surface p-2.5 sm:p-3 rounded-xl border border-fable-border space-y-1">
             <div class="flex justify-between text-[11px] sm:text-xs">
-              <span class="font-sans font-medium text-claude-dark">현재 현금 요새 (CMA)</span>
-              <span class="font-bold text-claude-dark">7.1% (₩1,713,891)</span>
+              <span class="font-sans font-medium text-fable-ink">현재 현금 요새 (CMA)</span>
+              <span class="font-bold text-fable-ink">7.1% (₩1,713,891)</span>
             </div>
-            <div class="w-full bg-claude-cream h-2.5 rounded-full overflow-hidden">
-              <div class="h-2.5 rounded-full bg-stone-400" style="width: 7.1%;"></div>
+            <div class="w-full bg-fable-cream h-2.5 rounded-full overflow-hidden border border-fable-border/60">
+              <div class="h-2.5 rounded-full bg-fable-slate" style="width: 7.1%;"></div>
             </div>
-            <div class="text-[9px] sm:text-[10px] text-claude-subtle font-sans">현금 탄약 결핍 상태 (추가 매수 여력 부족)</div>
+            <div class="text-[9px] sm:text-[10px] text-fable-subtle font-sans">현금 탄약 결핍 상태 (추가 매수 여력 부족)</div>
           </div>
 
           <!-- Dynamic After Bar -->
-          <div class="bg-claude-oliveLight/40 p-2.5 sm:p-3 rounded-xl border border-claude-olive/30 space-y-1">
+          <div class="bg-fable-matchaLight/60 p-2.5 sm:p-3 rounded-xl border border-fable-matcha/40 space-y-1">
             <div class="flex justify-between text-[11px] sm:text-xs">
-              <span class="font-sans font-bold text-claude-olive">재배치 후 예상 현금 요새</span>
-              <span id="sim-cma-bar-val" class="font-bold text-claude-olive">23.6% (₩5,713,891)</span>
+              <span class="font-sans font-bold text-fable-matcha">재배치 후 예상 현금 요새</span>
+              <span id="sim-cma-bar-val" class="font-bold text-fable-matcha">23.6% (₩5,713,891)</span>
             </div>
-            <div class="w-full bg-claude-cream h-2.5 rounded-full overflow-hidden">
-              <div id="sim-cma-bar" class="h-2.5 rounded-full bg-claude-olive transition-all duration-300" style="width: 23.6%;"></div>
+            <div class="w-full bg-fable-cream h-2.5 rounded-full overflow-hidden border border-fable-border/60">
+              <div id="sim-cma-bar" class="h-2.5 rounded-full bg-fable-matcha transition-all duration-300" style="width: 23.6%;"></div>
             </div>
-            <div id="sim-conclusion-badge" class="text-[9px] sm:text-[10px] text-claude-olive font-sans font-medium">
+            <div id="sim-conclusion-badge" class="text-[9px] sm:text-[10px] text-fable-matcha font-sans font-medium">
               ★ 요새 구축 성공: 관망 3사(한화에어로·삼양식품·클래시스) 눌림목 1차 매수 탄약 완비
             </div>
           </div>
         </div>
 
         <!-- Strategic Discipline Notice -->
-        <div class="p-2.5 sm:p-3 bg-white rounded-xl border border-claude-border text-claude-muted text-[10px] sm:text-[11px] leading-relaxed">
-          <strong class="text-claude-dark">Erebor 운용 규율:</strong> 2주 분할 익절만으로도 하이닉스 편중을 40%대로 경감하고 <strong class="text-claude-dark">CMA 방어력 23.6%</strong>를 확보할 수 있습니다.
+        <div class="p-2.5 sm:p-3 bg-fable-surface rounded-xl border border-fable-border text-fable-muted text-[10px] sm:text-[11px] leading-relaxed">
+          <strong class="text-fable-ink">Erebor 운용 규율:</strong> 2주 분할 익절만으로도 하이닉스 편중을 40%대로 경감하고 <strong class="text-fable-ink">CMA 방어력 23.6%</strong>를 확보할 수 있습니다.
         </div>
 
       </div>
     </div>
 
-    <!-- TAB 5: 수익률 & 손익 분석 -->
+    <!-- TAB 5: 수익률 & 손익 분석 (Fable Benchmark Result Bars) -->
     <div id="view-pnl" class="tab-view hidden space-y-2.5 sm:space-y-3">
-      <div class="p-2.5 sm:p-3 bg-claude-ivory rounded-xl border border-claude-border text-xs text-claude-muted flex justify-between items-center">
-        <span class="text-[11px] sm:text-xs">종목별 손익 및 초과수익 기여도</span>
-        <span class="font-mono font-semibold text-claude-dark text-[11px] sm:text-xs">+₩8,876,628</span>
+      <div class="p-2.5 sm:p-3 bg-fable-surface rounded-xl border border-fable-border text-xs text-fable-muted flex justify-between items-center">
+        <span class="text-[11px] sm:text-xs font-mono uppercase">Cumulative P&L // Excess Return</span>
+        <span class="font-mono font-bold text-fable-ink text-[11px] sm:text-xs">+₩8,876,628</span>
       </div>
 
-      <div class="space-y-2 pt-1 text-xs">
+      <div class="space-y-2 pt-1 text-xs font-mono">
         <!-- SK하이닉스 -->
-        <div onclick="openStockModal('000660')" class="p-2.5 rounded-xl border border-claude-border/80 bg-white hover:border-claude-clay/60 active:scale-[0.99] transition-all cursor-pointer">
+        <div onclick="openStockModal('000660')" class="p-2.5 rounded-xl border border-fable-border bg-fable-surface hover:border-fable-coral active:scale-[0.99] transition-all cursor-pointer">
           <div class="flex justify-between mb-1">
-            <span class="font-bold text-claude-dark text-[11px] sm:text-xs truncate">SK하이닉스 (000660)</span>
-            <span class="font-mono font-bold text-claude-clay text-[11px] sm:text-xs whitespace-nowrap">+138.80% (+₩8.61M)</span>
+            <span class="font-bold text-fable-ink text-[11px] sm:text-xs truncate font-sans">SK하이닉스 (000660)</span>
+            <span class="font-bold text-fable-coral text-[11px] sm:text-xs whitespace-nowrap">+138.80% (+₩8.61M)</span>
           </div>
-          <div class="w-full bg-claude-cream rounded-full h-2 overflow-hidden">
-            <div class="h-2.5 rounded-full" style="width: 100%; background: #D97757;"></div>
+          <div class="w-full bg-fable-cream rounded-full h-2 overflow-hidden border border-fable-border/40">
+            <div class="h-2 rounded-full" style="width: 100%; background: #D97757;"></div>
           </div>
         </div>
 
         <!-- 포트폴리오 종합 -->
-        <div class="p-2.5 rounded-xl border border-claude-border bg-claude-ivory">
+        <div class="p-2.5 rounded-xl border border-fable-border bg-fable-cream/50">
           <div class="flex justify-between mb-1">
-            <span class="font-bold text-claude-dark text-[11px] sm:text-xs truncate">포트폴리오 종합 (Total AUM)</span>
-            <span class="font-mono font-bold text-claude-olive text-[11px] sm:text-xs whitespace-nowrap">+57.93% (+₩8.87M)</span>
+            <span class="font-bold text-fable-ink text-[11px] sm:text-xs truncate font-sans">포트폴리오 종합 (Total AUM)</span>
+            <span class="font-bold text-fable-matcha text-[11px] sm:text-xs whitespace-nowrap">+57.93% (+₩8.87M)</span>
           </div>
-          <div class="w-full bg-claude-cream rounded-full h-2 overflow-hidden">
-            <div class="h-2.5 rounded-full" style="width: 41.7%; background: #211F1C;"></div>
+          <div class="w-full bg-fable-cream rounded-full h-2 overflow-hidden border border-fable-border/40">
+            <div class="h-2 rounded-full" style="width: 41.7%; background: #141413;"></div>
           </div>
         </div>
 
         <!-- KB금융 -->
-        <div onclick="openStockModal('105560')" class="p-2.5 rounded-xl border border-claude-border/80 bg-white hover:border-emerald-400 active:scale-[0.99] transition-all cursor-pointer">
+        <div onclick="openStockModal('105560')" class="p-2.5 rounded-xl border border-fable-border bg-fable-surface hover:border-fable-matcha active:scale-[0.99] transition-all cursor-pointer">
           <div class="flex justify-between mb-1">
-            <span class="font-bold text-claude-dark text-[11px] sm:text-xs truncate">KB금융 (105560)</span>
-            <span class="font-mono font-bold text-claude-olive text-[11px] sm:text-xs whitespace-nowrap">+26.64% (+₩507K)</span>
+            <span class="font-bold text-fable-ink text-[11px] sm:text-xs truncate font-sans">KB금융 (105560)</span>
+            <span class="font-bold text-fable-matcha text-[11px] sm:text-xs whitespace-nowrap">+26.64% (+₩507K)</span>
           </div>
-          <div class="w-full bg-claude-cream rounded-full h-2 overflow-hidden">
-            <div class="h-2.5 rounded-full" style="width: 19.2%; background: #788C5D;"></div>
+          <div class="w-full bg-fable-cream rounded-full h-2 overflow-hidden border border-fable-border/40">
+            <div class="h-2 rounded-full" style="width: 19.2%; background: #788C5D;"></div>
           </div>
         </div>
 
         <!-- 두산에너빌리티 -->
-        <div onclick="openStockModal('034020')" class="p-2.5 rounded-xl border border-claude-border/80 bg-white hover:border-stone-400 active:scale-[0.99] transition-all cursor-pointer">
+        <div onclick="openStockModal('034020')" class="p-2.5 rounded-xl border border-fable-border bg-fable-surface hover:border-fable-slate active:scale-[0.99] transition-all cursor-pointer">
           <div class="flex justify-between mb-1">
-            <span class="font-bold text-claude-dark text-[11px] sm:text-xs truncate">두산에너빌리티 (034020)</span>
-            <span class="font-mono font-bold text-claude-muted text-[11px] sm:text-xs whitespace-nowrap">-0.79% (-₩8.8K)</span>
+            <span class="font-bold text-fable-ink text-[11px] sm:text-xs truncate font-sans">두산에너빌리티 (034020)</span>
+            <span class="font-bold text-fable-muted text-[11px] sm:text-xs whitespace-nowrap">-0.79% (-₩8.8K)</span>
           </div>
-          <div class="w-full bg-claude-cream rounded-full h-2 overflow-hidden">
-            <div class="h-2.5 rounded-full" style="width: 2.5%; background: #87867F;"></div>
+          <div class="w-full bg-fable-cream rounded-full h-2 overflow-hidden border border-fable-border/40">
+            <div class="h-2 rounded-full" style="width: 2.5%; background: #87867F;"></div>
           </div>
         </div>
 
         <!-- HD현대일렉트릭 -->
-        <div onclick="openStockModal('267260')" class="p-2.5 rounded-xl border border-claude-border/80 bg-white hover:border-blue-400 active:scale-[0.99] transition-all cursor-pointer">
+        <div onclick="openStockModal('267260')" class="p-2.5 rounded-xl border border-fable-border bg-fable-surface hover:border-fable-cloud active:scale-[0.99] transition-all cursor-pointer">
           <div class="flex justify-between mb-1">
-            <span class="font-bold text-claude-dark text-[11px] sm:text-xs truncate">HD현대일렉트릭 (267260)</span>
-            <span class="font-mono font-bold text-blue-700 text-[11px] sm:text-xs whitespace-nowrap">-4.80% (-₩180K)</span>
+            <span class="font-bold text-fable-ink text-[11px] sm:text-xs truncate font-sans">HD현대일렉트릭 (267260)</span>
+            <span class="font-bold text-blue-700 text-[11px] sm:text-xs whitespace-nowrap">-4.80% (-₩180K)</span>
           </div>
-          <div class="w-full bg-claude-cream rounded-full h-2 overflow-hidden">
-            <div class="h-2.5 rounded-full" style="width: 5%; background: #6A9BCC;"></div>
+          <div class="w-full bg-fable-cream rounded-full h-2 overflow-hidden border border-fable-border/40">
+            <div class="h-2 rounded-full" style="width: 5%; background: #6A9BCC;"></div>
           </div>
         </div>
 
         <!-- 알테오젠 -->
-        <div onclick="openStockModal('196170')" class="p-2.5 rounded-xl border border-claude-border/80 bg-white hover:border-pink-400 active:scale-[0.99] transition-all cursor-pointer">
+        <div onclick="openStockModal('196170')" class="p-2.5 rounded-xl border border-fable-border bg-fable-surface hover:border-fable-heather active:scale-[0.99] transition-all cursor-pointer">
           <div class="flex justify-between mb-1">
-            <span class="font-bold text-claude-dark text-[11px] sm:text-xs truncate">알테오젠 (196170)</span>
-            <span class="font-mono font-bold text-pink-700 text-[11px] sm:text-xs whitespace-nowrap">-8.99% (-₩57K)</span>
+            <span class="font-bold text-fable-ink text-[11px] sm:text-xs truncate font-sans">알테오젠 (196170)</span>
+            <span class="font-bold text-pink-700 text-[11px] sm:text-xs whitespace-nowrap">-8.99% (-₩57K)</span>
           </div>
-          <div class="w-full bg-claude-cream rounded-full h-2 overflow-hidden">
-            <div class="h-2.5 rounded-full" style="width: 7%; background: #C46686;"></div>
+          <div class="w-full bg-fable-cream rounded-full h-2 overflow-hidden border border-fable-border/40">
+            <div class="h-2 rounded-full" style="width: 7%; background: #C46686;"></div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Footer Note -->
-    <div class="mt-4 sm:mt-5 pt-3 border-t border-claude-border flex justify-center items-center text-[10px] sm:text-[11px] text-claude-subtle">
-      <span class="font-serif italic">Erebor Absolute Return Engine</span>
+    <!-- Fable 5.1 Editorial Footer -->
+    <div class="mt-4 sm:mt-5 pt-3 border-t border-fable-border flex justify-between items-center text-[10px] sm:text-[11px] text-fable-subtle font-mono">
+      <span class="font-serif italic text-fable-ink">Erebor Absolute Return Engine</span>
+      <span>[ Fable & Mythos 5.1 Edition ]</span>
     </div>
 
   </div>
 
-  <!-- INTERACTIVE STOCK MODAL (iPhone 14 Pro Bottom Sheet Optimized) -->
-  <dialog id="stock-modal" class="rounded-2xl sm:rounded-2xl p-0 max-w-lg w-full bg-claude-card border border-claude-border claude-shadow outline-none m-auto overflow-hidden">
-    <!-- iOS Bottom Sheet Pull Indicator (Mobile only) -->
-    <div class="pt-2.5 pb-1 sm:hidden flex justify-center bg-claude-card">
-      <div class="w-10 h-1 bg-stone-300 rounded-full"></div>
+  <!-- INTERACTIVE STOCK MODAL (Fable 5.1 Editorial Bottom Sheet) -->
+  <dialog id="stock-modal" class="rounded-2xl p-0 max-w-lg w-full bg-fable-surface border border-fable-border shadow-2xl outline-none m-auto overflow-hidden">
+    <!-- iOS Pull Indicator -->
+    <div class="pt-2.5 pb-1 sm:hidden flex justify-center bg-fable-surface">
+      <div class="w-10 h-1 bg-fable-borderDark rounded-full"></div>
     </div>
 
-    <div class="p-4 sm:p-6 space-y-3.5 sm:space-y-4 max-h-[82vh] overflow-y-auto no-scrollbar">
+    <div class="p-4 sm:p-6 space-y-3.5 sm:space-y-4 max-h-[82vh] overflow-y-auto no-scrollbar bg-fable-surface">
       
       <!-- Modal Header -->
-      <div class="flex items-start justify-between border-b border-claude-border pb-2.5 sm:pb-3">
+      <div class="flex items-start justify-between border-b border-fable-border pb-2.5 sm:pb-3">
         <div>
-          <div class="flex items-center gap-1.5 sm:gap-2 mb-1">
-            <span id="modal-ticker" class="text-[10px] font-mono font-bold bg-claude-cream px-2 py-0.5 rounded text-claude-muted"></span>
+          <div class="flex items-center gap-1.5 sm:gap-2 mb-1 font-mono">
+            <span id="modal-ticker" class="text-[10px] font-bold bg-fable-cream px-2 py-0.5 rounded border border-fable-border text-fable-muted"></span>
             <span id="modal-status" class="text-[10px] font-semibold px-2 py-0.5 rounded"></span>
           </div>
-          <h2 id="modal-name" class="font-serif text-xl sm:text-2xl font-normal text-claude-dark"></h2>
+          <h2 id="modal-name" class="font-serif text-xl sm:text-2xl font-normal text-fable-ink"></h2>
         </div>
-        <button onclick="closeStockModal()" class="w-8 h-8 rounded-full bg-claude-cream hover:bg-claude-border text-claude-dark flex items-center justify-center text-sm font-bold transition-all active:scale-95">
+        <button onclick="closeStockModal()" class="w-8 h-8 rounded-full bg-fable-cream hover:bg-fable-border text-fable-ink flex items-center justify-center text-sm font-bold transition-all active:scale-95">
           ✕
         </button>
       </div>
 
       <!-- Key Metrics Strip -->
-      <div class="grid grid-cols-3 gap-1.5 sm:gap-2 text-xs font-mono bg-claude-ivory p-2.5 sm:p-3 rounded-xl border border-claude-border">
+      <div class="grid grid-cols-3 gap-1.5 sm:gap-2 text-xs font-mono bg-fable-ivory p-2.5 sm:p-3 rounded-xl border border-fable-border">
         <div>
-          <div class="text-[9px] sm:text-[10px] text-claude-subtle font-sans">현재가 / 비중</div>
-          <div id="modal-price" class="font-bold text-claude-dark mt-0.5 text-[11px] sm:text-xs"></div>
+          <div class="text-[9px] sm:text-[10px] text-fable-subtle font-sans">현재가 / 비중</div>
+          <div id="modal-price" class="font-bold text-fable-ink mt-0.5 text-[11px] sm:text-xs"></div>
         </div>
         <div>
-          <div class="text-[9px] sm:text-[10px] text-claude-subtle font-sans">수익률 (손익)</div>
+          <div class="text-[9px] sm:text-[10px] text-fable-subtle font-sans">수익률 (손익)</div>
           <div id="modal-return" class="font-bold mt-0.5 text-[11px] sm:text-xs"></div>
         </div>
         <div>
-          <div class="text-[9px] sm:text-[10px] text-claude-subtle font-sans">경제적 해자</div>
-          <div id="modal-moat" class="font-bold text-claude-dark mt-0.5 text-[11px] sm:text-xs truncate"></div>
+          <div class="text-[9px] sm:text-[10px] text-fable-subtle font-sans">경제적 해자</div>
+          <div id="modal-moat" class="font-bold text-fable-ink mt-0.5 text-[11px] sm:text-xs truncate"></div>
         </div>
       </div>
 
       <!-- Price Target Channel Details -->
-      <div class="p-2.5 sm:p-3 bg-white rounded-xl border border-claude-border space-y-1.5 text-xs">
-        <div class="flex justify-between items-center text-claude-muted text-[10px] sm:text-[11px]">
-          <span>운용 채널 가격선</span>
-          <span id="modal-range-diff" class="font-mono font-semibold text-claude-clay"></span>
+      <div class="p-2.5 sm:p-3 bg-white rounded-xl border border-fable-border space-y-1.5 text-xs">
+        <div class="flex justify-between items-center text-fable-muted text-[10px] sm:text-[11px]">
+          <span class="font-mono uppercase text-[10px]">Price Channel Range</span>
+          <span id="modal-range-diff" class="font-mono font-semibold text-fable-coral"></span>
         </div>
         <div class="grid grid-cols-3 gap-1.5 sm:gap-2 font-mono text-[10px] sm:text-[11px] pt-1">
           <div class="p-2 rounded bg-stone-50 border border-stone-200">
@@ -859,27 +859,27 @@
 
       <!-- Core Investment Thesis -->
       <div class="space-y-1 text-xs">
-        <h4 class="font-semibold text-claude-dark flex items-center gap-1.5 text-[11px] sm:text-xs">
-          <span class="w-1.5 h-1.5 rounded-full bg-claude-clay"></span>
+        <h4 class="font-semibold text-fable-ink flex items-center gap-1.5 text-[11px] sm:text-xs">
+          <span class="w-1.5 h-1.5 rounded-full bg-fable-coral"></span>
           핵심 동업 논거 (Moat Thesis)
         </h4>
-        <p id="modal-thesis" class="text-claude-muted leading-relaxed p-2.5 sm:p-3 bg-claude-ivory/60 rounded-xl border border-claude-border text-[11px] sm:text-[12px]"></p>
+        <p id="modal-thesis" class="text-fable-muted leading-relaxed p-2.5 sm:p-3 bg-fable-ivory rounded-xl border border-fable-border text-[11px] sm:text-[12px]"></p>
       </div>
 
       <!-- Recent DART / News Catalyst -->
       <div class="space-y-1 text-xs">
-        <h4 class="font-semibold text-claude-dark flex items-center gap-1.5 text-[11px] sm:text-xs">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+        <h4 class="font-semibold text-fable-ink flex items-center gap-1.5 text-[11px] sm:text-xs">
+          <span class="w-1.5 h-1.5 rounded-full bg-fable-matcha"></span>
           최근 핵심 공시 & 뉴스 촉매 (Catalyst)
         </h4>
-        <p id="modal-catalyst" class="text-claude-muted leading-relaxed p-2.5 sm:p-3 bg-claude-ivory/60 rounded-xl border border-claude-border text-[11px] sm:text-[12px]"></p>
+        <p id="modal-catalyst" class="text-fable-muted leading-relaxed p-2.5 sm:p-3 bg-fable-ivory rounded-xl border border-fable-border text-[11px] sm:text-[12px]"></p>
       </div>
 
       <!-- Tactical Scenario & Invalidation -->
       <div class="space-y-2 text-xs">
-        <div class="p-2.5 sm:p-3 bg-stone-50 rounded-xl border border-stone-200 space-y-1">
-          <div class="font-bold text-claude-dark text-[10px] sm:text-[11px]">평의회 대응 시나리오</div>
-          <p id="modal-scenario" class="text-claude-muted leading-relaxed text-[10px] sm:text-[11px]"></p>
+        <div class="p-2.5 sm:p-3 bg-fable-cream/60 rounded-xl border border-fable-border space-y-1">
+          <div class="font-bold text-fable-ink text-[10px] sm:text-[11px]">평의회 대응 시나리오</div>
+          <p id="modal-scenario" class="text-fable-muted leading-relaxed text-[10px] sm:text-[11px]"></p>
         </div>
         <div class="p-2.5 sm:p-3 bg-rose-50/40 rounded-xl border border-rose-200/60 space-y-1">
           <div class="font-bold text-rose-800 text-[10px] sm:text-[11px]">투자 아이디어 무효화 조건</div>
@@ -887,13 +887,13 @@
         </div>
       </div>
 
-      <!-- Modal Footer (Safe Area bottom padding for iPhone 14 Pro) -->
-      <div class="pt-3 pb-[calc(0.75rem+var(--sab))] sm:pb-0 border-t border-claude-border flex justify-between items-center text-xs">
-        <a id="modal-notion-link" href="#" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-claude-dark text-white font-medium hover:bg-stone-800 active:scale-95 transition-all text-xs">
+      <!-- Modal Footer -->
+      <div class="pt-3 pb-[calc(0.75rem+var(--sab))] sm:pb-0 border-t border-fable-border flex justify-between items-center text-xs">
+        <a id="modal-notion-link" href="#" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-fable-ink text-white font-medium hover:bg-stone-800 active:scale-95 transition-all text-xs font-mono">
           <span>Notion 리포트 열기</span>
           <span>↗</span>
         </a>
-        <button onclick="closeStockModal()" class="px-3.5 py-2 rounded-xl border border-claude-border text-claude-muted hover:bg-claude-cream active:scale-95 transition-all text-xs">
+        <button onclick="closeStockModal()" class="px-3.5 py-2 rounded-xl border border-fable-border text-fable-muted hover:bg-fable-cream active:scale-95 transition-all text-xs">
           닫기
         </button>
       </div>
@@ -1038,7 +1038,7 @@
     };
 
     // -------------------------------------------------------------
-    // 2. UNIFIED ANTHROPIC NAVIGATION ENGINE
+    // 2. FABLE & MYTHOS 5.1 UNIFIED NAVIGATION ENGINE
     // -------------------------------------------------------------
     const menuConfig = [
       { id: 'alloc', num: '01', title: '자산 배분 비중', sub: '포트폴리오 누적 비중 및 6대 자산 카드' },
@@ -1087,10 +1087,9 @@
       }
       const activeItem = menuConfig[currentTabIndex];
 
-      // 1. Update Navigation Bar display
-      document.getElementById('nav-current-num').innerText = activeItem.num;
+      // 1. Update Navigation Bar display with Fable bracket notation
+      document.getElementById('nav-current-num').innerText = `[ ${activeItem.num} ]`;
       document.getElementById('nav-current-title').innerText = activeItem.title;
-      document.getElementById('nav-current-sub').innerText = activeItem.sub;
       document.getElementById('nav-step-indicator').innerText = `${currentTabIndex + 1}/${menuConfig.length}`;
 
       // 2. Update Dropdown Menu items active state
@@ -1098,24 +1097,24 @@
         const btn = document.getElementById('menu-item-' + item.id);
         const check = btn.querySelector('.menu-check');
         const numSpan = btn.querySelector('.font-mono');
-        const titleDiv = btn.querySelector('.font-serif');
+        const titleSpan = btn.querySelector('.font-serif');
 
         if (item.id === tabId) {
-          btn.classList.add('bg-claude-ivory', 'border-claude-border');
+          btn.classList.add('bg-fable-ivory', 'border-fable-border');
           btn.classList.remove('border-transparent');
           check.classList.remove('hidden');
-          numSpan.classList.add('text-claude-clay');
-          numSpan.classList.remove('text-claude-muted');
-          titleDiv.classList.add('font-semibold');
-          titleDiv.classList.remove('font-normal');
+          numSpan.classList.add('text-fable-coral', 'font-bold');
+          numSpan.classList.remove('text-fable-subtle');
+          titleSpan.classList.add('font-semibold');
+          titleSpan.classList.remove('font-normal');
         } else {
-          btn.classList.remove('bg-claude-ivory', 'border-claude-border');
+          btn.classList.remove('bg-fable-ivory', 'border-fable-border');
           btn.classList.add('border-transparent');
           check.classList.add('hidden');
-          numSpan.classList.remove('text-claude-clay');
-          numSpan.classList.add('text-claude-muted');
-          titleDiv.classList.remove('font-semibold');
-          titleDiv.classList.add('font-normal');
+          numSpan.classList.remove('text-fable-coral', 'font-bold');
+          numSpan.classList.add('text-fable-subtle');
+          titleSpan.classList.remove('font-semibold');
+          titleSpan.classList.add('font-normal');
         }
       });
 
@@ -1147,17 +1146,17 @@
       const wView = document.getElementById('range-watchlist');
 
       if (subtab === 'holdings') {
-        hBtn.classList.add('bg-claude-dark', 'text-white');
-        hBtn.classList.remove('text-claude-muted');
-        wBtn.classList.remove('bg-claude-dark', 'text-white');
-        wBtn.classList.add('text-claude-muted');
+        hBtn.classList.add('bg-fable-ink', 'text-white');
+        hBtn.classList.remove('text-fable-subtle');
+        wBtn.classList.remove('bg-fable-ink', 'text-white');
+        wBtn.classList.add('text-fable-subtle');
         hView.classList.remove('hidden');
         wView.classList.add('hidden');
       } else {
-        wBtn.classList.add('bg-claude-dark', 'text-white');
-        wBtn.classList.remove('text-claude-muted');
-        hBtn.classList.remove('bg-claude-dark', 'text-white');
-        hBtn.classList.add('text-claude-muted');
+        wBtn.classList.add('bg-fable-ink', 'text-white');
+        wBtn.classList.remove('text-fable-subtle');
+        hBtn.classList.remove('bg-fable-ink', 'text-white');
+        hBtn.classList.add('text-fable-subtle');
         wView.classList.remove('hidden');
         hView.classList.add('hidden');
       }
@@ -1178,13 +1177,13 @@
     function setRadarStock(ticker) {
       currentRadarStock = ticker;
       document.querySelectorAll('.radar-chip').forEach(chip => {
-        chip.classList.remove('bg-claude-dark', 'text-white', 'border-claude-dark');
-        chip.classList.add('bg-white', 'text-claude-muted', 'border-claude-border');
+        chip.classList.remove('bg-fable-ink', 'text-white', 'border-fable-ink');
+        chip.classList.add('bg-white', 'text-fable-muted', 'border-fable-border');
       });
       const activeChip = document.getElementById('chip-' + ticker);
       if (activeChip) {
-        activeChip.classList.add('bg-claude-dark', 'text-white', 'border-claude-dark');
-        activeChip.classList.remove('bg-white', 'text-claude-muted', 'border-claude-border');
+        activeChip.classList.add('bg-fable-ink', 'text-white', 'border-fable-ink');
+        activeChip.classList.remove('bg-white', 'text-fable-muted', 'border-fable-border');
       }
       renderRadar();
     }
@@ -1200,7 +1199,7 @@
 
       let html = '';
 
-      // 1. Concentric background web rings
+      // 1. Concentric background web rings (Fable Hairlines)
       levels.forEach(lvl => {
         const r = (lvl / 10) * maxR;
         const pts = radarAxes.map(axis => {
@@ -1208,23 +1207,22 @@
           const y = cy + r * Math.sin(axis.angle);
           return `${x.toFixed(1)},${y.toFixed(1)}`;
         }).join(' ');
-        html += `<polygon points="${pts}" fill="none" stroke="#E8E2D6" stroke-width="${lvl === 10 ? '1.5' : '1'}" stroke-dasharray="${lvl === 10 ? 'none' : '2,2'}" />`;
+        html += `<polygon points="${pts}" fill="none" stroke="#E5E3D8" stroke-width="${lvl === 10 ? '1.5' : '1'}" stroke-dasharray="${lvl === 10 ? 'none' : '3,3'}" />`;
       });
 
       // 2. Axis radiating spokes & Labels
       radarAxes.forEach(axis => {
         const x2 = cx + maxR * Math.cos(axis.angle);
         const y2 = cy + maxR * Math.sin(axis.angle);
-        html += `<line x1="${cx}" y1="${cy}" x2="${x2}" y2="${y2}" stroke="#D5CDBF" stroke-width="1" />`;
+        html += `<line x1="${cx}" y1="${cy}" x2="${x2}" y2="${y2}" stroke="#DCD8CD" stroke-width="1" />`;
 
-        // Text label positioning
         const lx = cx + (maxR + 20) * Math.cos(axis.angle);
         const ly = cy + (maxR + 16) * Math.sin(axis.angle);
         let textAnchor = "middle";
         if (Math.abs(Math.cos(axis.angle)) > 0.3) {
           textAnchor = Math.cos(axis.angle) > 0 ? "start" : "end";
         }
-        html += `<text x="${lx}" y="${ly}" font-family="Plus Jakarta Sans" font-size="11" font-weight="600" fill="#211F1C" text-anchor="${textAnchor}" dominant-baseline="central">${axis.name}</text>`;
+        html += `<text x="${lx}" y="${ly}" font-family="Plus Jakarta Sans" font-size="11" font-weight="600" fill="#141413" text-anchor="${textAnchor}" dominant-baseline="central">${axis.name}</text>`;
       });
 
       // 3. Render Data Polygon(s)
@@ -1266,7 +1264,7 @@
           const r = (avgScores[axis.key] / 10) * maxR;
           const x = cx + r * Math.cos(axis.angle);
           const y = cy + r * Math.sin(axis.angle);
-          html += `<circle cx="${x}" cy="${y}" r="3.5" fill="#211F1C" stroke="#FAF7F2" stroke-width="1.5" />`;
+          html += `<circle cx="${x}" cy="${y}" r="3.5" fill="#141413" stroke="#FAF9F5" stroke-width="1.5" />`;
         });
 
         document.getElementById('radar-info-name').innerText = "Erebor 포트폴리오 가중 평균 지표";
@@ -1348,10 +1346,10 @@
       const badgeElem = document.getElementById('sim-conclusion-badge');
       if (sellShares === 0) {
         badgeElem.innerText = "현금 비중 7.1% 유지 (요새 탄약 미확보 상태 — 추가 매수 여력 부족)";
-        badgeElem.className = "text-[9px] sm:text-[10px] text-claude-subtle font-sans font-medium";
+        badgeElem.className = "text-[9px] sm:text-[10px] text-fable-subtle font-sans font-medium";
       } else if (sellShares >= 1 && sellShares <= 3) {
         badgeElem.innerText = `★ 요새 구축 성공: 현금 ${simulatedCMAPercent.toFixed(1)}% 확보로 관망 3사 눌림목 매수 탄약 완비`;
-        badgeElem.className = "text-[9px] sm:text-[10px] text-claude-olive font-sans font-medium";
+        badgeElem.className = "text-[9px] sm:text-[10px] text-fable-matcha font-sans font-medium";
       } else {
         badgeElem.innerText = `대규모 현금화: 현금 ${simulatedCMAPercent.toFixed(1)}% 확보 완료 (하이닉스 비중 ${simulatedHynixPercent.toFixed(1)}%로 안정 분산)`;
         badgeElem.className = "text-[9px] sm:text-[10px] text-blue-700 font-sans font-medium";
@@ -1372,7 +1370,7 @@
       if (!stk) return;
 
       document.getElementById('modal-name').innerText = stk.name;
-      document.getElementById('modal-ticker').innerText = stk.ticker;
+      document.getElementById('modal-ticker').innerText = `[ ${stk.ticker} ]`;
       
       const statusBadge = document.getElementById('modal-status');
       statusBadge.innerText = stk.status;
@@ -1383,7 +1381,7 @@
       const returnElem = document.getElementById('modal-return');
       const sign = stk.pnlRate >= 0 ? '+' : '';
       returnElem.innerText = `${sign}${stk.pnlRate}% (${sign}₩${stk.pnlAmount.toLocaleString()})`;
-      returnElem.className = `font-bold mt-0.5 text-[11px] sm:text-xs ${stk.pnlRate >= 0 ? 'text-claude-olive' : 'text-blue-600'}`;
+      returnElem.className = `font-bold mt-0.5 text-[11px] sm:text-xs ${stk.pnlRate >= 0 ? 'text-fable-matcha' : 'text-blue-600'}`;
 
       document.getElementById('modal-moat').innerText = stk.moat;
 
