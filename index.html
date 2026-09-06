@@ -634,9 +634,8 @@
 
         <!-- Strategy Presets (에디토리얼 전략 프리셋) -->
         <div class="space-y-1.5">
-          <div class="text-[10px] font-mono text-fable-subtle uppercase flex items-center justify-between">
+          <div class="text-[10px] font-mono text-fable-subtle uppercase">
             <span>Strategy Presets // 전략 시나리오 원클릭</span>
-            <span id="preset-status-text" class="text-[9px] text-fable-coral font-mono font-medium">🎯 평의회 기본 의결안 적용됨</span>
           </div>
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
             <button onclick="applySimPreset('council')" id="preset-btn-council" class="preset-btn p-2 sm:p-2.5 text-left rounded-xl border border-fable-coral bg-fable-coralLight/60 active:scale-[0.98] transition-all shadow-xs">
@@ -670,32 +669,95 @@
           </div>
         </div>
 
-        <!-- Stock Selector Pills (5대 보유 종목 전환) -->
-        <div class="space-y-1.5">
-          <div class="flex justify-between items-center text-[10px] font-mono text-fable-subtle">
-            <span>Select Target Asset // 조작 종목 선택</span>
-            <span id="sim-active-summary" class="text-fable-ink font-medium">SK하이닉스 조작 중</span>
+        <!-- TABLE OF CONTENTS // INDEX STOCK SELECTOR -->
+        <div class="relative z-20 space-y-1">
+          <div class="text-[10px] font-mono text-fable-subtle uppercase flex items-center justify-between">
+            <span>Table of Contents // 종목 선택</span>
+            <span class="text-[9px] text-fable-faded">터치하여 종목 변경</span>
           </div>
-          <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1 text-xs">
-            <button onclick="selectSimStock('000660')" id="sim-pill-000660" class="sim-pill px-3 py-2 rounded-xl border font-sans font-medium flex items-center gap-1.5 shrink-0 transition-all border-fable-ink bg-fable-ink text-white shadow-sm">
-              <span>SK하이닉스</span>
-              <span id="sim-pill-badge-000660" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-coral text-white font-bold">-2주</span>
+
+          <div class="bg-fable-surface border border-fable-border rounded-xl p-1.5 sm:p-2 flex items-center justify-between shadow-xs">
+            <!-- Dropdown Trigger Button with Dotted Leader -->
+            <button id="sim-stock-dropdown-btn" onclick="toggleSimStockMenu()" type="button" class="flex items-center justify-between group px-2 py-1 rounded-lg hover:bg-fable-ivory transition-all flex-1 select-none min-w-0">
+              <div class="flex items-center min-w-0 flex-1">
+                <span id="sim-stock-current-num" class="font-mono text-xs font-bold text-fable-coral shrink-0">[ 01 ]</span>
+                <span class="index-leader hidden sm:inline-block">....................................................................</span>
+                <span class="mx-1.5 sm:hidden text-fable-faded font-mono">/</span>
+                <span id="sim-stock-current-name" class="font-serif text-sm sm:text-base font-semibold text-fable-ink group-hover:text-fable-coral transition-colors truncate">SK하이닉스</span>
+                <span id="sim-stock-current-weight" class="font-mono text-[10px] text-fable-subtle ml-1.5 shrink-0">(61.25%)</span>
+                <span id="sim-stock-current-badge" class="ml-2 text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-coral text-white font-bold shrink-0">-2주</span>
+              </div>
+              <div class="flex items-center gap-1.5 shrink-0 ml-2">
+                <svg id="sim-stock-chevron" class="w-3.5 h-3.5 text-fable-subtle transition-transform duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 9l6 6 6-6"/>
+                </svg>
+              </div>
             </button>
-            <button onclick="selectSimStock('267260')" id="sim-pill-267260" class="sim-pill px-3 py-2 rounded-xl border font-sans font-medium flex items-center gap-1.5 shrink-0 transition-all border-fable-border bg-fable-surface text-fable-muted hover:bg-fable-cream">
-              <span>HD현대일렉트릭</span>
-              <span id="sim-pill-badge-267260" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-cream text-fable-subtle">0주</span>
+
+            <!-- Quick Stepper Controls (Prev / Next Stock) -->
+            <div class="flex items-center gap-1 shrink-0 ml-2 border-l border-fable-border pl-2">
+              <button onclick="stepSimStock(-1)" type="button" class="w-7 h-7 rounded-lg bg-fable-ivory border border-fable-border hover:bg-white flex items-center justify-center text-fable-ink text-xs font-bold transition-all active:scale-90" title="이전 종목">
+                ‹
+              </button>
+              <span id="sim-stock-step-indicator" class="font-mono text-[10px] text-fable-subtle px-1 whitespace-nowrap">
+                1/5
+              </span>
+              <button onclick="stepSimStock(1)" type="button" class="w-7 h-7 rounded-lg bg-fable-ivory border border-fable-border hover:bg-white flex items-center justify-center text-fable-ink text-xs font-bold transition-all active:scale-90" title="다음 종목">
+                ›
+              </button>
+            </div>
+          </div>
+
+          <!-- Stock Dotted Index Dropdown List -->
+          <div id="sim-stock-dropdown-menu" class="hidden absolute top-full left-0 right-0 mt-1 bg-fable-surface border border-fable-border rounded-2xl p-2.5 shadow-xl z-30 space-y-1 transition-all">
+            <div class="px-2 py-1 text-[10px] font-mono uppercase tracking-widest text-fable-subtle border-b border-fable-border mb-1.5 flex justify-between items-center">
+              <span>Table of Contents // Holdings Index</span>
+              <span>5 Core Holdings</span>
+            </div>
+
+            <!-- 01 SK하이닉스 -->
+            <button onclick="selectSimStockFromMenu('000660')" id="sim-menu-item-000660" type="button" class="sim-stock-menu-item w-full flex items-center justify-between p-2 rounded-xl text-left transition-all bg-fable-ivory border border-fable-border">
+              <span class="font-mono text-xs font-bold text-fable-coral shrink-0">[ 01 ]</span>
+              <span class="index-leader">....................................................................</span>
+              <span class="font-serif text-sm font-semibold text-fable-ink shrink-0 ml-1">SK하이닉스 (61.25%)</span>
+              <span id="sim-menu-badge-000660" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-coral text-white font-bold shrink-0 ml-2">-2주</span>
+              <span id="sim-menu-check-000660" class="text-xs text-fable-coral font-bold shrink-0 ml-1.5">✓</span>
             </button>
-            <button onclick="selectSimStock('105560')" id="sim-pill-105560" class="sim-pill px-3 py-2 rounded-xl border font-sans font-medium flex items-center gap-1.5 shrink-0 transition-all border-fable-border bg-fable-surface text-fable-muted hover:bg-fable-cream">
-              <span>KB금융</span>
-              <span id="sim-pill-badge-105560" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-cream text-fable-subtle">0주</span>
+
+            <!-- 02 HD현대일렉트릭 -->
+            <button onclick="selectSimStockFromMenu('267260')" id="sim-menu-item-267260" type="button" class="sim-stock-menu-item w-full flex items-center justify-between p-2 rounded-xl text-left transition-all hover:bg-fable-ivory/80 border border-transparent">
+              <span class="font-mono text-xs text-fable-subtle shrink-0">[ 02 ]</span>
+              <span class="index-leader">....................................................................</span>
+              <span class="font-serif text-sm font-normal text-fable-ink shrink-0 ml-1">HD현대일렉트릭 (14.75%)</span>
+              <span id="sim-menu-badge-267260" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-cream text-fable-subtle shrink-0 ml-2">0주</span>
+              <span id="sim-menu-check-267260" class="text-xs text-fable-coral font-bold shrink-0 ml-1.5 hidden">✓</span>
             </button>
-            <button onclick="selectSimStock('034020')" id="sim-pill-034020" class="sim-pill px-3 py-2 rounded-xl border font-sans font-medium flex items-center gap-1.5 shrink-0 transition-all border-fable-border bg-fable-surface text-fable-muted hover:bg-fable-cream">
-              <span>두산에너빌리티</span>
-              <span id="sim-pill-badge-034020" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-cream text-fable-subtle">0주</span>
+
+            <!-- 03 KB금융 -->
+            <button onclick="selectSimStockFromMenu('105560')" id="sim-menu-item-105560" type="button" class="sim-stock-menu-item w-full flex items-center justify-between p-2 rounded-xl text-left transition-all hover:bg-fable-ivory/80 border border-transparent">
+              <span class="font-mono text-xs text-fable-subtle shrink-0">[ 03 ]</span>
+              <span class="index-leader">....................................................................</span>
+              <span class="font-serif text-sm font-normal text-fable-ink shrink-0 ml-1">KB금융 (9.95%)</span>
+              <span id="sim-menu-badge-105560" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-cream text-fable-subtle shrink-0 ml-2">0주</span>
+              <span id="sim-menu-check-105560" class="text-xs text-fable-coral font-bold shrink-0 ml-1.5 hidden">✓</span>
             </button>
-            <button onclick="selectSimStock('196170')" id="sim-pill-196170" class="sim-pill px-3 py-2 rounded-xl border font-sans font-medium flex items-center gap-1.5 shrink-0 transition-all border-fable-border bg-fable-surface text-fable-muted hover:bg-fable-cream">
-              <span>알테오젠</span>
-              <span id="sim-pill-badge-196170" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-cream text-fable-subtle">0주</span>
+
+            <!-- 04 두산에너빌리티 -->
+            <button onclick="selectSimStockFromMenu('034020')" id="sim-menu-item-034020" type="button" class="sim-stock-menu-item w-full flex items-center justify-between p-2 rounded-xl text-left transition-all hover:bg-fable-ivory/80 border border-transparent">
+              <span class="font-mono text-xs text-fable-subtle shrink-0">[ 04 ]</span>
+              <span class="index-leader">....................................................................</span>
+              <span class="font-serif text-sm font-normal text-fable-ink shrink-0 ml-1">두산에너빌리티 (4.58%)</span>
+              <span id="sim-menu-badge-034020" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-cream text-fable-subtle shrink-0 ml-2">0주</span>
+              <span id="sim-menu-check-034020" class="text-xs text-fable-coral font-bold shrink-0 ml-1.5 hidden">✓</span>
+            </button>
+
+            <!-- 05 알테오젠 -->
+            <button onclick="selectSimStockFromMenu('196170')" id="sim-menu-item-196170" type="button" class="sim-stock-menu-item w-full flex items-center justify-between p-2 rounded-xl text-left transition-all hover:bg-fable-ivory/80 border border-transparent">
+              <span class="font-mono text-xs text-fable-subtle shrink-0">[ 05 ]</span>
+              <span class="index-leader">....................................................................</span>
+              <span class="font-serif text-sm font-normal text-fable-ink shrink-0 ml-1">알테오젠 (2.38%)</span>
+              <span id="sim-menu-badge-196170" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-cream text-fable-subtle shrink-0 ml-2">0주</span>
+              <span id="sim-menu-check-196170" class="text-xs text-fable-coral font-bold shrink-0 ml-1.5 hidden">✓</span>
             </button>
           </div>
         </div>
@@ -1481,6 +1543,14 @@
 
     // -------------------------------------------------------------
     // 4. MULTI-POSITION REBALANCING & FORTRESS SIMULATOR ENGINE
+    const simStockList = [
+      { ticker: "000660", num: "01", name: "SK하이닉스", weight: "61.25%" },
+      { ticker: "267260", num: "02", name: "HD현대일렉트릭", weight: "14.75%" },
+      { ticker: "105560", num: "03", name: "KB금융", weight: "9.95%" },
+      { ticker: "034020", num: "04", name: "두산에너빌리티", weight: "4.58%" },
+      { ticker: "196170", num: "05", name: "알테오젠", weight: "2.38%" }
+    ];
+
     const simConfig = {
       activeTicker: "000660",
       activePreset: "council",
@@ -1493,12 +1563,44 @@
       }
     };
 
+    function toggleSimStockMenu() {
+      const menu = document.getElementById('sim-stock-dropdown-menu');
+      const chevron = document.getElementById('sim-stock-chevron');
+      if (!menu) return;
+      const isHidden = menu.classList.contains('hidden');
+      if (isHidden) {
+        menu.classList.remove('hidden');
+        if (chevron) chevron.classList.add('rotate-180');
+      } else {
+        menu.classList.add('hidden');
+        if (chevron) chevron.classList.remove('rotate-180');
+      }
+    }
+
+    function closeSimStockMenu() {
+      const menu = document.getElementById('sim-stock-dropdown-menu');
+      const chevron = document.getElementById('sim-stock-chevron');
+      if (menu) menu.classList.add('hidden');
+      if (chevron) chevron.classList.remove('rotate-180');
+    }
+
+    function selectSimStockFromMenu(ticker) {
+      closeSimStockMenu();
+      selectSimStock(ticker);
+    }
+
+    function stepSimStock(direction) {
+      const currentIdx = simStockList.findIndex(s => s.ticker === simConfig.activeTicker);
+      const nextIdx = (currentIdx + direction + simStockList.length) % simStockList.length;
+      selectSimStock(simStockList[nextIdx].ticker);
+    }
+
     function updatePresetButtonsUI(activeType) {
       const presets = [
-        { id: 'council', label: '🎯 평의회 기본 의결안 적용됨', activeBorder: 'border-fable-coral', activeBg: 'bg-fable-coralLight/60', activeText: 'text-fable-coral', dotBg: 'bg-fable-coral' },
-        { id: 'dual', label: '⚖️ 2대 수익주 분할 적용됨', activeBorder: 'border-fable-coral', activeBg: 'bg-fable-coralLight/60', activeText: 'text-fable-coral', dotBg: 'bg-fable-coral' },
-        { id: 'defensive', label: '🛡 균형 방어 요새 적용됨', activeBorder: 'border-fable-coral', activeBg: 'bg-fable-coralLight/60', activeText: 'text-fable-coral', dotBg: 'bg-fable-coral' },
-        { id: 'reset', label: '🔄 기존 포트폴리오 유지 중 (매도 0주)', activeBorder: 'border-fable-borderDark', activeBg: 'bg-fable-cream', activeText: 'text-fable-ink', dotBg: 'bg-fable-ink' }
+        { id: 'council', activeBorder: 'border-fable-coral', activeBg: 'bg-fable-coralLight/60', activeText: 'text-fable-coral', dotBg: 'bg-fable-coral' },
+        { id: 'dual', activeBorder: 'border-fable-coral', activeBg: 'bg-fable-coralLight/60', activeText: 'text-fable-coral', dotBg: 'bg-fable-coral' },
+        { id: 'defensive', activeBorder: 'border-fable-coral', activeBg: 'bg-fable-coralLight/60', activeText: 'text-fable-coral', dotBg: 'bg-fable-coral' },
+        { id: 'reset', activeBorder: 'border-fable-borderDark', activeBg: 'bg-fable-cream', activeText: 'text-fable-ink', dotBg: 'bg-fable-ink' }
       ];
 
       presets.forEach(p => {
@@ -1520,20 +1622,6 @@
           if (dot) dot.className = "preset-dot w-1.5 h-1.5 rounded-full bg-transparent inline-block shrink-0";
         }
       });
-
-      const statusElem = document.getElementById('preset-status-text');
-      if (statusElem) {
-        if (activeType === 'custom') {
-          statusElem.innerText = '✏️ 사용자 직접 조정 중 (커스텀)';
-          statusElem.className = 'text-[9px] text-fable-subtle font-mono font-medium';
-        } else {
-          const match = presets.find(p => p.id === activeType);
-          if (match) {
-            statusElem.innerText = match.label;
-            statusElem.className = `text-[9px] ${match.activeText} font-mono font-medium`;
-          }
-        }
-      }
     }
 
     function updatePriceButtonsUI(sellPrice, stk) {
@@ -1568,19 +1656,54 @@
       const planItem = simConfig.plan[ticker];
       if (!stk || !planItem) return;
 
-      // Update pills
-      Object.keys(simConfig.plan).forEach(t => {
-        const pill = document.getElementById(`sim-pill-${t}`);
-        if (pill) {
-          if (t === ticker) {
-            pill.className = "sim-pill px-3 py-2 rounded-xl border font-sans font-medium flex items-center gap-1.5 shrink-0 transition-all border-fable-ink bg-fable-ink text-white shadow-sm";
+      // Update Stock Selector Trigger Bar display
+      const stockIdx = simStockList.findIndex(s => s.ticker === ticker);
+      const stockInfo = simStockList[stockIdx] || simStockList[0];
+      
+      const curNumElem = document.getElementById('sim-stock-current-num');
+      if (curNumElem) curNumElem.innerText = `[ ${stockInfo.num} ]`;
+      
+      const curNameElem = document.getElementById('sim-stock-current-name');
+      if (curNameElem) curNameElem.innerText = stockInfo.name;
+      
+      const curWeightElem = document.getElementById('sim-stock-current-weight');
+      if (curWeightElem) curWeightElem.innerText = `(${stockInfo.weight})`;
+
+      const stepIndicator = document.getElementById('sim-stock-step-indicator');
+      if (stepIndicator) stepIndicator.innerText = `${stockIdx + 1}/5`;
+
+      const curBadgeElem = document.getElementById('sim-stock-current-badge');
+      if (curBadgeElem) {
+        if (planItem.sellShares > 0) {
+          curBadgeElem.innerText = `-${planItem.sellShares}주`;
+          curBadgeElem.className = "ml-2 text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-coral text-white font-bold shrink-0";
+        } else {
+          curBadgeElem.innerText = "0주";
+          curBadgeElem.className = "ml-2 text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-cream text-fable-subtle shrink-0";
+        }
+      }
+
+      // Update Stock Dropdown Menu Items UI
+      simStockList.forEach(s => {
+        const menuItem = document.getElementById(`sim-menu-item-${s.ticker}`);
+        const checkElem = document.getElementById(`sim-menu-check-${s.ticker}`);
+        const numElem = menuItem ? menuItem.querySelector('span:first-child') : null;
+        const nameElem = menuItem ? menuItem.querySelector('.font-serif') : null;
+
+        if (menuItem) {
+          if (s.ticker === ticker) {
+            menuItem.className = "sim-stock-menu-item w-full flex items-center justify-between p-2 rounded-xl text-left transition-all bg-fable-ivory border border-fable-border";
+            if (numElem) numElem.className = "font-mono text-xs font-bold text-fable-coral shrink-0";
+            if (nameElem) nameElem.className = "font-serif text-sm font-semibold text-fable-ink shrink-0 ml-1";
+            if (checkElem) checkElem.classList.remove('hidden');
           } else {
-            pill.className = "sim-pill px-3 py-2 rounded-xl border font-sans font-medium flex items-center gap-1.5 shrink-0 transition-all border-fable-border bg-fable-surface text-fable-muted hover:bg-fable-cream";
+            menuItem.className = "sim-stock-menu-item w-full flex items-center justify-between p-2 rounded-xl text-left transition-all hover:bg-fable-ivory/80 border border-transparent";
+            if (numElem) numElem.className = "font-mono text-xs text-fable-subtle shrink-0";
+            if (nameElem) nameElem.className = "font-serif text-sm font-normal text-fable-ink shrink-0 ml-1";
+            if (checkElem) checkElem.classList.add('hidden');
           }
         }
       });
-
-      document.getElementById('sim-active-summary').innerText = `${stk.name} 조작 중`;
 
       // Update active stock editor info
       document.getElementById('sim-editor-name').innerText = stk.name;
@@ -1668,7 +1791,6 @@
       simConfig.activePreset = type;
 
       if (type === 'council') {
-        // SK하이닉스 2주 @ 2,000,000원, 타종목 0
         simConfig.plan["000660"] = { sellShares: 2, sellPrice: 2000000, minPrice: 1480000, maxPrice: 2500000, step: 20000 };
         simConfig.plan["267260"].sellShares = 0;
         simConfig.plan["105560"].sellShares = 0;
@@ -1676,7 +1798,6 @@
         simConfig.plan["196170"].sellShares = 0;
         simConfig.activeTicker = "000660";
       } else if (type === 'dual') {
-        // 하이닉스 2주 + KB금융 4주
         simConfig.plan["000660"] = { sellShares: 2, sellPrice: 2000000, minPrice: 1480000, maxPrice: 2500000, step: 20000 };
         simConfig.plan["267260"].sellShares = 0;
         simConfig.plan["105560"] = { sellShares: 4, sellPrice: 195000, minPrice: 155000, maxPrice: 240000, step: 1000 };
@@ -1684,7 +1805,6 @@
         simConfig.plan["196170"].sellShares = 0;
         simConfig.activeTicker = "000660";
       } else if (type === 'defensive') {
-        // 전 종목 분할 매도
         simConfig.plan["000660"] = { sellShares: 3, sellPrice: 2000000, minPrice: 1480000, maxPrice: 2500000, step: 20000 };
         simConfig.plan["267260"] = { sellShares: 1, sellPrice: 820000, minPrice: 690000, maxPrice: 1100000, step: 10000 };
         simConfig.plan["105560"] = { sellShares: 4, sellPrice: 195000, minPrice: 155000, maxPrice: 240000, step: 1000 };
@@ -1728,22 +1848,39 @@
 
       updatePriceButtonsUI(activePlan.sellPrice, activeStk);
 
-      // Update Pill Badges
+      // Update Stock Dropdown Menu Badges & Trigger Badge
+      simStockList.forEach(s => {
+        const item = simConfig.plan[s.ticker];
+        const badge = document.getElementById(`sim-menu-badge-${s.ticker}`);
+        if (badge) {
+          if (item.sellShares > 0) {
+            badge.innerText = `-${item.sellShares}주`;
+            badge.className = "text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-coral text-white font-bold shrink-0 ml-2";
+          } else {
+            badge.innerText = "0주";
+            badge.className = "text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-cream text-fable-subtle shrink-0 ml-2";
+          }
+        }
+      });
+
+      const activeBadge = document.getElementById('sim-stock-current-badge');
+      if (activeBadge) {
+        if (activePlan.sellShares > 0) {
+          activeBadge.innerText = `-${activePlan.sellShares}주`;
+          activeBadge.className = "ml-2 text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-coral text-white font-bold shrink-0";
+        } else {
+          activeBadge.innerText = "0주";
+          activeBadge.className = "ml-2 text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-cream text-fable-subtle shrink-0";
+        }
+      }
+
       let totalSoldStocksCount = 0;
       let totalSoldSharesCount = 0;
       Object.keys(simConfig.plan).forEach(t => {
         const item = simConfig.plan[t];
-        const badge = document.getElementById(`sim-pill-badge-${t}`);
-        if (badge) {
-          if (item.sellShares > 0) {
-            badge.innerText = `-${item.sellShares}주`;
-            badge.className = "text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-coral text-white font-bold";
-            totalSoldStocksCount++;
-            totalSoldSharesCount += item.sellShares;
-          } else {
-            badge.innerText = "0주";
-            badge.className = "text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-cream text-fable-subtle";
-          }
+        if (item.sellShares > 0) {
+          totalSoldStocksCount++;
+          totalSoldSharesCount += item.sellShares;
         }
       });
 
