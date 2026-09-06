@@ -193,7 +193,7 @@
     </div>
 
     <!-- FABLE & MYTHOS DOTTED-LEADER UNIFIED INDEX NAVIGATOR -->
-    <div class="relative mb-4 sm:mb-5 z-20">
+    <div id="nav-dropdown-container" class="relative mb-4 sm:mb-5 z-50">
       <div class="bg-fable-cream/80 border border-fable-border rounded-xl p-1.5 sm:p-2 flex items-center justify-between">
         
         <!-- Dropdown Trigger Button with Dotted Leader -->
@@ -227,7 +227,7 @@
       </div>
 
       <!-- Fable 5.1 Dotted Index Dropdown List -->
-      <div id="nav-dropdown-menu" class="hidden absolute top-full left-0 right-0 mt-1.5 bg-fable-surface border border-fable-border rounded-2xl p-2.5 shadow-lg z-30 space-y-1 transition-all">
+      <div id="nav-dropdown-menu" class="hidden absolute top-full left-0 right-0 mt-1.5 bg-fable-surface border border-fable-border rounded-2xl p-2.5 shadow-2xl z-50 space-y-1 transition-all">
         <div class="px-2 py-1 text-[10px] font-mono uppercase tracking-widest text-fable-subtle border-b border-fable-border mb-1.5 flex justify-between items-center">
           <span>Table of Contents // Index</span>
           <span>5 Sections</span>
@@ -408,7 +408,7 @@
       </div>
 
       <!-- TABLE OF CONTENTS // RADAR TARGET SELECTOR -->
-      <div class="relative z-20 space-y-1">
+      <div id="radar-dropdown-container" class="relative z-20 space-y-1">
         <div class="text-[10px] font-mono text-fable-subtle uppercase">
           <span>Table of Contents // 분석 대상 선택</span>
         </div>
@@ -765,7 +765,7 @@
         </div>
 
         <!-- TABLE OF CONTENTS // INDEX STOCK SELECTOR -->
-        <div class="relative z-20 space-y-1">
+        <div id="sim-dropdown-container" class="relative z-20 space-y-1">
           <div class="text-[10px] font-mono text-fable-subtle uppercase">
             <span>Table of Contents // 종목 선택</span>
           </div>
@@ -1399,6 +1399,8 @@
       const chevron = document.getElementById('nav-chevron');
       const isHidden = menu.classList.contains('hidden');
       if (isHidden) {
+        closeRadarStockMenu();
+        closeSimStockMenu();
         menu.classList.remove('hidden');
         chevron.classList.add('rotate-180');
       } else {
@@ -1425,6 +1427,10 @@
     }
 
     function switchTab(tabId) {
+      closeNavMenu();
+      closeRadarStockMenu();
+      closeSimStockMenu();
+
       const foundIdx = menuConfig.findIndex(item => item.id === tabId);
       if (foundIdx !== -1) {
         currentTabIndex = foundIdx;
@@ -1542,22 +1548,29 @@
     function toggleRadarStockMenu() {
       const menu = document.getElementById('radar-stock-dropdown-menu');
       const chevron = document.getElementById('radar-stock-chevron');
+      const container = document.getElementById('radar-dropdown-container');
       if (!menu) return;
       const isHidden = menu.classList.contains('hidden');
       if (isHidden) {
+        closeNavMenu();
+        closeSimStockMenu();
         menu.classList.remove('hidden');
         if (chevron) chevron.classList.add('rotate-180');
+        if (container) container.classList.add('z-40');
       } else {
         menu.classList.add('hidden');
         if (chevron) chevron.classList.remove('rotate-180');
+        if (container) container.classList.remove('z-40');
       }
     }
 
     function closeRadarStockMenu() {
       const menu = document.getElementById('radar-stock-dropdown-menu');
       const chevron = document.getElementById('radar-stock-chevron');
+      const container = document.getElementById('radar-dropdown-container');
       if (menu) menu.classList.add('hidden');
       if (chevron) chevron.classList.remove('rotate-180');
+      if (container) container.classList.remove('z-40');
     }
 
     function selectRadarStockFromMenu(ticker) {
@@ -1732,22 +1745,29 @@
     function toggleSimStockMenu() {
       const menu = document.getElementById('sim-stock-dropdown-menu');
       const chevron = document.getElementById('sim-stock-chevron');
+      const container = document.getElementById('sim-dropdown-container');
       if (!menu) return;
       const isHidden = menu.classList.contains('hidden');
       if (isHidden) {
+        closeNavMenu();
+        closeRadarStockMenu();
         menu.classList.remove('hidden');
         if (chevron) chevron.classList.add('rotate-180');
+        if (container) container.classList.add('z-40');
       } else {
         menu.classList.add('hidden');
         if (chevron) chevron.classList.remove('rotate-180');
+        if (container) container.classList.remove('z-40');
       }
     }
 
     function closeSimStockMenu() {
       const menu = document.getElementById('sim-stock-dropdown-menu');
       const chevron = document.getElementById('sim-stock-chevron');
+      const container = document.getElementById('sim-dropdown-container');
       if (menu) menu.classList.add('hidden');
       if (chevron) chevron.classList.remove('rotate-180');
+      if (container) container.classList.remove('z-40');
     }
 
     function selectSimStockFromMenu(ticker) {
