@@ -636,24 +636,36 @@
         <div class="space-y-1.5">
           <div class="text-[10px] font-mono text-fable-subtle uppercase flex items-center justify-between">
             <span>Strategy Presets // 전략 시나리오 원클릭</span>
-            <span class="text-[9px] text-fable-faded">사전 의결된 시나리오</span>
+            <span id="preset-status-text" class="text-[9px] text-fable-coral font-mono font-medium">🎯 평의회 기본 의결안 적용됨</span>
           </div>
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
-            <button onclick="applySimPreset('council')" id="preset-btn-council" class="p-2 text-left rounded-xl border border-fable-coral/70 bg-fable-coralLight/50 hover:bg-fable-coralLight active:scale-[0.98] transition-all">
-              <div class="text-[11px] font-bold text-fable-coral font-sans truncate">🎯 평의회 기본 의결안</div>
-              <div class="text-[9px] text-fable-muted font-mono mt-0.5">하이닉스 2주 익절 (CMA 23.6%)</div>
+            <button onclick="applySimPreset('council')" id="preset-btn-council" class="preset-btn p-2 sm:p-2.5 text-left rounded-xl border border-fable-coral bg-fable-coralLight/60 active:scale-[0.98] transition-all shadow-xs">
+              <div class="preset-title text-[11px] sm:text-xs font-bold text-fable-coral font-sans truncate flex items-center gap-1">
+                <span class="preset-dot w-1.5 h-1.5 rounded-full bg-fable-coral inline-block shrink-0"></span>
+                <span>🎯 평의회 기본 의결안</span>
+              </div>
+              <div class="preset-sub text-[9px] text-fable-ink font-mono mt-0.5">하이닉스 2주 (CMA 22.9%)</div>
             </button>
-            <button onclick="applySimPreset('dual')" id="preset-btn-dual" class="p-2 text-left rounded-xl border border-fable-border bg-fable-surface hover:bg-fable-cream active:scale-[0.98] transition-all">
-              <div class="text-[11px] font-bold text-fable-ink font-sans truncate">⚖️ 2대 수익주 분할</div>
-              <div class="text-[9px] text-fable-subtle font-mono mt-0.5">하이닉스 2주 + KB금융 4주</div>
+            <button onclick="applySimPreset('dual')" id="preset-btn-dual" class="preset-btn p-2 sm:p-2.5 text-left rounded-xl border border-fable-border bg-fable-surface hover:bg-fable-cream active:scale-[0.98] transition-all">
+              <div class="preset-title text-[11px] sm:text-xs font-medium text-fable-ink font-sans truncate flex items-center gap-1">
+                <span class="preset-dot w-1.5 h-1.5 rounded-full bg-transparent inline-block shrink-0"></span>
+                <span>⚖️ 2대 수익주 분할</span>
+              </div>
+              <div class="preset-sub text-[9px] text-fable-subtle font-mono mt-0.5">하이닉스 2주 + KB금융 4주</div>
             </button>
-            <button onclick="applySimPreset('defensive')" id="preset-btn-defensive" class="p-2 text-left rounded-xl border border-fable-border bg-fable-surface hover:bg-fable-cream active:scale-[0.98] transition-all">
-              <div class="text-[11px] font-bold text-fable-ink font-sans truncate">🛡 균형 방어 요새</div>
-              <div class="text-[9px] text-fable-subtle font-mono mt-0.5">전 종목 20~30% 고른 현금화</div>
+            <button onclick="applySimPreset('defensive')" id="preset-btn-defensive" class="preset-btn p-2 sm:p-2.5 text-left rounded-xl border border-fable-border bg-fable-surface hover:bg-fable-cream active:scale-[0.98] transition-all">
+              <div class="preset-title text-[11px] sm:text-xs font-medium text-fable-ink font-sans truncate flex items-center gap-1">
+                <span class="preset-dot w-1.5 h-1.5 rounded-full bg-transparent inline-block shrink-0"></span>
+                <span>🛡 균형 방어 요새</span>
+              </div>
+              <div class="preset-sub text-[9px] text-fable-subtle font-mono mt-0.5">전 종목 20~30% 고른 현금화</div>
             </button>
-            <button onclick="applySimPreset('reset')" id="preset-btn-reset" class="p-2 text-left rounded-xl border border-fable-border bg-fable-surface hover:bg-fable-cream active:scale-[0.98] transition-all">
-              <div class="text-[11px] font-bold text-fable-subtle font-sans truncate">🔄 현재 보유 유지</div>
-              <div class="text-[9px] text-fable-subtle font-mono mt-0.5">매도 0주 (기존 포트폴리오)</div>
+            <button onclick="applySimPreset('reset')" id="preset-btn-reset" class="preset-btn p-2 sm:p-2.5 text-left rounded-xl border border-fable-border bg-fable-surface hover:bg-fable-cream active:scale-[0.98] transition-all">
+              <div class="preset-title text-[11px] sm:text-xs font-medium text-fable-ink font-sans truncate flex items-center gap-1">
+                <span class="preset-dot w-1.5 h-1.5 rounded-full bg-transparent inline-block shrink-0"></span>
+                <span>🔄 현재 보유 유지</span>
+              </div>
+              <div class="preset-sub text-[9px] text-fable-subtle font-mono mt-0.5">매도 0주 (기존 포트폴리오)</div>
             </button>
           </div>
         </div>
@@ -721,9 +733,16 @@
             <input id="slider-shares" type="range" min="0" max="9" step="1" value="2" oninput="onShareSliderChange(this.value)" class="w-full">
             <div id="sim-shares-ticks" class="flex justify-between text-[9px] sm:text-[10px] text-fable-subtle font-mono pt-0.5">
               <span>0주</span>
-              <span>2주</span>
-              <span>5주</span>
-              <span>9주(전량)</span>
+              <span>50%</span>
+              <span>전량</span>
+            </div>
+            <!-- Quick Shares Buttons -->
+            <div class="flex items-center gap-1.5 pt-1 font-mono text-[9px]">
+              <span class="text-fable-subtle text-[8px] sm:text-[9px] mr-0.5">빠른선택:</span>
+              <button onclick="setQuickShares(0)" class="px-2 py-0.5 rounded border border-fable-border bg-fable-ivory hover:bg-white text-fable-muted active:scale-95 transition-all">0주</button>
+              <button onclick="setQuickShares('quarter')" class="px-2 py-0.5 rounded border border-fable-border bg-fable-ivory hover:bg-white text-fable-muted active:scale-95 transition-all">25%</button>
+              <button onclick="setQuickShares('half')" class="px-2 py-0.5 rounded border border-fable-border bg-fable-ivory hover:bg-white text-fable-muted active:scale-95 transition-all">50%</button>
+              <button onclick="setQuickShares('all')" class="px-2 py-0.5 rounded border border-fable-border bg-fable-ivory hover:bg-white text-fable-muted active:scale-95 transition-all">전량</button>
             </div>
           </div>
 
@@ -1464,6 +1483,7 @@
     // 4. MULTI-POSITION REBALANCING & FORTRESS SIMULATOR ENGINE
     const simConfig = {
       activeTicker: "000660",
+      activePreset: "council",
       plan: {
         "000660": { sellShares: 2, sellPrice: 2000000, minPrice: 1480000, maxPrice: 2500000, step: 20000 },
         "267260": { sellShares: 0, sellPrice: 820000, minPrice: 690000, maxPrice: 1100000, step: 10000 },
@@ -1472,6 +1492,75 @@
         "196170": { sellShares: 0, sellPrice: 380000, minPrice: 265000, maxPrice: 500000, step: 5000 }
       }
     };
+
+    function updatePresetButtonsUI(activeType) {
+      const presets = [
+        { id: 'council', label: '🎯 평의회 기본 의결안 적용됨', activeBorder: 'border-fable-coral', activeBg: 'bg-fable-coralLight/60', activeText: 'text-fable-coral', dotBg: 'bg-fable-coral' },
+        { id: 'dual', label: '⚖️ 2대 수익주 분할 적용됨', activeBorder: 'border-fable-coral', activeBg: 'bg-fable-coralLight/60', activeText: 'text-fable-coral', dotBg: 'bg-fable-coral' },
+        { id: 'defensive', label: '🛡 균형 방어 요새 적용됨', activeBorder: 'border-fable-coral', activeBg: 'bg-fable-coralLight/60', activeText: 'text-fable-coral', dotBg: 'bg-fable-coral' },
+        { id: 'reset', label: '🔄 기존 포트폴리오 유지 중 (매도 0주)', activeBorder: 'border-fable-borderDark', activeBg: 'bg-fable-cream', activeText: 'text-fable-ink', dotBg: 'bg-fable-ink' }
+      ];
+
+      presets.forEach(p => {
+        const btn = document.getElementById(`preset-btn-${p.id}`);
+        if (!btn) return;
+        const title = btn.querySelector('.preset-title');
+        const sub = btn.querySelector('.preset-sub');
+        const dot = btn.querySelector('.preset-dot');
+
+        if (p.id === activeType) {
+          btn.className = `preset-btn p-2 sm:p-2.5 text-left rounded-xl border ${p.activeBorder} ${p.activeBg} active:scale-[0.98] transition-all shadow-xs`;
+          if (title) title.className = `preset-title text-[11px] sm:text-xs font-bold ${p.activeText} font-sans truncate flex items-center gap-1`;
+          if (sub) sub.className = "preset-sub text-[9px] text-fable-ink font-mono mt-0.5";
+          if (dot) dot.className = `preset-dot w-1.5 h-1.5 rounded-full ${p.dotBg} inline-block shrink-0`;
+        } else {
+          btn.className = "preset-btn p-2 sm:p-2.5 text-left rounded-xl border border-fable-border bg-fable-surface hover:bg-fable-cream hover:border-fable-borderDark active:scale-[0.98] transition-all";
+          if (title) title.className = "preset-title text-[11px] sm:text-xs font-medium text-fable-ink font-sans truncate flex items-center gap-1";
+          if (sub) sub.className = "preset-sub text-[9px] text-fable-subtle font-mono mt-0.5";
+          if (dot) dot.className = "preset-dot w-1.5 h-1.5 rounded-full bg-transparent inline-block shrink-0";
+        }
+      });
+
+      const statusElem = document.getElementById('preset-status-text');
+      if (statusElem) {
+        if (activeType === 'custom') {
+          statusElem.innerText = '✏️ 사용자 직접 조정 중 (커스텀)';
+          statusElem.className = 'text-[9px] text-fable-subtle font-mono font-medium';
+        } else {
+          const match = presets.find(p => p.id === activeType);
+          if (match) {
+            statusElem.innerText = match.label;
+            statusElem.className = `text-[9px] ${match.activeText} font-mono font-medium`;
+          }
+        }
+      }
+    }
+
+    function updatePriceButtonsUI(sellPrice, stk) {
+      const btnCur = document.getElementById('btn-price-cur');
+      const btnT1 = document.getElementById('btn-price-t1');
+      const btnT2 = document.getElementById('btn-price-t2');
+
+      const activeClass = "px-2 py-1 rounded border border-fable-coral bg-fable-coralLight text-fable-coral font-bold active:scale-95 transition-all text-[9px] sm:text-[10px]";
+      const inactiveClass = "px-2 py-1 rounded border border-fable-border bg-fable-ivory hover:bg-white text-fable-muted active:scale-95 transition-all text-[9px] sm:text-[10px]";
+
+      const curFmt = stk.currentPrice >= 1000000 ? (stk.currentPrice/10000).toFixed(1) : (stk.currentPrice/10000).toFixed(0);
+      const t1Fmt = stk.target1 >= 1000000 ? (stk.target1/10000).toFixed(1) : (stk.target1/10000).toFixed(0);
+      const t2Fmt = stk.target2 >= 1000000 ? (stk.target2/10000).toFixed(1) : (stk.target2/10000).toFixed(0);
+
+      if (btnCur) {
+        btnCur.className = (sellPrice === stk.currentPrice) ? activeClass : inactiveClass;
+        btnCur.innerText = `현재가 (₩${curFmt}만)`;
+      }
+      if (btnT1) {
+        btnT1.className = (sellPrice === stk.target1) ? activeClass : inactiveClass;
+        btnT1.innerText = `1차목표 (₩${t1Fmt}만)`;
+      }
+      if (btnT2) {
+        btnT2.className = (sellPrice === stk.target2) ? activeClass : inactiveClass;
+        btnT2.innerText = `2차목표 (₩${t2Fmt}만)`;
+      }
+    }
 
     function selectSimStock(ticker) {
       simConfig.activeTicker = ticker;
@@ -1521,18 +1610,41 @@
       const halfShares = Math.floor(stk.shares / 2);
       ticksElem.innerHTML = `<span>0주</span><span>${halfShares}주 (50%)</span><span>${stk.shares}주 (전량)</span>`;
 
+      updatePriceButtonsUI(planItem.sellPrice, stk);
       runSimulation();
     }
 
     function onShareSliderChange(val) {
       const ticker = simConfig.activeTicker;
       simConfig.plan[ticker].sellShares = parseInt(val, 10);
+      simConfig.activePreset = 'custom';
+      updatePresetButtonsUI('custom');
       runSimulation();
     }
 
     function onPriceSliderChange(val) {
       const ticker = simConfig.activeTicker;
       simConfig.plan[ticker].sellPrice = parseInt(val, 10);
+      simConfig.activePreset = 'custom';
+      updatePresetButtonsUI('custom');
+      runSimulation();
+    }
+
+    function setQuickShares(mode) {
+      const ticker = simConfig.activeTicker;
+      const stk = portfolioData.stocks[ticker];
+      if (!stk) return;
+
+      let shares = 0;
+      if (mode === 0) shares = 0;
+      else if (mode === 'quarter') shares = Math.max(1, Math.round(stk.shares * 0.25));
+      else if (mode === 'half') shares = Math.max(1, Math.round(stk.shares * 0.5));
+      else if (mode === 'all') shares = stk.shares;
+
+      simConfig.plan[ticker].sellShares = shares;
+      document.getElementById('slider-shares').value = shares;
+      simConfig.activePreset = 'custom';
+      updatePresetButtonsUI('custom');
       runSimulation();
     }
 
@@ -1547,10 +1659,14 @@
 
       simConfig.plan[ticker].sellPrice = targetVal;
       document.getElementById('slider-price').value = targetVal;
+      simConfig.activePreset = 'custom';
+      updatePresetButtonsUI('custom');
       runSimulation();
     }
 
     function applySimPreset(type) {
+      simConfig.activePreset = type;
+
       if (type === 'council') {
         // SK하이닉스 2주 @ 2,000,000원, 타종목 0
         simConfig.plan["000660"] = { sellShares: 2, sellPrice: 2000000, minPrice: 1480000, maxPrice: 2500000, step: 20000 };
@@ -1581,6 +1697,7 @@
         });
       }
 
+      updatePresetButtonsUI(type);
       selectSimStock(simConfig.activeTicker);
     }
 
@@ -1609,6 +1726,8 @@
       document.getElementById('sim-single-profit').innerText = `${singleProfit >= 0 ? '+' : ''}₩${(singleProfit / 1000000).toFixed(2)}M`;
       document.getElementById('sim-single-rem').innerText = `${singleRemShares}주 (₩${(singleRemVal / 1000000).toFixed(1)}M)`;
 
+      updatePriceButtonsUI(activePlan.sellPrice, activeStk);
+
       // Update Pill Badges
       let totalSoldStocksCount = 0;
       let totalSoldSharesCount = 0;
@@ -1628,7 +1747,11 @@
         }
       });
 
-      document.getElementById('sim-total-sold-badge').innerText = `총 ${totalSoldStocksCount}종목 ${totalSoldSharesCount}주 매도 설정`;
+      if (totalSoldSharesCount === 0) {
+        document.getElementById('sim-total-sold-badge').innerText = "매도 설정 없음 (기존 보유 유지)";
+      } else {
+        document.getElementById('sim-total-sold-badge').innerText = `총 ${totalSoldStocksCount}개 종목 · ${totalSoldSharesCount}주 매도 설정`;
+      }
 
       // 2. Global Portfolio Calculations
       let totalCashGen = 0;
@@ -1776,6 +1899,7 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       renderRadar();
+      updatePresetButtonsUI('council');
       selectSimStock('000660');
     });
   </script>
