@@ -2,302 +2,425 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Erebor Capital Architecture</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['Newsreader', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', '"Apple SD Gothic Neo"', '"Pretendard"', 'sans-serif'],
+          },
+          colors: {
+            claude: {
+              ivory: '#FAF7F2',
+              cream: '#F4EFE6',
+              card: '#FFFFFF',
+              border: '#E8E2D6',
+              borderDark: '#D5CDBF',
+              clay: '#D97757',       // Claude Terracotta
+              clayLight: '#FBECE6',
+              clayDark: '#C15F3D',
+              dark: '#211F1C',       // Claude Dark Espresso
+              muted: '#68655E',
+              subtle: '#969186',
+              olive: '#788C5D',
+              oliveLight: '#F2F5ED',
+              blue: '#6A9BCC',
+              blueLight: '#EDF4FB',
+              fig: '#C46686',
+              figLight: '#FAEDF2',
+              gray: '#87867F',
+            }
+          }
+        }
+      }
+    }
+  </script>
   <style>
+    body {
+      background-color: transparent;
+      color: #211F1C;
+      font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .claude-shadow {
+      box-shadow: 0 1px 3px rgba(33, 31, 28, 0.04), 0 6px 16px rgba(33, 31, 28, 0.03);
+    }
     .tab-btn.active {
-      background: var(--foreground, #3D3D3A);
-      color: var(--background, #FAF9F5);
+      background-color: #211F1C;
+      color: #FAF7F2;
+      box-shadow: 0 2px 6px rgba(33, 31, 28, 0.15);
+    }
+    .tab-btn:not(.active):hover {
+      background-color: #EFE9DE;
+      color: #211F1C;
+    }
+    .clay-gradient {
+      background: linear-gradient(135deg, #D97757 0%, #C15F3D 100%);
     }
   </style>
 </head>
-<body class="bg-transparent text-[var(--foreground)] antialiased p-2 sm:p-3 font-sans">
-  <div class="bg-[var(--card,#ffffff)] text-[var(--foreground,#2d2d2a)] border border-[var(--border,#e5e5e0)] rounded-xl p-4 shadow-sm max-w-2xl mx-auto">
+<body class="p-2 sm:p-4">
+  <!-- Claude Styled Container -->
+  <div class="bg-claude-card border border-claude-border rounded-2xl p-4 sm:p-6 claude-shadow max-w-2xl mx-auto transition-all">
     
-    <!-- Top Header -->
-    <div class="flex items-center justify-between border-b border-[var(--border,#e5e5e0)] pb-3 mb-3">
+    <!-- Header Section (Claude Editorial Aesthetic) -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-claude-border pb-4 mb-4 gap-3">
       <div>
-        <div class="flex items-center gap-2">
-          <span class="text-xs font-mono font-bold px-1.5 py-0.5 rounded bg-stone-100 text-stone-600 border border-stone-200">01 / Architecture</span>
-          <h2 class="text-sm sm:text-base font-bold text-[var(--foreground)]">Erebor 포트폴리오 비주얼 레이더</h2>
+        <div class="flex items-center gap-2 mb-1">
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium tracking-wide bg-claude-cream text-claude-muted border border-claude-border">
+            <span class="w-1.5 h-1.5 rounded-full bg-claude-clay"></span>
+            01 / Capital Architecture
+          </span>
+          <span class="text-[11px] text-claude-subtle font-mono">As of 2026.09.06</span>
         </div>
-        <p class="text-xs text-[var(--muted-foreground,#787873)] mt-0.5">AUM ₩24,200,691 (+57.93%) │ 6개 보유 자산 정밀 진단</p>
-      </div>
-      <div class="text-right">
-        <span class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">+₩8,876,628</span>
-      </div>
-    </div>
-
-    <!-- Interactive Navigation Tabs -->
-    <div class="flex items-center gap-1.5 mb-3 text-xs overflow-x-auto pb-1">
-      <button onclick="switchTab('alloc')" id="tab-alloc" class="tab-btn active px-2.5 py-1 rounded-md border border-[var(--border,#e5e5e0)] font-medium transition-all">
-        ① 자산 비중
-      </button>
-      <button onclick="switchTab('pnl')" id="tab-pnl" class="tab-btn px-2.5 py-1 rounded-md border border-[var(--border,#e5e5e0)] font-medium transition-all hover:bg-stone-50">
-        ② 수익률 & 손익
-      </button>
-      <button onclick="switchTab('range')" id="tab-range" class="tab-btn px-2.5 py-1 rounded-md border border-[var(--border,#e5e5e0)] font-medium transition-all hover:bg-stone-50">
-        ③ 안전마진 게이지
-      </button>
-      <button onclick="switchTab('sim')" id="tab-sim" class="tab-btn px-2.5 py-1 rounded-md border border-[var(--border,#e5e5e0)] font-medium transition-all hover:bg-stone-50">
-        ④ 현금요새 시뮬레이터
-      </button>
-    </div>
-
-    <!-- Tab 1: 자산 배분 비중 -->
-    <div id="view-alloc" class="tab-view block space-y-2.5">
-      <!-- 20-block stacked bar preview -->
-      <div class="space-y-1">
-        <div class="flex justify-between text-xs text-[var(--muted-foreground)]">
-          <span class="font-medium">포트폴리오 누적 자산 배분 (20칸 스택)</span>
-          <span class="font-mono font-bold text-[var(--foreground)]">100.0%</span>
-        </div>
-        <div class="flex h-4 w-full rounded-md overflow-hidden border border-stone-200">
-          <div style="width: 61.3%; background: #D97757;" title="SK하이닉스 (61.3%)"></div>
-          <div style="width: 14.8%; background: #6A9BCC;" title="HD현대일렉트릭 (14.8%)"></div>
-          <div style="width: 10.0%; background: #788C5D;" title="KB금융 (10.0%)"></div>
-          <div style="width: 4.6%; background: #87867F;" title="두산에너빌리티 (4.6%)"></div>
-          <div style="width: 2.4%; background: #C46686;" title="알테오젠 (2.4%)"></div>
-          <div style="width: 7.1%; background: #3D3D3A;" title="The Fortress CMA (7.1%)"></div>
-        </div>
+        <h1 class="font-serif text-xl sm:text-2xl font-normal tracking-tight text-claude-dark">
+          Erebor Portfolio Radar
+        </h1>
+        <p class="text-xs sm:text-[13px] text-claude-muted mt-0.5">
+          Total AUM: <strong class="text-claude-dark font-semibold">₩24,200,691</strong>
+          <span class="text-claude-subtle mx-1.5">|</span>
+          수익률: <strong class="text-claude-olive font-semibold">+57.93%</strong> (+₩8,876,628)
+        </p>
       </div>
 
-      <!-- Asset list with color badges -->
-      <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-1">
-        <div class="p-2 rounded-lg border border-stone-100 bg-stone-50/50 flex flex-col justify-between">
-          <div class="flex items-center gap-1.5">
-            <span class="w-2.5 h-2.5 rounded-full" style="background: #D97757;"></span>
-            <span class="text-xs font-bold truncate">SK하이닉스</span>
-          </div>
-          <div class="mt-1 flex items-baseline justify-between">
-            <span class="text-xs font-mono font-bold">61.3%</span>
-            <span class="text-[10px] text-stone-500">1,482만 원</span>
-          </div>
-        </div>
-
-        <div class="p-2 rounded-lg border border-stone-100 bg-stone-50/50 flex flex-col justify-between">
-          <div class="flex items-center gap-1.5">
-            <span class="w-2.5 h-2.5 rounded-full" style="background: #6A9BCC;"></span>
-            <span class="text-xs font-bold truncate">HD현대일렉</span>
-          </div>
-          <div class="mt-1 flex items-baseline justify-between">
-            <span class="text-xs font-mono font-bold">14.8%</span>
-            <span class="text-[10px] text-stone-500">357만 원</span>
-          </div>
-        </div>
-
-        <div class="p-2 rounded-lg border border-stone-100 bg-stone-50/50 flex flex-col justify-between">
-          <div class="flex items-center gap-1.5">
-            <span class="w-2.5 h-2.5 rounded-full" style="background: #788C5D;"></span>
-            <span class="text-xs font-bold truncate">KB금융</span>
-          </div>
-          <div class="mt-1 flex items-baseline justify-between">
-            <span class="text-xs font-mono font-bold">10.0%</span>
-            <span class="text-[10px] text-stone-500">241만 원</span>
-          </div>
-        </div>
-
-        <div class="p-2 rounded-lg border border-stone-100 bg-stone-50/50 flex flex-col justify-between">
-          <div class="flex items-center gap-1.5">
-            <span class="w-2.5 h-2.5 rounded-full" style="background: #87867F;"></span>
-            <span class="text-xs font-bold truncate">두산에너빌리티</span>
-          </div>
-          <div class="mt-1 flex items-baseline justify-between">
-            <span class="text-xs font-mono font-bold">4.6%</span>
-            <span class="text-[10px] text-stone-500">111만 원</span>
-          </div>
-        </div>
-
-        <div class="p-2 rounded-lg border border-stone-100 bg-stone-50/50 flex flex-col justify-between">
-          <div class="flex items-center gap-1.5">
-            <span class="w-2.5 h-2.5 rounded-full" style="background: #C46686;"></span>
-            <span class="text-xs font-bold truncate">알테오젠</span>
-          </div>
-          <div class="mt-1 flex items-baseline justify-between">
-            <span class="text-xs font-mono font-bold">2.4%</span>
-            <span class="text-[10px] text-stone-500">58만 원</span>
-          </div>
-        </div>
-
-        <div class="p-2 rounded-lg border border-stone-100 bg-stone-50/50 flex flex-col justify-between">
-          <div class="flex items-center gap-1.5">
-            <span class="w-2.5 h-2.5 rounded-full" style="background: #3D3D3A;"></span>
-            <span class="text-xs font-bold truncate">CMA 현금</span>
-          </div>
-          <div class="mt-1 flex items-baseline justify-between">
-            <span class="text-xs font-mono font-bold">7.1%</span>
-            <span class="text-[10px] text-stone-500">171만 원</span>
+      <!-- Action Status Pill -->
+      <div class="self-start sm:self-center">
+        <div class="inline-flex items-center gap-2 bg-claude-ivory border border-claude-border px-3 py-1.5 rounded-xl">
+          <div class="w-2 h-2 rounded-full bg-claude-olive animate-pulse"></div>
+          <div class="text-left">
+            <div class="text-[10px] uppercase tracking-wider text-claude-subtle font-semibold">Council Action</div>
+            <div class="text-xs font-semibold text-claude-dark">전체 포지션 유지 (Hold)</div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Tab 2: 수익률 & 손익 분석 -->
-    <div id="view-pnl" class="tab-view hidden space-y-2 text-xs">
-      <div class="space-y-2 pt-1">
-        <div>
-          <div class="flex justify-between mb-0.5">
-            <span class="font-bold">SK하이닉스</span>
-            <span class="font-mono font-bold text-rose-600">+138.80% (+861.5만 원)</span>
+    <!-- Navigation Pills (Claude Warm Minimalist Tabs) -->
+    <div class="flex items-center gap-1.5 mb-5 bg-claude-cream/60 p-1 rounded-xl border border-claude-border/80 overflow-x-auto">
+      <button onclick="switchTab('alloc')" id="tab-alloc" class="tab-btn active px-3 py-1.5 rounded-lg text-xs font-medium tracking-tight transition-all flex-1 text-center whitespace-nowrap">
+        자산 배분 비중
+      </button>
+      <button onclick="switchTab('pnl')" id="tab-pnl" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium tracking-tight transition-all flex-1 text-center whitespace-nowrap text-claude-muted">
+        수익률 & 손익
+      </button>
+      <button onclick="switchTab('range')" id="tab-range" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium tracking-tight transition-all flex-1 text-center whitespace-nowrap text-claude-muted">
+        안전마진 게이지
+      </button>
+      <button onclick="switchTab('sim')" id="tab-sim" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium tracking-tight transition-all flex-1 text-center whitespace-nowrap text-claude-muted">
+        CMA 요새 시뮬레이터
+      </button>
+    </div>
+
+    <!-- TAB 1: 자산 배분 비중 (Claude Clean Stack & Cards) -->
+    <div id="view-alloc" class="tab-view block space-y-4">
+      <!-- 20-block Horizontal Asset Bar -->
+      <div class="bg-claude-ivory p-3.5 rounded-xl border border-claude-border">
+        <div class="flex items-center justify-between text-xs mb-2">
+          <span class="font-medium text-claude-dark">포트폴리오 누적 자산 배분 (20칸 스택)</span>
+          <span class="font-mono font-bold text-claude-dark bg-white px-2 py-0.5 rounded border border-claude-border">100.0%</span>
+        </div>
+        <div class="flex h-4 w-full rounded-lg overflow-hidden border border-claude-borderDark/40 p-0.5 bg-white shadow-inner gap-0.5">
+          <div style="width: 61.3%; background: #D97757;" class="rounded-sm transition-all hover:opacity-90" title="SK하이닉스 (61.3%)"></div>
+          <div style="width: 14.8%; background: #6A9BCC;" class="rounded-sm transition-all hover:opacity-90" title="HD현대일렉트릭 (14.8%)"></div>
+          <div style="width: 10.0%; background: #788C5D;" class="rounded-sm transition-all hover:opacity-90" title="KB금융 (10.0%)"></div>
+          <div style="width: 4.6%; background: #87867F;" class="rounded-sm transition-all hover:opacity-90" title="두산에너빌리티 (4.6%)"></div>
+          <div style="width: 2.4%; background: #C46686;" class="rounded-sm transition-all hover:opacity-90" title="알테오젠 (2.4%)"></div>
+          <div style="width: 7.1%; background: #211F1C;" class="rounded-sm transition-all hover:opacity-90" title="The Fortress CMA (7.1%)"></div>
+        </div>
+        <div class="flex justify-between items-center text-[11px] text-claude-subtle mt-2 font-mono">
+          <span>주식 자산: 92.9% (₩22,486,800)</span>
+          <span>현금 요새: 7.1% (₩1,713,891)</span>
+        </div>
+      </div>
+
+      <!-- Asset Grid Cards -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+        <!-- SK하이닉스 -->
+        <div class="p-3 rounded-xl border border-claude-border bg-claude-ivory/50 hover:bg-claude-ivory transition-all">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-xs font-bold text-claude-dark flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full" style="background: #D97757;"></span>
+              SK하이닉스
+            </span>
+            <span class="text-[10px] font-mono text-claude-clay font-bold bg-claude-clayLight px-1.5 py-0.5 rounded">61.3%</span>
           </div>
-          <div class="w-full bg-stone-100 rounded-full h-2 overflow-hidden">
+          <div class="text-sm font-serif text-claude-dark font-medium">₩14,823,000</div>
+          <div class="text-[11px] text-claude-olive font-medium mt-0.5 font-mono">+138.80% (+861.5만)</div>
+        </div>
+
+        <!-- HD현대일렉트릭 -->
+        <div class="p-3 rounded-xl border border-claude-border bg-claude-ivory/50 hover:bg-claude-ivory transition-all">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-xs font-bold text-claude-dark flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full" style="background: #6A9BCC;"></span>
+              HD현대일렉
+            </span>
+            <span class="text-[10px] font-mono text-blue-700 font-bold bg-blue-50 px-1.5 py-0.5 rounded">14.8%</span>
+          </div>
+          <div class="text-sm font-serif text-claude-dark font-medium">₩3,570,000</div>
+          <div class="text-[11px] text-blue-600 font-medium mt-0.5 font-mono">-4.80% (-18.0만)</div>
+        </div>
+
+        <!-- KB금융 -->
+        <div class="p-3 rounded-xl border border-claude-border bg-claude-ivory/50 hover:bg-claude-ivory transition-all">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-xs font-bold text-claude-dark flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full" style="background: #788C5D;"></span>
+              KB금융
+            </span>
+            <span class="text-[10px] font-mono text-emerald-800 font-bold bg-emerald-50 px-1.5 py-0.5 rounded">10.0%</span>
+          </div>
+          <div class="text-sm font-serif text-claude-dark font-medium">₩2,408,000</div>
+          <div class="text-[11px] text-claude-olive font-medium mt-0.5 font-mono">+26.64% (+50.7만)</div>
+        </div>
+
+        <!-- 두산에너빌리티 -->
+        <div class="p-3 rounded-xl border border-claude-border bg-claude-ivory/50 hover:bg-claude-ivory transition-all">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-xs font-bold text-claude-dark flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full" style="background: #87867F;"></span>
+              두산에너빌리티
+            </span>
+            <span class="text-[10px] font-mono text-stone-700 font-bold bg-stone-100 px-1.5 py-0.5 rounded">4.6%</span>
+          </div>
+          <div class="text-sm font-serif text-claude-dark font-medium">₩1,108,800</div>
+          <div class="text-[11px] text-claude-muted font-medium mt-0.5 font-mono">-0.79% (-0.9만)</div>
+        </div>
+
+        <!-- 알테오젠 -->
+        <div class="p-3 rounded-xl border border-claude-border bg-claude-ivory/50 hover:bg-claude-ivory transition-all">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-xs font-bold text-claude-dark flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full" style="background: #C46686;"></span>
+              알테오젠
+            </span>
+            <span class="text-[10px] font-mono text-pink-700 font-bold bg-pink-50 px-1.5 py-0.5 rounded">2.4%</span>
+          </div>
+          <div class="text-sm font-serif text-claude-dark font-medium">₩577,000</div>
+          <div class="text-[11px] text-pink-700 font-medium mt-0.5 font-mono">-8.99% (-5.7만)</div>
+        </div>
+
+        <!-- The Fortress (CMA) -->
+        <div class="p-3 rounded-xl border border-claude-border bg-claude-ivory/50 hover:bg-claude-ivory transition-all">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-xs font-bold text-claude-dark flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-claude-dark"></span>
+              CMA 요새
+            </span>
+            <span class="text-[10px] font-mono text-claude-dark font-bold bg-stone-200 px-1.5 py-0.5 rounded">7.1%</span>
+          </div>
+          <div class="text-sm font-serif text-claude-dark font-medium">₩1,713,891</div>
+          <div class="text-[11px] text-claude-subtle font-medium mt-0.5 font-mono">0.00% (현금 보존)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: 수익률 & 손익 분석 (Claude Editorial Bars) -->
+    <div id="view-pnl" class="tab-view hidden space-y-3">
+      <div class="p-3 bg-claude-ivory rounded-xl border border-claude-border text-xs text-claude-muted flex justify-between items-center">
+        <span>종목별 누적 손익 및 초과수익 기여도</span>
+        <span class="font-mono font-semibold text-claude-dark">합계: +₩8,876,628</span>
+      </div>
+
+      <div class="space-y-2.5 pt-1 text-xs">
+        <!-- SK하이닉스 -->
+        <div class="p-2.5 rounded-xl border border-claude-border/80 bg-white">
+          <div class="flex justify-between mb-1">
+            <span class="font-bold text-claude-dark">SK하이닉스 (000660)</span>
+            <span class="font-mono font-bold text-claude-clay">+138.80% (+₩8,615,000)</span>
+          </div>
+          <div class="w-full bg-claude-cream rounded-full h-2 overflow-hidden">
             <div class="h-2 rounded-full" style="width: 100%; background: #D97757;"></div>
           </div>
         </div>
 
-        <div>
-          <div class="flex justify-between mb-0.5">
-            <span class="font-bold">포트폴리오 전체 종합</span>
-            <span class="font-mono font-bold text-emerald-600">+57.93% (+887.7만 원)</span>
+        <!-- 포트폴리오 종합 -->
+        <div class="p-2.5 rounded-xl border border-claude-border bg-claude-ivory">
+          <div class="flex justify-between mb-1">
+            <span class="font-bold text-claude-dark">포트폴리오 전체 종합 (Total AUM)</span>
+            <span class="font-mono font-bold text-claude-olive">+57.93% (+₩8,876,628)</span>
           </div>
-          <div class="w-full bg-stone-100 rounded-full h-2 overflow-hidden">
-            <div class="h-2 rounded-full" style="width: 41.7%; background: #3D3D3A;"></div>
-          </div>
-        </div>
-
-        <div>
-          <div class="flex justify-between mb-0.5">
-            <span class="font-bold">KB금융</span>
-            <span class="font-mono font-bold text-emerald-600">+26.64% (+50.7만 원)</span>
-          </div>
-          <div class="w-full bg-stone-100 rounded-full h-2 overflow-hidden">
-            <div class="h-2 rounded-full" style="width: 19.2%; background: #788C5D;"></div>
-          </div>
-        </div>
-
-        <div>
-          <div class="flex justify-between mb-0.5">
-            <span class="font-bold">두산에너빌리티</span>
-            <span class="font-mono font-bold text-stone-500">-0.79% (-0.9만 원)</span>
-          </div>
-          <div class="w-full bg-stone-100 rounded-full h-2 overflow-hidden">
-            <div class="h-2 rounded-full" style="width: 2%; background: #87867F;"></div>
-          </div>
-        </div>
-
-        <div>
-          <div class="flex justify-between mb-0.5">
-            <span class="font-bold">HD현대일렉트릭</span>
-            <span class="font-mono font-bold text-blue-600">-4.80% (-18.0만 원)</span>
-          </div>
-          <div class="w-full bg-stone-100 rounded-full h-2 overflow-hidden">
-            <div class="h-2 rounded-full" style="width: 4%; background: #6A9BCC;"></div>
-          </div>
-        </div>
-
-        <div>
-          <div class="flex justify-between mb-0.5">
-            <span class="font-bold">알테오젠</span>
-            <span class="font-mono font-bold text-pink-600">-8.99% (-5.7만 원)</span>
-          </div>
-          <div class="w-full bg-stone-100 rounded-full h-2 overflow-hidden">
-            <div class="h-2 rounded-full" style="width: 6.5%; background: #C46686;"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Tab 3: 안전마진 & 가격 위치 게이지 -->
-    <div id="view-range" class="tab-view hidden space-y-2 text-xs">
-      <p class="text-[11px] text-[var(--muted-foreground)]">좌측 손절선(0%) ➔ 중앙 현재가 ➔ 우측 1차 목표가(100%) 구간 채널</p>
-      
-      <div class="space-y-2 pt-1">
-        <!-- SK하이닉스 -->
-        <div class="border border-stone-100 p-2 rounded bg-stone-50/40">
-          <div class="flex justify-between font-medium">
-            <span>SK하이닉스 (손절 148만 원 ~ 목표 200만 원)</span>
-            <span class="text-emerald-600 font-bold">목표가까지 +21.4%</span>
-          </div>
-          <div class="relative w-full bg-stone-200 h-2 rounded-full mt-1.5">
-            <div class="bg-stone-400 h-2 rounded-full" style="width: 32.1%;"></div>
-            <div class="absolute -top-1 w-4 h-4 rounded-full border-2 border-white shadow-sm" style="left: 31%; background: #D97757;"></div>
-          </div>
-          <div class="flex justify-between text-[10px] text-stone-500 mt-1 font-mono">
-            <span>손절선 148만</span>
-            <span class="font-bold text-stone-800">현재 164.7만</span>
-            <span>1차목표 200만</span>
-          </div>
-        </div>
-
-        <!-- HD현대일렉트릭 -->
-        <div class="border border-amber-100 p-2 rounded bg-amber-50/20">
-          <div class="flex justify-between font-medium">
-            <span>HD현대일렉트릭 (손절 69만 원 ~ 목표 82만 원)</span>
-            <span class="text-amber-600 font-bold">손절선 대비 +3.5% [경계]</span>
-          </div>
-          <div class="relative w-full bg-stone-200 h-2 rounded-full mt-1.5">
-            <div class="bg-stone-400 h-2 rounded-full" style="width: 18.5%;"></div>
-            <div class="absolute -top-1 w-4 h-4 rounded-full border-2 border-white shadow-sm" style="left: 17%; background: #6A9BCC;"></div>
-          </div>
-          <div class="flex justify-between text-[10px] text-stone-500 mt-1 font-mono">
-            <span class="text-amber-700 font-bold">손절선 69만</span>
-            <span class="font-bold text-stone-800">현재 71.4만</span>
-            <span>1차목표 82만</span>
+          <div class="w-full bg-claude-cream rounded-full h-2 overflow-hidden">
+            <div class="h-2 rounded-full" style="width: 41.7%; background: #211F1C;"></div>
           </div>
         </div>
 
         <!-- KB금융 -->
-        <div class="border border-stone-100 p-2 rounded bg-stone-50/40">
-          <div class="flex justify-between font-medium">
-            <span>KB금융 (손절 15.5만 원 ~ 목표 19.5만 원)</span>
-            <span class="text-emerald-600 font-bold">목표가까지 +13.4%</span>
+        <div class="p-2.5 rounded-xl border border-claude-border/80 bg-white">
+          <div class="flex justify-between mb-1">
+            <span class="font-bold text-claude-dark">KB금융 (105560)</span>
+            <span class="font-mono font-bold text-claude-olive">+26.64% (+₩507,000)</span>
           </div>
-          <div class="relative w-full bg-stone-200 h-2 rounded-full mt-1.5">
-            <div class="bg-stone-400 h-2 rounded-full" style="width: 42.5%;"></div>
-            <div class="absolute -top-1 w-4 h-4 rounded-full border-2 border-white shadow-sm" style="left: 41%; background: #788C5D;"></div>
+          <div class="w-full bg-claude-cream rounded-full h-2 overflow-hidden">
+            <div class="h-2 rounded-full" style="width: 19.2%; background: #788C5D;"></div>
           </div>
-          <div class="flex justify-between text-[10px] text-stone-500 mt-1 font-mono">
-            <span>손절선 15.5만</span>
-            <span class="font-bold text-stone-800">현재 17.2만</span>
-            <span>1차목표 19.5만</span>
+        </div>
+
+        <!-- 두산에너빌리티 -->
+        <div class="p-2.5 rounded-xl border border-claude-border/80 bg-white">
+          <div class="flex justify-between mb-1">
+            <span class="font-bold text-claude-dark">두산에너빌리티 (034020)</span>
+            <span class="font-mono font-bold text-claude-muted">-0.79% (-₩8,800)</span>
+          </div>
+          <div class="w-full bg-claude-cream rounded-full h-2 overflow-hidden">
+            <div class="h-2 rounded-full" style="width: 2.5%; background: #87867F;"></div>
+          </div>
+        </div>
+
+        <!-- HD현대일렉트릭 -->
+        <div class="p-2.5 rounded-xl border border-claude-border/80 bg-white">
+          <div class="flex justify-between mb-1">
+            <span class="font-bold text-claude-dark">HD현대일렉트릭 (267260)</span>
+            <span class="font-mono font-bold text-blue-700">-4.80% (-₩180,000)</span>
+          </div>
+          <div class="w-full bg-claude-cream rounded-full h-2 overflow-hidden">
+            <div class="h-2 rounded-full" style="width: 5%; background: #6A9BCC;"></div>
+          </div>
+        </div>
+
+        <!-- 알테오젠 -->
+        <div class="p-2.5 rounded-xl border border-claude-border/80 bg-white">
+          <div class="flex justify-between mb-1">
+            <span class="font-bold text-claude-dark">알테오젠 (196170)</span>
+            <span class="font-mono font-bold text-pink-700">-8.99% (-₩57,000)</span>
+          </div>
+          <div class="w-full bg-claude-cream rounded-full h-2 overflow-hidden">
+            <div class="h-2 rounded-full" style="width: 7%; background: #C46686;"></div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Tab 4: CMA 요새 시뮬레이터 -->
-    <div id="view-sim" class="tab-view hidden space-y-3 text-xs">
-      <div class="p-3 bg-stone-50 rounded-lg border border-stone-200 space-y-2">
-        <div class="flex items-center justify-between">
-          <span class="font-bold text-[var(--foreground)]">SK하이닉스 200만 원 도달 시 2주 분할 익절 시뮬레이션</span>
-          <span class="font-mono text-xs px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-semibold">+₩4,000,000 확보</span>
-        </div>
-        <p class="text-stone-600 text-[11px]">SK하이닉스 2주 매도 시 현금 요새(CMA) 비중의 극적인 방어력 상승 효과:</p>
-        
-        <div class="space-y-1.5 pt-1 font-mono">
-          <div>
-            <div class="flex justify-between text-[11px]">
-              <span class="text-stone-500 font-sans">현재 CMA 비중:</span>
-              <span class="font-bold">7.1% (₩1,713,891) — 방어력 취약</span>
-            </div>
-            <div class="w-full bg-stone-200 h-2 rounded-full overflow-hidden mt-0.5">
-              <div class="bg-stone-600 h-2 rounded-full" style="width: 7.1%;"></div>
-            </div>
-          </div>
+    <!-- TAB 3: 안전마진 & 가격 위치 게이지 -->
+    <div id="view-range" class="tab-view hidden space-y-3">
+      <div class="p-3 bg-claude-ivory rounded-xl border border-claude-border text-xs text-claude-muted">
+        각 종목의 <strong>손절가(0%) ➔ 현재 주가 ➔ 1차 목표가(100%)</strong> 상대 위치 채널
+      </div>
 
-          <div>
-            <div class="flex justify-between text-[11px]">
-              <span class="text-emerald-700 font-bold font-sans">익절 후 예상 CMA 비중:</span>
-              <span class="text-emerald-700 font-bold">23.6% (₩5,713,891) — 요새 구축 완료</span>
-            </div>
-            <div class="w-full bg-stone-200 h-2 rounded-full overflow-hidden mt-0.5">
-              <div class="bg-emerald-600 h-2 rounded-full" style="width: 23.6%;"></div>
-            </div>
+      <div class="space-y-2.5 pt-1 text-xs">
+        <!-- SK하이닉스 -->
+        <div class="p-3 rounded-xl border border-claude-border bg-white space-y-2">
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-claude-dark">SK하이닉스 (164.7만 원)</span>
+            <span class="font-mono text-[11px] font-semibold text-claude-clay bg-claude-clayLight px-2 py-0.5 rounded">목표가까지 +21.4%</span>
+          </div>
+          <div class="relative w-full bg-claude-cream h-2.5 rounded-full overflow-hidden">
+            <div class="h-2.5 rounded-full bg-claude-clay" style="width: 32.1%;"></div>
+          </div>
+          <div class="flex justify-between text-[11px] font-mono text-claude-subtle">
+            <span>손절선 148만 원</span>
+            <span class="font-bold text-claude-dark">현재 164.7만</span>
+            <span>1차목표 200만 원</span>
           </div>
         </div>
 
-        <div class="text-[11px] text-stone-600 bg-white p-2 rounded border border-stone-200 mt-2 font-sans">
-          💡 <strong>운용 결론:</strong> 하이닉스 목표가 달성 시 2주 기계적 익절을 통해 <strong>현금 탄약 23.6%</strong>를 확보하면, 향후 관망 후보군(한화에어로스페이스·클래시스·삼양식품)의 눌림목 분할 매수 자본 배치가 완벽히 가능해집니다.
+        <!-- HD현대일렉트릭 -->
+        <div class="p-3 rounded-xl border border-amber-200 bg-amber-50/30 space-y-2">
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-claude-dark flex items-center gap-1.5">
+              HD현대일렉트릭 (71.4만 원)
+              <span class="text-[10px] font-bold text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded">경계</span>
+            </span>
+            <span class="font-mono text-[11px] font-semibold text-amber-800">손절선 대비 +3.5%</span>
+          </div>
+          <div class="relative w-full bg-claude-cream h-2.5 rounded-full overflow-hidden">
+            <div class="h-2.5 rounded-full bg-blue-500" style="width: 18.5%;"></div>
+          </div>
+          <div class="flex justify-between text-[11px] font-mono text-claude-subtle">
+            <span class="text-amber-800 font-bold">손절선 69만 원</span>
+            <span class="font-bold text-claude-dark">현재 71.4만</span>
+            <span>1차목표 82만 원</span>
+          </div>
+        </div>
+
+        <!-- KB금융 -->
+        <div class="p-3 rounded-xl border border-claude-border bg-white space-y-2">
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-claude-dark">KB금융 (17.2만 원)</span>
+            <span class="font-mono text-[11px] font-semibold text-claude-olive bg-claude-oliveLight px-2 py-0.5 rounded">목표가까지 +13.4%</span>
+          </div>
+          <div class="relative w-full bg-claude-cream h-2.5 rounded-full overflow-hidden">
+            <div class="h-2.5 rounded-full bg-claude-olive" style="width: 42.5%;"></div>
+          </div>
+          <div class="flex justify-between text-[11px] font-mono text-claude-subtle">
+            <span>손절선 15.5만 원</span>
+            <span class="font-bold text-claude-dark">현재 17.2만</span>
+            <span>1차목표 19.5만 원</span>
+          </div>
         </div>
       </div>
+    </div>
+
+    <!-- TAB 4: CMA 요새 시뮬레이터 (Claude Interactive Scenario) -->
+    <div id="view-sim" class="tab-view hidden space-y-4 text-xs">
+      <div class="p-4 bg-claude-ivory rounded-2xl border border-claude-border space-y-3">
+        <div class="flex items-center justify-between">
+          <h3 class="font-serif text-base text-claude-dark font-medium">SK하이닉스 200만 원 분할 익절 로드맵</h3>
+          <span class="font-mono text-[11px] font-bold text-claude-clay bg-claude-clayLight px-2.5 py-1 rounded-full border border-claude-clay/20">+₩4,000,000 확보</span>
+        </div>
+        <p class="text-claude-muted text-xs leading-relaxed">
+          1차 목표가 <strong>₩2,000,000</strong> 도달 시 2주를 기계적으로 분할 매도하여 CMA 요새로 편입할 경우의 자본 구조 변화입니다:
+        </p>
+
+        <!-- Current vs Simulated Bars -->
+        <div class="space-y-3 pt-2 font-mono">
+          <!-- Before -->
+          <div class="bg-white p-3 rounded-xl border border-claude-border space-y-1.5">
+            <div class="flex justify-between text-xs">
+              <span class="font-sans font-medium text-claude-dark">현재 현금 요새 (CMA)</span>
+              <span class="font-bold text-claude-dark">7.1% (₩1,713,891)</span>
+            </div>
+            <div class="w-full bg-claude-cream h-2.5 rounded-full overflow-hidden">
+              <div class="h-2.5 rounded-full bg-stone-500" style="width: 7.1%;"></div>
+            </div>
+            <div class="text-[11px] text-claude-subtle font-sans">방어력 취약 상태 (외부 충격 시 추가 매수 여력 부족)</div>
+          </div>
+
+          <!-- After -->
+          <div class="bg-claude-oliveLight/50 p-3 rounded-xl border border-claude-olive/30 space-y-1.5">
+            <div class="flex justify-between text-xs">
+              <span class="font-sans font-bold text-claude-olive">익절 집행 후 예상 현금 요새 (CMA)</span>
+              <span class="font-bold text-claude-olive">23.6% (₩5,713,891)</span>
+            </div>
+            <div class="w-full bg-claude-cream h-2.5 rounded-full overflow-hidden">
+              <div class="h-2.5 rounded-full bg-claude-olive" style="width: 23.6%;"></div>
+            </div>
+            <div class="text-[11px] text-claude-olive font-sans font-medium">★ 요새 구축 완료: 관망 후보군(한화에어로·클래시스·삼양식품) 눌림목 1차 매수 탄약 확보</div>
+          </div>
+        </div>
+
+        <!-- Strategy Note -->
+        <div class="p-3 bg-white rounded-xl border border-claude-border text-claude-muted text-[11px] leading-relaxed">
+          <strong class="text-claude-dark">Erebor 운용 규율:</strong> 단일 종목(SK하이닉스)의 과도한 쏠림(61.3%)을 40%대로 경감시키고, 방어력 23.6%를 확보하여 하락장에서도 절대수익을 지키는 <strong>현금 요새 원칙(The Fortress Rule)</strong>을 정식 의결함.
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Note -->
+    <div class="mt-4 pt-3 border-t border-claude-border flex justify-between items-center text-[11px] text-claude-subtle">
+      <span class="font-serif italic">Erebor Absolute Return Engine</span>
+      <span class="font-mono">Anthropic Claude Design Discipline</span>
     </div>
 
   </div>
 
   <script>
     function switchTab(tabId) {
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+        btn.classList.add('text-claude-muted');
+      });
       document.querySelectorAll('.tab-view').forEach(view => view.classList.add('hidden'));
-      document.getElementById('tab-' + tabId).classList.add('active');
+      const activeBtn = document.getElementById('tab-' + tabId);
+      activeBtn.classList.add('active');
+      activeBtn.classList.remove('text-claude-muted');
       document.getElementById('view-' + tabId).classList.remove('hidden');
     }
   </script>
