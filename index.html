@@ -151,7 +151,7 @@
     
     <!-- Fable 5.1 Hero Header -->
     <div class="border-b border-fable-border pb-3.5 sm:pb-4 mb-3.5 sm:mb-4">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3">
+      <div class="flex flex-col gap-3 sm:gap-4">
         <div>
           <!-- Prehead & Date in Anthropic style -->
           <div class="flex items-center gap-2 mb-1.5">
@@ -180,12 +180,13 @@
         </div>
 
         <!-- Action Status Pill (Fable 5.1 Guardrail Badge) -->
-        <div class="self-start sm:self-center">
-          <div class="inline-flex items-center gap-2 bg-fable-cream border border-fable-border px-3 py-1.5 rounded-xl">
-            <div class="w-2 h-2 rounded-full bg-fable-matcha animate-pulse shrink-0"></div>
-            <div class="text-left">
-              <div class="text-[9px] uppercase font-mono tracking-wider text-fable-subtle">Council Action</div>
-              <div class="text-[11px] sm:text-xs font-semibold text-fable-ink whitespace-nowrap">전체 포지션 유지 (Hold)</div>
+        <div class="w-full">
+          <div class="flex items-center gap-3 bg-fable-cream border border-fable-border px-3.5 py-2.5 rounded-xl w-full">
+            <div class="w-2.5 h-2.5 rounded-full bg-fable-matcha animate-pulse shrink-0"></div>
+            <div class="text-left flex flex-col sm:flex-row sm:items-center sm:gap-3 w-full">
+              <div class="text-[10px] sm:text-[11px] uppercase font-mono tracking-wider text-fable-subtle shrink-0">Council Action</div>
+              <div class="hidden sm:block text-fable-border text-xs">|</div>
+              <div class="text-xs sm:text-sm font-semibold text-fable-ink truncate">전체 포지션 유지 (Hold)</div>
             </div>
           </div>
         </div>
