@@ -69,14 +69,13 @@
       box-shadow: 0 1px 2px rgba(20, 20, 19, 0.03), 0 4px 14px rgba(20, 20, 19, 0.02);
     }
     .index-leader {
-      flex-grow: 1;
-      overflow: hidden;
-      white-space: nowrap;
-      letter-spacing: 3px;
-      color: #C8C5B9;
-      font-family: "JetBrains Mono", monospace;
-      font-size: 11px;
+      display: inline-block;
+      flex: 1 1 auto;
+      min-width: 8px;
+      height: 0;
       margin: 0 8px;
+      border-bottom: 1.5px dotted #C8C5B9;
+      align-self: center;
       user-select: none;
     }
     .no-scrollbar::-webkit-scrollbar {
@@ -197,14 +196,13 @@
       <div class="bg-fable-cream/80 border border-fable-border rounded-xl p-1.5 sm:p-2 flex items-center justify-between">
         
         <!-- Dropdown Trigger Button with Dotted Leader -->
-        <button id="nav-dropdown-btn" onclick="toggleNavMenu()" type="button" class="flex items-center justify-between group px-2 py-1 rounded-lg hover:bg-white/80 transition-all flex-1 select-none min-w-0">
-          <div class="flex items-center min-w-0 flex-1">
+        <button id="nav-dropdown-btn" onclick="toggleNavMenu()" type="button" class="flex items-center justify-between group px-2 py-1.5 rounded-lg hover:bg-white/80 transition-all flex-1 select-none min-w-0">
+          <div class="flex items-center min-w-0">
             <span id="nav-current-num" class="font-mono text-xs font-bold text-fable-coral shrink-0">[ 01 ]</span>
-            <span class="index-leader hidden sm:inline-block">....................................................................</span>
-            <span class="mx-1.5 sm:hidden text-fable-faded font-mono">/</span>
-            <span id="nav-current-title" class="font-serif text-sm sm:text-base font-semibold text-fable-ink group-hover:text-fable-coral transition-colors truncate">자산 배분 비중</span>
+            <span id="nav-current-title" class="font-serif text-sm sm:text-base font-semibold text-fable-ink group-hover:text-fable-coral transition-colors truncate ml-1.5">자산 배분 비중</span>
           </div>
-          <div class="flex items-center gap-1.5 shrink-0 ml-2">
+          <span class="index-leader"></span>
+          <div class="flex items-center gap-1.5 shrink-0 ml-1">
             <svg id="nav-chevron" class="w-3.5 h-3.5 text-fable-subtle transition-transform duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M6 9l6 6 6-6"/>
             </svg>
@@ -235,42 +233,52 @@
 
         <!-- 01 자산 배분 -->
         <button onclick="selectMenu('alloc')" id="menu-item-alloc" type="button" class="menu-item w-full flex items-center justify-between p-2 rounded-xl text-left transition-all bg-fable-ivory border border-fable-border">
-          <span class="font-mono text-xs font-bold text-fable-coral shrink-0">[ 01 ]</span>
-          <span class="index-leader">....................................................................</span>
-          <span class="font-serif text-sm font-semibold text-fable-ink shrink-0 ml-1">자산 배분 비중</span>
-          <span class="menu-check text-xs text-fable-coral font-bold shrink-0 ml-2">✓</span>
+          <div class="flex items-center min-w-0">
+            <span class="font-mono text-xs font-bold text-fable-coral shrink-0">[ 01 ]</span>
+            <span class="font-serif text-sm font-semibold text-fable-ink ml-1.5 truncate">자산 배분 비중</span>
+          </div>
+          <span class="index-leader"></span>
+          <span class="menu-check text-xs text-fable-coral font-bold shrink-0 ml-1">✓</span>
         </button>
 
         <!-- 02 다차원 레이더 -->
         <button onclick="selectMenu('radar')" id="menu-item-radar" type="button" class="menu-item w-full flex items-center justify-between p-2 rounded-xl text-left transition-all hover:bg-fable-ivory/80 border border-transparent">
-          <span class="font-mono text-xs text-fable-subtle shrink-0">[ 02 ]</span>
-          <span class="index-leader">....................................................................</span>
-          <span class="font-serif text-sm font-normal text-fable-ink shrink-0 ml-1">다차원 레이더</span>
-          <span class="menu-check text-xs text-fable-coral font-bold shrink-0 ml-2 hidden">✓</span>
+          <div class="flex items-center min-w-0">
+            <span class="font-mono text-xs text-fable-subtle shrink-0">[ 02 ]</span>
+            <span class="font-serif text-sm font-normal text-fable-ink ml-1.5 truncate">다차원 레이더</span>
+          </div>
+          <span class="index-leader"></span>
+          <span class="menu-check text-xs text-fable-coral font-bold shrink-0 ml-1 hidden">✓</span>
         </button>
 
         <!-- 03 안전마진 채널 -->
         <button onclick="selectMenu('range')" id="menu-item-range" type="button" class="menu-item w-full flex items-center justify-between p-2 rounded-xl text-left transition-all hover:bg-fable-ivory/80 border border-transparent">
-          <span class="font-mono text-xs text-fable-subtle shrink-0">[ 03 ]</span>
-          <span class="index-leader">....................................................................</span>
-          <span class="font-serif text-sm font-normal text-fable-ink shrink-0 ml-1">안전마진 채널</span>
-          <span class="menu-check text-xs text-fable-coral font-bold shrink-0 ml-2 hidden">✓</span>
+          <div class="flex items-center min-w-0">
+            <span class="font-mono text-xs text-fable-subtle shrink-0">[ 03 ]</span>
+            <span class="font-serif text-sm font-normal text-fable-ink ml-1.5 truncate">안전마진 채널</span>
+          </div>
+          <span class="index-leader"></span>
+          <span class="menu-check text-xs text-fable-coral font-bold shrink-0 ml-1 hidden">✓</span>
         </button>
 
-        <!-- 04 재배치 시뮬레이터 -->
+        <!-- 04 멀티 리밸런싱 랩 -->
         <button onclick="selectMenu('sim')" id="menu-item-sim" type="button" class="menu-item w-full flex items-center justify-between p-2 rounded-xl text-left transition-all hover:bg-fable-ivory/80 border border-transparent">
-          <span class="font-mono text-xs text-fable-subtle shrink-0">[ 04 ]</span>
-          <span class="index-leader">....................................................................</span>
-          <span class="font-serif text-sm font-normal text-fable-ink shrink-0 ml-1">재배치 시뮬레이터</span>
-          <span class="menu-check text-xs text-fable-coral font-bold shrink-0 ml-2 hidden">✓</span>
+          <div class="flex items-center min-w-0">
+            <span class="font-mono text-xs text-fable-subtle shrink-0">[ 04 ]</span>
+            <span class="font-serif text-sm font-normal text-fable-ink ml-1.5 truncate">멀티 리밸런싱 랩</span>
+          </div>
+          <span class="index-leader"></span>
+          <span class="menu-check text-xs text-fable-coral font-bold shrink-0 ml-1 hidden">✓</span>
         </button>
 
         <!-- 05 수익률 분석 -->
         <button onclick="selectMenu('pnl')" id="menu-item-pnl" type="button" class="menu-item w-full flex items-center justify-between p-2 rounded-xl text-left transition-all hover:bg-fable-ivory/80 border border-transparent">
-          <span class="font-mono text-xs text-fable-subtle shrink-0">[ 05 ]</span>
-          <span class="index-leader">....................................................................</span>
-          <span class="font-serif text-sm font-normal text-fable-ink shrink-0 ml-1">수익률 분석</span>
-          <span class="menu-check text-xs text-fable-coral font-bold shrink-0 ml-2 hidden">✓</span>
+          <div class="flex items-center min-w-0">
+            <span class="font-mono text-xs text-fable-subtle shrink-0">[ 05 ]</span>
+            <span class="font-serif text-sm font-normal text-fable-ink ml-1.5 truncate">수익률 분석</span>
+          </div>
+          <span class="index-leader"></span>
+          <span class="menu-check text-xs text-fable-coral font-bold shrink-0 ml-1 hidden">✓</span>
         </button>
       </div>
     </div>
@@ -678,16 +686,15 @@
 
           <div class="bg-fable-surface border border-fable-border rounded-xl p-1.5 sm:p-2 flex items-center justify-between shadow-xs">
             <!-- Dropdown Trigger Button with Dotted Leader -->
-            <button id="sim-stock-dropdown-btn" onclick="toggleSimStockMenu()" type="button" class="flex items-center justify-between group px-2 py-1 rounded-lg hover:bg-fable-ivory transition-all flex-1 select-none min-w-0">
-              <div class="flex items-center min-w-0 flex-1">
+            <button id="sim-stock-dropdown-btn" onclick="toggleSimStockMenu()" type="button" class="flex items-center justify-between group px-2 py-1.5 rounded-lg hover:bg-fable-ivory transition-all flex-1 select-none min-w-0">
+              <div class="flex items-center min-w-0">
                 <span id="sim-stock-current-num" class="font-mono text-xs font-bold text-fable-coral shrink-0">[ 01 ]</span>
-                <span class="index-leader hidden sm:inline-block">....................................................................</span>
-                <span class="mx-1.5 sm:hidden text-fable-faded font-mono">/</span>
-                <span id="sim-stock-current-name" class="font-serif text-sm sm:text-base font-semibold text-fable-ink group-hover:text-fable-coral transition-colors truncate">SK하이닉스</span>
-                <span id="sim-stock-current-weight" class="font-mono text-[10px] text-fable-subtle ml-1.5 shrink-0">(61.25%)</span>
-                <span id="sim-stock-current-badge" class="ml-2 text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-coral text-white font-bold shrink-0">-2주</span>
+                <span id="sim-stock-current-name" class="font-serif text-sm sm:text-base font-semibold text-fable-ink group-hover:text-fable-coral transition-colors truncate ml-1.5">SK하이닉스</span>
+                <span id="sim-stock-current-weight" class="font-mono text-[10px] text-fable-subtle ml-1 shrink-0">(61.3%)</span>
               </div>
-              <div class="flex items-center gap-1.5 shrink-0 ml-2">
+              <span class="index-leader"></span>
+              <div class="flex items-center gap-1.5 shrink-0 ml-1">
+                <span id="sim-stock-current-badge" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-coral text-white font-bold shrink-0">-2주</span>
                 <svg id="sim-stock-chevron" class="w-3.5 h-3.5 text-fable-subtle transition-transform duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M6 9l6 6 6-6"/>
                 </svg>
@@ -717,47 +724,72 @@
 
             <!-- 01 SK하이닉스 -->
             <button onclick="selectSimStockFromMenu('000660')" id="sim-menu-item-000660" type="button" class="sim-stock-menu-item w-full flex items-center justify-between p-2 rounded-xl text-left transition-all bg-fable-ivory border border-fable-border">
-              <span class="font-mono text-xs font-bold text-fable-coral shrink-0">[ 01 ]</span>
-              <span class="index-leader">....................................................................</span>
-              <span class="font-serif text-sm font-semibold text-fable-ink shrink-0 ml-1">SK하이닉스 (61.25%)</span>
-              <span id="sim-menu-badge-000660" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-coral text-white font-bold shrink-0 ml-2">-2주</span>
-              <span id="sim-menu-check-000660" class="text-xs text-fable-coral font-bold shrink-0 ml-1.5">✓</span>
+              <div class="flex items-center min-w-0">
+                <span class="font-mono text-xs font-bold text-fable-coral shrink-0">[ 01 ]</span>
+                <span class="font-serif text-sm font-semibold text-fable-ink ml-1.5 truncate">SK하이닉스</span>
+                <span class="font-mono text-[10px] text-fable-subtle ml-1 shrink-0">61.3%</span>
+              </div>
+              <span class="index-leader"></span>
+              <div class="flex items-center gap-1.5 shrink-0 ml-1">
+                <span id="sim-menu-badge-000660" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-coral text-white font-bold shrink-0">-2주</span>
+                <span id="sim-menu-check-000660" class="text-xs text-fable-coral font-bold shrink-0">✓</span>
+              </div>
             </button>
 
             <!-- 02 HD현대일렉트릭 -->
             <button onclick="selectSimStockFromMenu('267260')" id="sim-menu-item-267260" type="button" class="sim-stock-menu-item w-full flex items-center justify-between p-2 rounded-xl text-left transition-all hover:bg-fable-ivory/80 border border-transparent">
-              <span class="font-mono text-xs text-fable-subtle shrink-0">[ 02 ]</span>
-              <span class="index-leader">....................................................................</span>
-              <span class="font-serif text-sm font-normal text-fable-ink shrink-0 ml-1">HD현대일렉트릭 (14.75%)</span>
-              <span id="sim-menu-badge-267260" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-cream text-fable-subtle shrink-0 ml-2">0주</span>
-              <span id="sim-menu-check-267260" class="text-xs text-fable-coral font-bold shrink-0 ml-1.5 hidden">✓</span>
+              <div class="flex items-center min-w-0">
+                <span class="font-mono text-xs text-fable-subtle shrink-0">[ 02 ]</span>
+                <span class="font-serif text-sm font-normal text-fable-ink ml-1.5 truncate">HD현대일렉트릭</span>
+                <span class="font-mono text-[10px] text-fable-subtle ml-1 shrink-0">14.8%</span>
+              </div>
+              <span class="index-leader"></span>
+              <div class="flex items-center gap-1.5 shrink-0 ml-1">
+                <span id="sim-menu-badge-267260" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-cream text-fable-subtle shrink-0">0주</span>
+                <span id="sim-menu-check-267260" class="text-xs text-fable-coral font-bold shrink-0 hidden">✓</span>
+              </div>
             </button>
 
             <!-- 03 KB금융 -->
             <button onclick="selectSimStockFromMenu('105560')" id="sim-menu-item-105560" type="button" class="sim-stock-menu-item w-full flex items-center justify-between p-2 rounded-xl text-left transition-all hover:bg-fable-ivory/80 border border-transparent">
-              <span class="font-mono text-xs text-fable-subtle shrink-0">[ 03 ]</span>
-              <span class="index-leader">....................................................................</span>
-              <span class="font-serif text-sm font-normal text-fable-ink shrink-0 ml-1">KB금융 (9.95%)</span>
-              <span id="sim-menu-badge-105560" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-cream text-fable-subtle shrink-0 ml-2">0주</span>
-              <span id="sim-menu-check-105560" class="text-xs text-fable-coral font-bold shrink-0 ml-1.5 hidden">✓</span>
+              <div class="flex items-center min-w-0">
+                <span class="font-mono text-xs text-fable-subtle shrink-0">[ 03 ]</span>
+                <span class="font-serif text-sm font-normal text-fable-ink ml-1.5 truncate">KB금융</span>
+                <span class="font-mono text-[10px] text-fable-subtle ml-1 shrink-0">10.0%</span>
+              </div>
+              <span class="index-leader"></span>
+              <div class="flex items-center gap-1.5 shrink-0 ml-1">
+                <span id="sim-menu-badge-105560" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-cream text-fable-subtle shrink-0">0주</span>
+                <span id="sim-menu-check-105560" class="text-xs text-fable-coral font-bold shrink-0 hidden">✓</span>
+              </div>
             </button>
 
             <!-- 04 두산에너빌리티 -->
             <button onclick="selectSimStockFromMenu('034020')" id="sim-menu-item-034020" type="button" class="sim-stock-menu-item w-full flex items-center justify-between p-2 rounded-xl text-left transition-all hover:bg-fable-ivory/80 border border-transparent">
-              <span class="font-mono text-xs text-fable-subtle shrink-0">[ 04 ]</span>
-              <span class="index-leader">....................................................................</span>
-              <span class="font-serif text-sm font-normal text-fable-ink shrink-0 ml-1">두산에너빌리티 (4.58%)</span>
-              <span id="sim-menu-badge-034020" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-cream text-fable-subtle shrink-0 ml-2">0주</span>
-              <span id="sim-menu-check-034020" class="text-xs text-fable-coral font-bold shrink-0 ml-1.5 hidden">✓</span>
+              <div class="flex items-center min-w-0">
+                <span class="font-mono text-xs text-fable-subtle shrink-0">[ 04 ]</span>
+                <span class="font-serif text-sm font-normal text-fable-ink ml-1.5 truncate">두산에너빌리티</span>
+                <span class="font-mono text-[10px] text-fable-subtle ml-1 shrink-0">4.6%</span>
+              </div>
+              <span class="index-leader"></span>
+              <div class="flex items-center gap-1.5 shrink-0 ml-1">
+                <span id="sim-menu-badge-034020" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-cream text-fable-subtle shrink-0">0주</span>
+                <span id="sim-menu-check-034020" class="text-xs text-fable-coral font-bold shrink-0 hidden">✓</span>
+              </div>
             </button>
 
             <!-- 05 알테오젠 -->
             <button onclick="selectSimStockFromMenu('196170')" id="sim-menu-item-196170" type="button" class="sim-stock-menu-item w-full flex items-center justify-between p-2 rounded-xl text-left transition-all hover:bg-fable-ivory/80 border border-transparent">
-              <span class="font-mono text-xs text-fable-subtle shrink-0">[ 05 ]</span>
-              <span class="index-leader">....................................................................</span>
-              <span class="font-serif text-sm font-normal text-fable-ink shrink-0 ml-1">알테오젠 (2.38%)</span>
-              <span id="sim-menu-badge-196170" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-cream text-fable-subtle shrink-0 ml-2">0주</span>
-              <span id="sim-menu-check-196170" class="text-xs text-fable-coral font-bold shrink-0 ml-1.5 hidden">✓</span>
+              <div class="flex items-center min-w-0">
+                <span class="font-mono text-xs text-fable-subtle shrink-0">[ 05 ]</span>
+                <span class="font-serif text-sm font-normal text-fable-ink ml-1.5 truncate">알테오젠</span>
+                <span class="font-mono text-[10px] text-fable-subtle ml-1 shrink-0">2.4%</span>
+              </div>
+              <span class="index-leader"></span>
+              <div class="flex items-center gap-1.5 shrink-0 ml-1">
+                <span id="sim-menu-badge-196170" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-fable-cream text-fable-subtle shrink-0">0주</span>
+                <span id="sim-menu-check-196170" class="text-xs text-fable-coral font-bold shrink-0 hidden">✓</span>
+              </div>
             </button>
           </div>
         </div>
@@ -1544,11 +1576,11 @@
     // -------------------------------------------------------------
     // 4. MULTI-POSITION REBALANCING & FORTRESS SIMULATOR ENGINE
     const simStockList = [
-      { ticker: "000660", num: "01", name: "SK하이닉스", weight: "61.25%" },
-      { ticker: "267260", num: "02", name: "HD현대일렉트릭", weight: "14.75%" },
-      { ticker: "105560", num: "03", name: "KB금융", weight: "9.95%" },
-      { ticker: "034020", num: "04", name: "두산에너빌리티", weight: "4.58%" },
-      { ticker: "196170", num: "05", name: "알테오젠", weight: "2.38%" }
+      { ticker: "000660", num: "01", name: "SK하이닉스", weight: "61.3%" },
+      { ticker: "267260", num: "02", name: "HD현대일렉트릭", weight: "14.8%" },
+      { ticker: "105560", num: "03", name: "KB금융", weight: "10.0%" },
+      { ticker: "034020", num: "04", name: "두산에너빌리티", weight: "4.6%" },
+      { ticker: "196170", num: "05", name: "알테오젠", weight: "2.4%" }
     ];
 
     const simConfig = {
@@ -1687,19 +1719,19 @@
       simStockList.forEach(s => {
         const menuItem = document.getElementById(`sim-menu-item-${s.ticker}`);
         const checkElem = document.getElementById(`sim-menu-check-${s.ticker}`);
-        const numElem = menuItem ? menuItem.querySelector('span:first-child') : null;
+        const numElem = menuItem ? menuItem.querySelector('.font-mono') : null;
         const nameElem = menuItem ? menuItem.querySelector('.font-serif') : null;
 
         if (menuItem) {
           if (s.ticker === ticker) {
             menuItem.className = "sim-stock-menu-item w-full flex items-center justify-between p-2 rounded-xl text-left transition-all bg-fable-ivory border border-fable-border";
             if (numElem) numElem.className = "font-mono text-xs font-bold text-fable-coral shrink-0";
-            if (nameElem) nameElem.className = "font-serif text-sm font-semibold text-fable-ink shrink-0 ml-1";
+            if (nameElem) nameElem.className = "font-serif text-sm font-semibold text-fable-ink ml-1.5 truncate";
             if (checkElem) checkElem.classList.remove('hidden');
           } else {
             menuItem.className = "sim-stock-menu-item w-full flex items-center justify-between p-2 rounded-xl text-left transition-all hover:bg-fable-ivory/80 border border-transparent";
             if (numElem) numElem.className = "font-mono text-xs text-fable-subtle shrink-0";
-            if (nameElem) nameElem.className = "font-serif text-sm font-normal text-fable-ink shrink-0 ml-1";
+            if (nameElem) nameElem.className = "font-serif text-sm font-normal text-fable-ink ml-1.5 truncate";
             if (checkElem) checkElem.classList.add('hidden');
           }
         }
