@@ -164,6 +164,7 @@
               <span class="inline-block w-1.5 h-1.5 rounded-full bg-fable-matcha animate-pulse"></span>
               LIVE DISCIPLINE
             </span>
+            <span id="notion-sync-badge" class="hidden text-[9px] font-mono text-fable-subtle px-1.5 py-0.5 rounded bg-fable-cream border border-fable-border"></span>
           </div>
 
           <!-- Editorial Title -->
@@ -173,9 +174,9 @@
 
           <!-- Summary Line -->
           <p class="text-xs sm:text-[13px] text-fable-muted mt-1 font-mono flex flex-wrap items-center gap-1.5">
-            <span>AUM: <strong class="text-fable-ink font-bold font-sans">₩24,200,691</strong></span>
+            <span>AUM: <strong id="header-aum" class="text-fable-ink font-bold font-sans">₩24,200,691</strong></span>
             <span class="text-fable-subtle">·</span>
-            <span>수익률: <strong class="text-fable-matcha font-bold font-sans">+57.93%</strong> (+₩8,876,628)</span>
+            <span>수익률: <strong id="header-pnl" class="text-fable-matcha font-bold font-sans">+57.93%</strong> <span id="header-pnl-amt">(+₩8,876,628)</span></span>
           </p>
         </div>
 
@@ -1247,7 +1248,7 @@
     // -------------------------------------------------------------
     // 1. DATA DICTIONARY (Erebor Portfolio & Radar Data)
     // -------------------------------------------------------------
-    const portfolioData = {
+    let portfolioData = {
       totalAUM: 24200691,
       cmaCash: 1713891,
       stocks: {
@@ -2514,12 +2515,64 @@ ${watchlistSummary}
       }
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
+    function updateHeaderMetrics() {
+      if (!portfolioData || !portfolioData.stocks) return;
+      let totalEval = portfolioData.cmaCash || 0;
+      let totalCost = portfolioData.cmaCash || 0;
+
+      Object.values(portfolioData.stocks).forEach(stk => {
+        totalEval += (stk.shares * stk.currentPrice);
+        totalCost += (stk.shares * stk.avgBuy);
+      });
+
+      const totalPnL = totalEval - totalCost;
+      const totalRate = totalCost > 0 ? ((totalPnL / totalCost) * 100) : 0;
+
+      const aumElem = document.getElementById('header-aum');
+      if (aumElem) aumElem.innerText = `₩${totalEval.toLocaleString()}`;
+
+      const pnlElem = document.getElementById('header-pnl');
+      if (pnlElem) {
+        const sign = totalRate >= 0 ? '+' : '';
+        pnlElem.innerText = `${sign}${totalRate.toFixed(2)}%`;
+      }
+
+      const pnlAmtElem = document.getElementById('header-pnl-amt');
+      if (pnlAmtElem) {
+        const sign = totalPnL >= 0 ? '+' : '';
+        pnlAmtElem.innerText = `(${sign}₩${totalPnL.toLocaleString()})`;
+      }
+    }
+
+    async function loadPortfolioData() {
+      try {
+        const res = await fetch('./data/portfolioData.json?t=' + Date.now());
+        if (res.ok) {
+          const freshData = await res.json();
+          portfolioData = freshData;
+          console.log("[Notion Sync] Loaded live data from data/portfolioData.json");
+          if (freshData.lastSynced) {
+            const syncElem = document.getElementById('notion-sync-badge');
+            if (syncElem) {
+              syncElem.innerText = `Notion: ${freshData.lastSynced.substring(5, 16)}`;
+              syncElem.classList.remove('hidden');
+            }
+          }
+        }
+      } catch (e) {
+        console.log("[Notion Sync] Using embedded default portfolio data (offline/file fallback)");
+      }
+
+      updateHeaderMetrics();
       renderWatchlistUI();
       renderRadar();
       updatePresetButtonsUI('council');
       selectSimStock('000660');
       checkApiKeyUI();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadPortfolioData();
     });
   </script>
 </body>
